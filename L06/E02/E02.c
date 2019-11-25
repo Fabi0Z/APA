@@ -305,10 +305,13 @@ void promptMenu(listaAnagrafica **head) {
             printf("==>");
             uint16_t codice;
             scanf("\nA%" SCNd16, &codice);
-            listaAnagrafica *risultato = ricercaCodice(*head, &codice);
-            if (risultato != NULL) { // Se ho trovato la codice
+            listaAnagrafica *precedente = ricercaCodiceR(*head, &codice);
+            if (precedente != NULL) { // Se ho trovato la codice
+                precedente = estraiNext(precedente);
                 printf("È stato eliminato l'elemento ---> ");
-                printItem(risultato->Contenuto, stdout);
+                printItem(precedente->Contenuto, stdout);
+                freeListaItem(precedente);
+
             } else {
                 puts("Codice non trovato");
             }
