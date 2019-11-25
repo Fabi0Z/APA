@@ -77,15 +77,8 @@ void copiaItem(Item *a, Item *b) { // Copia l'item a in b
     strcpy(b->Città, a->Città);
 }
 
-unsigned int confrontaData(listaAnagrafica *list1, listaAnagrafica *list2) { // Confronta due elementi di tipo data e restituisce true se il primo è maggiore al secondo
-    if (list1->Contenuto == NULL) {                                          // Se sono sulla HEAD
-        return true;
-    }
-
-    data *a = &list1->Contenuto->Nascita;
-    data *b = &list2->Contenuto->Nascita;
-
-    if (a->Anno > b->Anno) { // Se Anno è maggiore
+bool confrontaData(data *a, data *b) { // Confronta due elementi di tipo data e restituisce true se il primo è maggiore al secondo
+    if (a->Anno > b->Anno) {           // Se Anno è maggiore
         return true;
     } else if (a->Anno < b->Anno) { // Se Anno è minore
         return false;
@@ -100,6 +93,15 @@ unsigned int confrontaData(listaAnagrafica *list1, listaAnagrafica *list2) { // 
 
     // Se arrivo qui Mese è uguale
     return a->Giorno > b->Giorno;
+}
+
+bool confrontaDataList(listaAnagrafica *list1, listaAnagrafica *list2) { // Confronta due elementi di tipo lista per data e restituisce true se il primo è maggiore al secondo
+    if (list1->Contenuto == NULL) {                                      // Se sono sulla HEAD
+        return true;
+    }
+    data *a = &list1->Contenuto->Nascita;
+    data *b = &list2->Contenuto->Nascita;
+    return confrontaData(a, b);
 }
 
 bool checkFilestream(FILE *stream) { // Controlla errori di aperrtura del file
@@ -172,7 +174,7 @@ void addInOrder(listaAnagrafica *head, listaAnagrafica *item) { // Inserisce un 
     }
 
     // Se la data nella lista è > inserisco tra la head e il successivo, altrimenti proseguo ricorsivamente
-    return confrontaData(posizione, item) ? putInBetween(head, item) : addInOrder(posizione, item);
+    return confrontaDataList(posizione, item) ? putInBetween(head, item) : addInOrder(posizione, item);
 }
 
 Item *getResizedItem(Item *temp) { // Alloca memoria per realizzare una copia ridimensionata dell'item
@@ -252,6 +254,19 @@ listaAnagrafica *estraiNext(listaAnagrafica *previous) { // Estrae l'elemento su
     return elemento;
 }
 
+void estraiInRange(listaAnagrafica *head, data inizio, data fine) { // Estrae un range di elementi definiti per date da una lista
+    listaAnagrafica *next = getNextItem(head);                      // Salto la head
+    if (next->Next == NULL) {                                       // Nel caso la lista abbia un elemento solo
+        if (confrontaData()) {
+            /* code */
+        }
+    }
+
+    while (next->Next != NULL) { // Sinché ci sono elementi da esplorare
+        /* code */
+    }
+}
+
 void promptMenu(listaAnagrafica **head) {
     puts("0 - Inserisci un elemento da tastiera");
     puts("1 - Inserisci elementi da file");
@@ -328,7 +343,14 @@ void promptMenu(listaAnagrafica **head) {
         }
 
         case estrazioneRange: {
-            /* code */
+            puts("Inserisci il range di date da eliminare:");
+            printf("==>");
+            char data1[10], data2[10];
+            fscanf("%s %s", data1, data2);
+            data inizio = parseData(data1);
+            data fine   = parseData(data2);
+            estraiInRange(*head, inizio, fine);
+            premiPerContinuare();
             break;
         }
 
