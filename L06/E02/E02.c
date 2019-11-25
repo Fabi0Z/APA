@@ -151,6 +151,7 @@ listaAnagrafica *getNextItem(listaAnagrafica *item) { // Restituisce l'elemento 
 void addNext(listaAnagrafica *item, listaAnagrafica *next) { // Aggiunge un elemento next subito dopo un elemento item in una lista
     if (item->Next == NULL) {                                // Se si tratta dell'ultimo elemento
         item->Next = next;
+        next->Next = NULL;
         return;
     }
 
