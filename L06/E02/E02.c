@@ -333,7 +333,7 @@ void promptMenu(listaAnagrafica **head) {
 
         case inserimentoFile: {
             char filename[MAX_STRING];
-            printf("Inserisci il nome del file (massimo %" SCNd8 " caratteri)\n", MAX_STRING);
+            printf("Inserisci il nome del file (massimo %" SCNd8 " caratteri)\n", (MAX_STRING - 1));
             printf("==> ");
             scanf("%s", filename);
             FILE *stream = fopen(filename, "r");
@@ -391,7 +391,7 @@ void promptMenu(listaAnagrafica **head) {
 
         case printFile: {
             char filename[MAX_STRING];
-            printf("Inserisci il nome del file (massimo %" SCNd8 " caratteri)\n", MAX_STRING);
+            printf("Inserisci il nome del file (massimo %" SCNd8 " caratteri)\n", (MAX_STRING - 1));
             printf("==> ");
             scanf("%s", filename);
             FILE *stream = fopen(filename, "w");
