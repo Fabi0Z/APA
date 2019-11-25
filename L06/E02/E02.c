@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-const uint8_t MAX_STRING = 50;
+const uint8_t MAX_STRING = 51;
 typedef enum { inserimentoTastiera,
                inserimentoFile,
                ricerca,
@@ -97,7 +97,7 @@ bool confrontaData(data *a, data *b) { // Confronta due elementi di tipo data e 
 
 bool confrontaDataList(listaAnagrafica *list1, listaAnagrafica *list2) { // Confronta due elementi di tipo lista per data e restituisce true se il primo è maggiore al secondo
     if (list1->Contenuto == NULL) {                                      // Se sono sulla HEAD
-        return true;
+        return false;
     }
     data *a = &list1->Contenuto->Nascita;
     data *b = &list2->Contenuto->Nascita;
@@ -127,10 +127,10 @@ bool leggiRiga(FILE *stream, Item *dato) { // Legge una riga dal file di input e
     uint8_t elementiLetti = 0;
     char data[10];
     elementiLetti += fscanf(stream, "A%04" SCNd16, &dato->Codice);
-    elementiLetti += fscanf(stream, "%s %s", dato->Nome, dato->Cognome);
-    elementiLetti += fscanf(stream, " %s ", data);
+    elementiLetti += fscanf(stream, "%50s %50s", dato->Nome, dato->Cognome);
+    elementiLetti += fscanf(stream, " %10s ", data);
     dato->Nascita = parseData(data);
-    elementiLetti += fscanf(stream, "%s %s", dato->Via, dato->Città);
+    elementiLetti += fscanf(stream, "%50s %50s", dato->Via, dato->Città);
     elementiLetti += fscanf(stream, "%05" SCNd32, &dato->CAP);
     if (stream != stdin) {
         fscanf(stream, "\n"); // Leggo a vuoto lo scanf
@@ -304,7 +304,7 @@ void promptMenu(listaAnagrafica **head) {
     puts("4 - Estrai un range di elementi dalla lista");
     puts("5 - Stampa la lista su file");
     puts("6 - Stampa la lista a video");
-    puts("Premi CTRL + C per uscire");
+    puts("\nPremi CTRL + C per uscire");
     printf("==> ");
 
     sceltaMenu scelta;
@@ -372,9 +372,10 @@ void promptMenu(listaAnagrafica **head) {
 
         case estrazioneRange: {
             puts("Inserisci il range di date da eliminare:");
-            printf("==>");
-            char data1[10], data2[10];
-            scanf("%s %s", data1, data2);
+            printf("==> ");
+            char data1[11];
+            char data2[11];
+            scanf("%10s %10s", data1, data2);
             data inizio = parseData(data1);
             data fine   = parseData(data2);
             estraiInRange(*head, &inizio, &fine);
