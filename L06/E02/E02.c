@@ -115,17 +115,25 @@ void premiPerContinuare() {
     getchar();
 }
 
+data parseData(char *string) { // Effettua il parse di una data da una stringa
+    data d;
+    sscanf(string, "%02" SCNd8 "/%02" SCNd8 "/%04" SCNd16, &d.Giorno, &d.Mese, &d.Anno);
+    return d;
+}
+
 bool leggiRiga(FILE *stream, Item *dato) { // Legge una riga dal file di input e la salva su una variabile per riferimento
     uint8_t elementiLetti = 0;
+    char data[10];
     elementiLetti += fscanf(stream, "A%04" SCNd16, &dato->Codice);
     elementiLetti += fscanf(stream, "%s %s", dato->Nome, dato->Cognome);
-    elementiLetti += fscanf(stream, "%02" SCNd8 "/%02" SCNd8 "/%04" SCNd16, &dato->Nascita.Giorno, &dato->Nascita.Mese, &dato->Nascita.Anno);
+    elementiLetti += fscanf(stream, " %s ", data);
+    dato->Nascita = parseData(data);
     elementiLetti += fscanf(stream, "%s %s", dato->Via, dato->Città);
     elementiLetti += fscanf(stream, "%05" SCNd32, &dato->CAP);
     if (stream != stdin) {
         fscanf(stream, "\n"); // Leggo a vuoto lo scanf
     }
-    return elementiLetti == 9;
+    return elementiLetti == 7;
 }
 
 listaAnagrafica *creaLista(Item *i) { // Crea, alloca e restituisce un puntatore a listaAnagrafica
