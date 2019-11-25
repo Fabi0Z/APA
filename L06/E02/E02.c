@@ -269,13 +269,18 @@ void estraiSinoAData(listaAnagrafica *head, data *fine) { // Estrae elementi di 
     }
 
     if (!confrontaData(&next->Contenuto->Nascita, fine)) { // Se l'elemento della lista è minore o uguale della data di fine
+        estraiSinoAData(next, fine);                       // Passo all'elemento successivo
         estraiAndPrint(head);
-        estraiSinoAData(next, fine); // Passo all'elemento successivo
     }
 }
 
 void estraiInRange(listaAnagrafica *head, data *inizio, data *fine) { // Estrae un range di elementi definiti per date da una lista
     listaAnagrafica *next = getNextItem(head);                        // Salto la head
+
+    if (next == NULL) { // Se la lista è vuota
+        puts("Nessun elemento nel range selezionato!");
+        return;
+    }
 
     if (next->Next == NULL) {                                      // Nel caso la lista abbia un elemento solo
         if (confrontaData(&next->Contenuto->Nascita, inizio)) {    // Se la data nella lista è maggiore dell'inizio
