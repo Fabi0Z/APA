@@ -375,7 +375,7 @@ void promptMenu(listaAnagrafica **head) {
             fscanf("%s %s", data1, data2);
             data inizio = parseData(data1);
             data fine   = parseData(data2);
-            estraiInRange(*head, inizio, fine);
+            estraiInRange(*head, &inizio, &fine);
             premiPerContinuare();
             break;
         }
