@@ -211,20 +211,20 @@ void printAnagrafica(listaAnagrafica *l) { // Stampa un array di anagrafiche a v
     printAnagraficaFile(l, stdout);
 }
 
-Item *ricercaCodiceR(listaAnagrafica *head, uint16_t *codice) { // Ricerca ricorsiva
+listaAnagrafica *ricercaCodiceR(listaAnagrafica *head, uint16_t *codice) { // Ricerca ricorsiva
     listaAnagrafica *pointer = getNextItem(head);
     if (pointer == NULL) { // Condizione di terminazione
         return NULL;
     }
 
     if (head->Contenuto->Codice == *codice) { // Se ho trovato la corrispondenza
-        return head->Contenuto;
+        return head;
     }
 
     return ricercaCodiceR(pointer, codice); // Ricerco sull'elemento successivo
 }
 
-Item *ricercaCodice(listaAnagrafica *head, uint16_t *codice) { // Ricerca un elemento per codice nella lista, se lo trova ne restitusice il puntatore, altrimenti restituisce null
+listaAnagrafica *ricercaCodice(listaAnagrafica *head, uint16_t *codice) { // Ricerca un elemento per codice nella lista, se lo trova ne restitusice il puntatore, altrimenti restituisce null
     listaAnagrafica *pointer = getNextItem(head);              // Salto la head
     return ricercaCodiceR(pointer, codice);                    // Ricerco sull'elemento successivo
 }
@@ -280,9 +280,9 @@ void promptMenu(listaAnagrafica **head) {
             printf("==>");
             uint16_t codice;
             scanf("\nA%" SCNd16, &codice);
-            Item *risultato = ricercaCodice(*head, &codice);
+            listaAnagrafica *risultato = ricercaCodice(*head, &codice);
             if (risultato != NULL) { // Se ho trovato la codice
-                printItem(risultato, stdout);
+                printItem(risultato->Contenuto, stdout);
             } else {
                 puts("Codice non trovato");
             }
