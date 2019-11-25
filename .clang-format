@@ -1,0 +1,7 @@
+﻿BasedOnStyle: LLVM
+AlignConsecutiveAssignments: 'true'
+ColumnLimit: '0'
+IndentCaseLabels: 'true'
+IndentWidth: '4'
+TabWidth: '4'
+UseTab: Never
