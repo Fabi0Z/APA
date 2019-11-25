@@ -321,6 +321,7 @@ void promptMenu(listaAnagrafica **head) {
             copiaItem(temp, newItem);             // Copio il contenuto
             freeItem(temp);
             addInOrder(*head, creaLista(newItem)); // Aggiungo alla lista
+            printf("\n");
             break;
         }
 
@@ -333,6 +334,7 @@ void promptMenu(listaAnagrafica **head) {
             checkFilestream(stream);
             addAnagraficaFile(*head, stream);
             fclose(stream);
+            printf("\n");
             break;
         }
 
@@ -372,7 +374,7 @@ void promptMenu(listaAnagrafica **head) {
             puts("Inserisci il range di date da eliminare:");
             printf("==>");
             char data1[10], data2[10];
-            fscanf("%s %s", data1, data2);
+            scanf("%s %s", data1, data2);
             data inizio = parseData(data1);
             data fine   = parseData(data2);
             estraiInRange(*head, &inizio, &fine);
@@ -389,6 +391,7 @@ void promptMenu(listaAnagrafica **head) {
             checkFilestream(stream);
             printAnagraficaFile(*head, stream);
             fclose(stream);
+            printf("\n");
             break;
         }
 
@@ -404,7 +407,6 @@ void promptMenu(listaAnagrafica **head) {
             break;
         }
     }
-    printf("\n");
 }
 
 int main() {
