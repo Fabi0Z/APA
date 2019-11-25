@@ -216,13 +216,17 @@ void printAnagrafica(listaAnagrafica *l) { // Stampa un array di anagrafiche a v
     printAnagraficaFile(l, stdout);
 }
 
-listaAnagrafica *ricercaCodiceR(listaAnagrafica *head, uint16_t *codice) { // Ricerca ricorsiva
+listaAnagrafica *ricercaCodiceR(listaAnagrafica *head, uint16_t *codice) { // Ricerca ricorsiva che restituisce l'elemento precedete a quello trovato
     listaAnagrafica *pointer = getNextItem(head);
-    if (pointer == NULL) { // Condizione di terminazione
+    if (pointer == NULL) { // Condizione di terminazione (lista vuota)
         return NULL;
     }
 
-    if (head->Contenuto->Codice == *codice) { // Se ho trovato la corrispondenza
+    if (pointer->Next == NULL) { // Condizione di terminazione (lista di un elemento)
+        return pointer->Contenuto->Codice == *codice ? head : NULL;
+    }
+
+    if (pointer->Contenuto->Codice == *codice) { // Se ho trovato la corrispondenza
         return head;
     }
 
@@ -230,8 +234,8 @@ listaAnagrafica *ricercaCodiceR(listaAnagrafica *head, uint16_t *codice) { // Ri
 }
 
 listaAnagrafica *ricercaCodice(listaAnagrafica *head, uint16_t *codice) { // Ricerca un elemento per codice nella lista, se lo trova ne restitusice il puntatore, altrimenti restituisce null
-    listaAnagrafica *pointer = getNextItem(head);                         // Salto la head
-    return ricercaCodiceR(pointer, codice);                               // Ricerco sull'elemento successivo
+    listaAnagrafica *precedente = ricercaCodiceR(head, codice);           // Trovo l'elemento precedente in lista
+    return precedente == NULL ? NULL : precedente->Next;                  // Restituisco quello successivo se ho trovato il precedente
 }
 
 listaAnagrafica *estraiNext(listaAnagrafica *previous) { // Estrae l'elemento successivo in lista
@@ -297,7 +301,18 @@ void promptMenu(listaAnagrafica **head) {
         }
 
         case estrazione: {
-            /* code */
+            printf("Inserisci il codice dell'elemento da eliminare\n");
+            printf("==>");
+            uint16_t codice;
+            scanf("\nA%" SCNd16, &codice);
+            listaAnagrafica *risultato = ricercaCodice(*head, &codice);
+            if (risultato != NULL) { // Se ho trovato la codice
+                printf("È stato eliminato l'elemento ---> ");
+                printItem(risultato->Contenuto, stdout);
+            } else {
+                puts("Codice non trovato");
+            }
+            premiPerContinuare();
             break;
         }
 
