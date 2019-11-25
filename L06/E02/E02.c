@@ -261,6 +261,19 @@ void estraiAndPrint(listaAnagrafica *previous) { // Estrare l'elemento successiv
     freeListaItem(previous);
 }
 
+void estraiSinoAData(listaAnagrafica *head, data *fine) { // Estrae elementi di una lista sino a una determinata data
+    listaAnagrafica *next = getNextItem(head);            // Trovo l'elemento successivo
+
+    if (next == NULL) { // Condizione di terminazione (lista vuota)
+        return;
+    }
+
+    if (!confrontaData(&next->Contenuto->Nascita, fine)) { // Se l'elemento della lista è minore o uguale della data di fine
+        estraiAndPrint(head);
+        estraiSinoAData(next, fine); // Passo all'elemento successivo
+    }
+}
+
 void estraiInRange(listaAnagrafica *head, data *inizio, data *fine) { // Estrae un range di elementi definiti per date da una lista
     listaAnagrafica *next = getNextItem(head);                        // Salto la head
 
@@ -273,11 +286,14 @@ void estraiInRange(listaAnagrafica *head, data *inizio, data *fine) { // Estrae 
         }
     }
 
-    while (next->Next != NULL) { // Sinché ci sono elementi da esplorare
-        if (confrontaData) {
-            /* code */
+    while (next->Next != NULL) {                                // Sinché ci sono elementi da esplorare
+        if (confrontaData(&next->Contenuto->Nascita, inizio)) { // Se la data nella lista è maggiore dell'inizio
+            return estraiSinoAData(next, fine);
         }
+        next = getNextItem(next); // Passo all'elemento succesivo
     }
+
+    puts("Nessun elemento nel range selezionato!");
 }
 
 void promptMenu(listaAnagrafica **head) {
