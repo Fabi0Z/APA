@@ -254,16 +254,31 @@ listaAnagrafica *estraiNext(listaAnagrafica *previous) { // Estrae l'elemento su
     return elemento;
 }
 
-void estraiInRange(listaAnagrafica *head, data inizio, data fine) { // Estrae un range di elementi definiti per date da una lista
-    listaAnagrafica *next = getNextItem(head);                      // Salto la head
-    if (next->Next == NULL) {                                       // Nel caso la lista abbia un elemento solo
-        if (confrontaData()) {
-            /* code */
+void estraiAndPrint(listaAnagrafica *previous) { // Estrare l'elemento successivo a quello dato da una lista, lo stampa e libera la memoria
+    listaAnagrafica *l = estraiNext(previous);
+    printf("L'elemento estratto è ---> ");
+    printItem(l->Contenuto, stdout);
+    freeListaItem(l);
+}
+
+void estraiInRange(listaAnagrafica *head, data *inizio, data *fine) { // Estrae un range di elementi definiti per date da una lista
+    listaAnagrafica *next = getNextItem(head);                        // Salto la head
+
+    if (next->Next == NULL) {                                      // Nel caso la lista abbia un elemento solo
+        if (confrontaData(&next->Contenuto->Nascita, inizio)) {    // Se la data nella lista è maggiore dell'inizio
+            if (!confrontaData(&next->Contenuto->Nascita, fine)) { // Se la data nella lista è minore o uguale alla fine
+                estraiAndPrint(head);
+                return;
+            }
         }
     }
 
     while (next->Next != NULL) { // Sinché ci sono elementi da esplorare
-        /* code */
+        if (confrontaData)
+        {
+            /* code */
+        }
+        
     }
 }
 
