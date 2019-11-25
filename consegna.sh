@@ -6,7 +6,7 @@ if [ -z "$1" ]; then # Check if the submission parameter exist
     echo "No submission number provided"
     echo "Usage: consegna.sh [SUBMISSION_NUMBER] [STUDENT_ID]"
     exit 1
-elif [ -z "$2" ]; then # Check if the STUDENT_ID parameter exist
+    elif [ -z "$2" ]; then # Check if the STUDENT_ID parameter exist
     SUBMISSION_NUMBER=$1
     echo "No student ID provided, using the default" $STUDENT_ID
     echo
@@ -16,7 +16,7 @@ else
 fi
 
 STUDENT_ID="s"$STUDENT_ID # Assign correct value to STUDENT_ID
-FILENAME="$STUDENT_ID"_"$1".tar.gz # Save filename value
+FILENAME=consegne/"$STUDENT_ID"_"$1".tar.gz # Save filename value
 
 case "$SUBMISSION_NUMBER" in
     1)
