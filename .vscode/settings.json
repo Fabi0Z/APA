@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "hash_map": "c",
+        "bitset": "c",
+        "chrono": "c",
+        "algorithm": "c",
+        "array": "c",
+        "string_view": "c",
+        "initializer_list": "c",
+        "utility": "c",
+        "valarray": "c",
+        "string.h": "c"
+    }
+}
