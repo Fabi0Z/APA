@@ -52,7 +52,7 @@ void freeItem(Item *i) { // Dealloca la memoria di un Item
 }
 
 void freeListaItem(listaAnagrafica *l) { // Dealloca la memoria di una lista ed il suo contenuto
-    if (l->Contenuto != NULL) { // Se non sono sulla HEAD
+    if (l->Contenuto != NULL) {          // Se non sono sulla HEAD
         freeItem(l->Contenuto);
     }
     free(l);
@@ -105,9 +105,14 @@ unsigned int confrontaData(listaAnagrafica *list1, listaAnagrafica *list2) { // 
 bool checkFilestream(FILE *stream) { // Controlla errori di aperrtura del file
     if (stream == NULL) {
         puts("Errore apertura file");
-        exit(1);
     }
     return false;
+}
+
+void premiPerContinuare() {
+    puts("Premi qualisiasi tasto per continuare...");
+    getchar();
+    getchar();
 }
 
 bool leggiRiga(FILE *stream, Item *dato) { // Legge una riga dal file di input e la salva su una variabile per riferimento
@@ -225,8 +230,8 @@ listaAnagrafica *ricercaCodiceR(listaAnagrafica *head, uint16_t *codice) { // Ri
 }
 
 listaAnagrafica *ricercaCodice(listaAnagrafica *head, uint16_t *codice) { // Ricerca un elemento per codice nella lista, se lo trova ne restitusice il puntatore, altrimenti restituisce null
-    listaAnagrafica *pointer = getNextItem(head);              // Salto la head
-    return ricercaCodiceR(pointer, codice);                    // Ricerco sull'elemento successivo
+    listaAnagrafica *pointer = getNextItem(head);                         // Salto la head
+    return ricercaCodiceR(pointer, codice);                               // Ricerco sull'elemento successivo
 }
 
 listaAnagrafica *estraiNext(listaAnagrafica *previous) { // Estrae l'elemento successivo in lista
@@ -282,10 +287,12 @@ void promptMenu(listaAnagrafica **head) {
             scanf("\nA%" SCNd16, &codice);
             listaAnagrafica *risultato = ricercaCodice(*head, &codice);
             if (risultato != NULL) { // Se ho trovato la codice
+                printf("---> ");
                 printItem(risultato->Contenuto, stdout);
             } else {
                 puts("Codice non trovato");
             }
+            premiPerContinuare();
             break;
         }
 
@@ -313,11 +320,13 @@ void promptMenu(listaAnagrafica **head) {
 
         case printVideo: {
             printAnagrafica(*head);
+            premiPerContinuare();
             break;
         }
 
         default: {
             puts("Scelta non valida");
+            premiPerContinuare();
             break;
         }
     }
