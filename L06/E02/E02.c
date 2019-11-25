@@ -255,10 +255,10 @@ listaAnagrafica *estraiNext(listaAnagrafica *previous) { // Estrae l'elemento su
 }
 
 void estraiAndPrint(listaAnagrafica *previous) { // Estrare l'elemento successivo a quello dato da una lista, lo stampa e libera la memoria
-    listaAnagrafica *l = estraiNext(previous);
+    previous = estraiNext(previous);
     printf("L'elemento estratto è ---> ");
-    printItem(l->Contenuto, stdout);
-    freeListaItem(l);
+    printItem(previous->Contenuto, stdout);
+    freeListaItem(previous);
 }
 
 void estraiInRange(listaAnagrafica *head, data *inizio, data *fine) { // Estrae un range di elementi definiti per date da una lista
@@ -274,11 +274,9 @@ void estraiInRange(listaAnagrafica *head, data *inizio, data *fine) { // Estrae 
     }
 
     while (next->Next != NULL) { // Sinché ci sono elementi da esplorare
-        if (confrontaData)
-        {
+        if (confrontaData) {
             /* code */
         }
-        
     }
 }
 
@@ -345,10 +343,7 @@ void promptMenu(listaAnagrafica **head) {
             scanf("\nA%" SCNd16, &codice);
             listaAnagrafica *precedente = ricercaCodiceR(*head, &codice);
             if (precedente != NULL) { // Se ho trovato la codice
-                precedente = estraiNext(precedente);
-                printf("È stato eliminato l'elemento ---> ");
-                printItem(precedente->Contenuto, stdout);
-                freeListaItem(precedente);
+                estraiAndPrint(precedente);
 
             } else {
                 puts("Codice non trovato");
