@@ -2,6 +2,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+const uint8_t MAX_FILENAME = 51;
+
 enum pietra { zaffiro,
               smeraldo,
               rubino,
@@ -62,7 +64,25 @@ bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia ris
     return true;
 }
 
+collana parseCollana(FILE *stream) { // Effettua il parse di una collana da un filestream
+}
+
+bool apriFile(char *filename, char *modalità, FILE **stream) { // Apre un file e controlla che l'operazione sia andata a buon fine
+    *stream = fopen(filename, modalità);
+    if (stream == NULL) { // Se l'apertura non è andata a buon fine
+        puts("Errore apertura file");
+        return false;
+    }
+    return true;
+}
+
 int main() {
-    /* code */
+    char filename[MAX_FILENAME];
+    FILE *stream;
+    printf("Inserisci il nome del file (max %d caratteri):\n==> ", (MAX_FILENAME - 1));
+    scanf(" %50s", filename);
+    if (apriFile(filename, "r", &stream)) {
+        collana c = parseCollana(stream);
+    }
     return 0;
 }
