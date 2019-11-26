@@ -17,14 +17,14 @@ typedef struct Collana { // Struttura rappresentante una collana
     uint8_t *Array;
 } collana;
 
-bool verificaSmeraldiRubini(unsigned int *array) { // Verifica che l'ordine dei rubini o degli smeraldi sia rispettato
+bool verificaSmeraldiRubini(uint8_t *array) { // Verifica che l'ordine dei rubini o degli smeraldi sia rispettato
     if (array[1] == smeraldo || array[1] == topazio) {
         return true;
     }
     return false;
 }
 
-bool verificaZaffiriTopazi(unsigned int *array) { // Verifica che l'ordine dei topazi o degli zaffiri sia rispettato
+bool verificaZaffiriTopazi(uint8_t *array) { // Verifica che l'ordine dei topazi o degli zaffiri sia rispettato
     if (array[1] == zaffiro || array[1] == rubino) {
         return true;
     }
@@ -38,22 +38,22 @@ bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia ris
         check = false;
         switch (c->Array[i]) {
             case zaffiro: {
-                check = verificaZaffiriTopazi(c->Array[i]);
+                check = verificaZaffiriTopazi(&c->Array[i]);
                 break;
             }
 
             case smeraldo: {
-                check = verificaSmeraldiRubini(c->Array[i]);
+                check = verificaSmeraldiRubini(&c->Array[i]);
                 break;
             }
 
             case rubino: {
-                check = verificaSmeraldiRubini(c->Array[i]);
+                check = verificaSmeraldiRubini(&c->Array[i]);
                 break;
             }
 
             case topazio: {
-                check = verificaZaffiriTopazi(c->Array[i]);
+                check = verificaZaffiriTopazi(&c->Array[i]);
                 break;
             }
         }
@@ -64,7 +64,14 @@ bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia ris
     return true;
 }
 
-collana parseCollana(FILE *stream) { // Effettua il parse di una collana da un filestream
+collana parseCollana(char *string) { // Effettua il parse di una collana da stringa e svuota la stringa
+    collana c;
+    sscanf(string, "%d %[^\n]", &c.Zaffiri, string);
+    sscanf(string, "%d %[^\n]", &c.Smeraldi, string);
+    sscanf(string, "%d %[^\n]", &c.Rubini, string);
+    sscanf(string, "%d", &c.Topazi);
+    c.Array = NULL;
+    return c;
 }
 
 bool apriFile(char *filename, char *modalità, FILE **stream) { // Apre un file e controlla che l'operazione sia andata a buon fine
@@ -78,11 +85,9 @@ bool apriFile(char *filename, char *modalità, FILE **stream) { // Apre un file 
 
 int main() {
     char filename[MAX_FILENAME];
-    FILE *stream;
-    printf("Inserisci il nome del file (max %d caratteri):\n==> ", (MAX_FILENAME - 1));
-    scanf(" %50s", filename);
-    if (apriFile(filename, "r", &stream)) {
-        collana c = parseCollana(stream);
-    }
+    puts("Inserisci il numero di pietre secondo quest'ordine: z s r t");
+    printf("==> ");
+    fgets(filename, (MAX_FILENAME - 1), stdin);
+    collana c = parseCollana(filename);
     return 0;
 }
