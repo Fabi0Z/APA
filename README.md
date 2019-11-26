@@ -4,7 +4,7 @@ Le soluzioni sono suddivise per i vari laboratori, se pensi che certe cose possa
 
 ## Riguardo ai branch
 
-Spesso non faccio merge sul branch principale sinché non sono sicuro che il mio codice sia pronto alla consegna, quindi se ancora non trovi un esercizio prova a controllare nel branch del relativo laboratorio, la struttura che uso per nominare i branch è `Lab/{{ NUMERO_LABORATORIO }}`
+Spesso non faccio merge sul branch principale sinché non sono sicuro che il mio codice sia pronto alla consegna, quindi se ancora non trovi un esercizio prova a controllare nel branch del relativo laboratorio, la struttura che uso per nominare i branch è `lab/{{ NUMERO_LABORATORIO }}`
 
 ## APA e VS Code
 
