@@ -33,7 +33,7 @@ int **malloc2dR(size_t *righe, size_t *colonne) { // Effettua il parse della mat
 }
 
 size_t elementiMonocolore(size_t righe, size_t colonne) { // Restituisce il numero di elementi dello stesso colore in una scacchiera
-    return (righe * colonne) / 2 + (elementi % 2);
+    return (righe * colonne) / 2;
 }
 
 size_t elementiMassimi(size_t elementi) { // Restituisce il numero massimo di elementi dello stesso colore in un array di lunghezza n
@@ -66,12 +66,13 @@ void separa(int **matrice, size_t righe, size_t colonne, int **bianchiOut, int *
     *neriOut    = neri;
 }
 
-void printSottoScacchiera(int **matrice, size_t righe, size_t colonne, colore coloreScacchiera) {
+void printSottoScacchiera(int *array, size_t righe, size_t colonne, colore coloreScacchiera) {
     /* Disegna una scacchiera di soli bianchi o soli neri a partire dalle dimensioni originali
        della scacchiera e da una matrice contenente solo i bianchi o solo i neri
        infine dealloca le matrici dei singoli colori */
 
     size_t colonneMassime = elementiMassimi(colonne); // Scrivo il numero di colonne massime
+    size_t posizione      = 0;
 
     for (size_t i = 0; i < righe; i++) { // Per ogni riga
         // Se stiamo iniziando da una cella bianca indico il numero di colonne corrispettivo
@@ -81,7 +82,7 @@ void printSottoScacchiera(int **matrice, size_t righe, size_t colonne, colore co
             printf("* ");
         }
         for (size_t j = 0; j < nColonne; j++) { // Per ogni colonna
-            printf("%d ", matrice[i][j]);       // Stampo il valore della cella
+            printf("%d ", array[posizione++]);  // Stampo il valore della cella
             if (j + 1 < nColonne) {             // Se non sono sull'ultima cella stampo lo spaziatore
                 printf("* ");
             }
@@ -91,9 +92,8 @@ void printSottoScacchiera(int **matrice, size_t righe, size_t colonne, colore co
         }
         printf("\n");
         coloreScacchiera = coloreScacchiera == bianco ? nero : bianco; // Scambio il colore
-        free(matrice[i]);                                              // Dealloco la memoria
     }
-    free(matrice); // Dealloco la memoria
+    free(array); // Dealloco la memoria
 }
 
 void printScacchiera(int **matrix, size_t righe, size_t colonne) { // Stampa una scacchiera a video
@@ -108,7 +108,7 @@ void printScacchiera(int **matrix, size_t righe, size_t colonne) { // Stampa una
 int main(int argc, char const *argv[]) {
     size_t righe, colonne;
     int **matrix = malloc2dR(&righe, &colonne);
-    int **bianchi, **neri;
+    int *bianchi, *neri;
 
     puts("Scacchiera originale:");
     printScacchiera(matrix, colonne, righe);
