@@ -1,6 +1,7 @@
 #include <inttypes.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 const uint8_t MAX_FILENAME = 51;
 
@@ -14,6 +15,7 @@ typedef struct Collana { // Struttura rappresentante una collana
     unsigned int Smeraldi;
     unsigned int Rubini;
     unsigned int Topazi;
+    unsigned int TotalePietre;
     uint8_t *Array;
 } collana;
 
@@ -70,7 +72,23 @@ collana parseCollana(char *string) { // Effettua il parse di una collana da stri
     sscanf(string, "%d %[^\n]", &c.Smeraldi, string);
     sscanf(string, "%d %[^\n]", &c.Rubini, string);
     sscanf(string, "%d", &c.Topazi);
-    c.Array = NULL;
+
+    c.TotalePietre = c.Zaffiri + c.Smeraldi + c.Rubini + c.Topazi;
+    c.Array        = (uint8_t)calloc(c.TotalePietre, sizeof(uint8_t)); // Alloco la memoria nell'array
+
+    for (size_t i = 0; i < c.Rubini; i++) { // Per ogni rubino
+        c.Array[i] = rubino;
+    }
+    for (size_t i = 0; i < c.Smeraldi; i++) { // Per ogni smeraldo
+        c.Array[i] = smeraldo;
+    }
+    for (size_t i = 0; i < c.Zaffiri; i++) { // Per ogni zaffiro
+        c.Array[i] = zaffiro;
+    }
+    for (size_t i = 0; i < c.Topazi; i++) { // Per ogni topazio
+        c.Array[i] = topazio;
+    }
+
     return c;
 }
 
