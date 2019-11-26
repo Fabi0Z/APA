@@ -32,15 +32,20 @@ int **malloc2dR(size_t *righe, size_t *colonne) { // Effettua il parse della mat
     return matrix;
 }
 
-size_t elementiMonocolore(size_t righe, size_t colonne) { // Restituisce il numero di elementi dello stesso colore in una scacchiera
-    return (righe * colonne) / 2;
+size_t maxElementiMonocolore(size_t righe, size_t colonne) { // Restituisce il numero di elementi dello stesso colore in una scacchiera
+    return ((righe * colonne) / 2) + ((righe * colonne) % 2);
 }
 
 void separa(int **matrice, size_t righe, size_t colonne, int **bianchiOut, int **neriOut) {
     int *bianchi, *neri; // Dichiaro le variabili puntatori
-    size_t dimensioneArray = elementiMonocolore(righe, colonne);
-    bianchi                = (int *)calloc(sizeof(int), dimensioneArray); // Alloco memoria per le righe
-    neri                   = (int *)calloc(sizeof(int), dimensioneArray);
+    size_t dimensioneArray = maxElementiMonocolore(righe, colonne);
+
+    bianchi = (int *)calloc(sizeof(int), dimensioneArray); // Alloco memoria per le righe
+    if (dimensioneArray % 2 == 1) {
+        neri = (int *)calloc(sizeof(int), dimensioneArray - 1);
+    } else {
+        neri = (int *)calloc(sizeof(int), dimensioneArray);
+    }
 
     colore inizioRiga = bianco; // Variabile che tiene conto del colore a inizio riga
     size_t nBianche = 0, nNere = 0;
