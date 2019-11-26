@@ -32,37 +32,26 @@ int **malloc2dR(size_t *righe, size_t *colonne) { // Effettua il parse della mat
     return matrix;
 }
 
-size_t elementiMassimi(size_t elementi) { // Restituisce il numero massimo di elementi dello stesso colore in un array di lunghezza n
-    return (elementi / 2) + (elementi % 2);
+size_t elementiMonocolore(size_t righe, size_t colonne) { // Restituisce il numero di elementi dello stesso colore in una scacchiera
+    return (righe * colonne) / 2 + (elementi % 2);
 }
 
-void separa(int **matrice, size_t righe, size_t colonne, int ***bianchiOut, int ***neriOut) {
-    int **bianchi, **neri;                          // Dichiaro le variabili puntatori
-    bianchi = (int **)calloc(sizeof(int *), righe); // Alloco memoria per le righe
-    neri    = (int **)calloc(sizeof(int *), righe);
+void separa(int **matrice, size_t righe, size_t colonne, int **bianchiOut, int **neriOut) {
+    int *bianchi, *neri; // Dichiaro le variabili puntatori
+    size_t dimensioneArray = elementiMonocolore(righe, colonne);
+    bianchi                = (int *)calloc(sizeof(int), dimensioneArray); // Alloco memoria per le righe
+    neri                   = (int *)calloc(sizeof(int), dimensioneArray);
 
-    size_t dimensioneMassima = elementiMassimi(colonne); // La lunghezza massima nel caso di elementi dispari
-    colore inizioRiga        = bianco;                   // Variabile che tiene conto del colore a inizio riga
+    colore inizioRiga = bianco; // Variabile che tiene conto del colore a inizio riga
+    size_t nBianche = 0, nNere = 0;
 
-    for (size_t i = 0; i < righe; i++) { // Per ogni riga
-        colore cella = inizioRiga;       // Variabile che tiene conto del colore della prima cella
-
-        size_t colonneBianche = inizioRiga == bianco ? dimensioneMassima : dimensioneMassima - 1; // Se la riga inizia per una cella bianca il numero di elementi nella colonna la dimensione massima
-        size_t colonneNere    = colonne - colonneBianche;                                         // I restanti elementi sono la quantità di elementi neri nella colonna
-
-        size_t bianchiC = 0; // Contatori per gli indici delle matrici bianche e nere
-        size_t neriC    = 0;
-
-        bianchi[i] = (int *)calloc(sizeof(int), colonneBianche); // Alloco memoria per le colonne bianche
-        neri[i]    = (int *)calloc(sizeof(int), colonneNere);    // Alloco memoria per le colonne nere
-
-        for (size_t j = 0; j < colonne; j++) {        // Per ogni colonna
-            if (cella == bianco) {                    // Se la cella è bianca
-                bianchi[i][bianchiC] = matrice[i][j]; // Assegno il valore alla matrice bianca
-                bianchiC++;
-            } else {                            // Se la cella è nera
-                neri[i][neriC] = matrice[i][j]; // Assegno il valore alla matrice bianca
-                neriC++;
+    for (size_t i = 0; i < righe; i++) {             // Per ogni riga
+        colore cella = inizioRiga;                   // Variabile che tiene conto del colore della prima cella
+        for (size_t j = 0; j < colonne; j++) {       // Per ogni colonna
+            if (cella == bianco) {                   // Se la cella è bianca
+                bianchi[nBianche++] = matrice[i][j]; // Assegno il valore vettore dei bianchi
+            } else {                                 // Se la cella è nera
+                neri[nNere++] = matrice[i][j];       // Assegno il valore al vettori dei neri
             }
             cella = cella == bianco ? nero : bianco; // Scambio il colore
         }
@@ -98,7 +87,7 @@ void printSottoScacchiera(int **matrice, size_t righe, size_t colonne, colore co
         }
         printf("\n");
         coloreScacchiera = coloreScacchiera == bianco ? nero : bianco; // Scambio il colore
-        free(matrice[i]); // Dealloco la memoria
+        free(matrice[i]);                                              // Dealloco la memoria
     }
     free(matrice); // Dealloco la memoria
 }
