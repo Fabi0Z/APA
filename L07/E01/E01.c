@@ -102,11 +102,45 @@ bool apriFile(char *filename, char *modalità, FILE **stream) { // Apre un file 
     return true;
 }
 
+void disp_ripet(unsigned int pos, collana *val, collana *sol, unsigned int nBlocchi) {
+    uint8_t bloccoAttuale, *arrayOccorrenze;
+    bool ok = true;
+    if (pos >= val->TotalePietre) {
+        arrayOccorrenze = calloc(nBlocchi, sizeof(uint8_t));
+        for (size_t j = 0; j < nBlocchi; j++) {
+            arrayOccorrenze[sol->Array[j]]++;
+        }
+        bloccoAttuale = 0;
+        while ((bloccoAttuale < nBlocchi) && ok) {
+            if (arrayOccorrenze[bloccoAttuale] == 0) {
+                ok = false;
+            }
+            bloccoAttuale++;
+        }
+        free(arrayOccorrenze);
+        if (!ok) {
+            return;
+        } else {
+            for (size_t i = 0; i < sol->TotalePietre; i++) {
+                printf("%"SCNd8" ", sol->Array[i]);
+            }
+            printf("\n");
+        }
+    }
+    for (bloccoAttuale = 0; bloccoAttuale < nBlocchi; bloccoAttuale++) {
+        sol->Array[pos] = bloccoAttuale;
+        disp_ripet(pos + 1, val, sol, nBlocchi);
+    }
+}
+
 int main() {
     char filename[MAX_FILENAME];
     puts("Inserisci il numero di pietre secondo quest'ordine: z s r t");
     printf("==> ");
     fgets(filename, (MAX_FILENAME - 1), stdin);
     collana c = parseCollana(filename);
+    collana sol = c;
+    sol.Array = (uint8_t *)calloc(sol.TotalePietre, sizeof(uint8_t));
+    disp_ripet(0, &c, &sol, 1);
     return 0;
 }
