@@ -34,9 +34,8 @@ bool verificaZaffiriTopazi(uint8_t *array) { // Verifica che l'ordine dei topazi
 }
 
 bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia rispettato
-    unsigned int totale = c->Zaffiri + c->Smeraldi + c->Rubini + c->Topazi;
     bool check;
-    for (size_t i = 0; i < totale - 1; i++) { // Per ogni pietra eccetto l'ultima
+    for (size_t i = 0; i < c->TotalePietre - 1; i++) { // Per ogni pietra eccetto l'ultima
         check = false;
         switch (c->Array[i]) {
             case zaffiro: {
@@ -102,36 +101,7 @@ bool apriFile(char *filename, char *modalità, FILE **stream) { // Apre un file 
     return true;
 }
 
-void disp_ripet(unsigned int pos, collana *val, collana *sol, unsigned int nBlocchi) {
-    uint8_t bloccoAttuale, *arrayOccorrenze;
-    bool ok = true;
-    if (pos >= val->TotalePietre) {
-        arrayOccorrenze = calloc(nBlocchi, sizeof(uint8_t));
-        for (size_t j = 0; j < nBlocchi; j++) {
-            arrayOccorrenze[sol->Array[j]]++;
-        }
-        bloccoAttuale = 0;
-        while ((bloccoAttuale < nBlocchi) && ok) {
-            if (arrayOccorrenze[bloccoAttuale] == 0) {
-                ok = false;
-            }
-            bloccoAttuale++;
-        }
-        free(arrayOccorrenze);
-        if (!ok) {
-            return;
-        } else {
-            for (size_t i = 0; i < sol->TotalePietre; i++) {
-                printf("%"SCNd8" ", sol->Array[i]);
-            }
-            printf("\n");
-        }
-    }
-    for (bloccoAttuale = 0; bloccoAttuale < nBlocchi; bloccoAttuale++) {
-        sol->Array[pos] = bloccoAttuale;
-        disp_ripet(pos + 1, val, sol, nBlocchi);
-    }
-}
+void generaCollane ()
 
 int main() {
     char filename[MAX_FILENAME];
