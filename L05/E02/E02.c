@@ -36,6 +36,10 @@ size_t elementiMonocolore(size_t righe, size_t colonne) { // Restituisce il nume
     return (righe * colonne) / 2 + (elementi % 2);
 }
 
+size_t elementiMassimi(size_t elementi) { // Restituisce il numero massimo di elementi dello stesso colore in un array di lunghezza n
+    return (elementi / 2) + (elementi % 2);
+}
+
 void separa(int **matrice, size_t righe, size_t colonne, int **bianchiOut, int **neriOut) {
     int *bianchi, *neri; // Dichiaro le variabili puntatori
     size_t dimensioneArray = elementiMonocolore(righe, colonne);
