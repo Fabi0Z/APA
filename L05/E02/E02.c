@@ -28,7 +28,7 @@ int **malloc2dR(size_t *righe, size_t *colonne) { // Effettua il parse della mat
         }
     }
 
-    fclose(stream); // Chiudo il filestream
+    // fclose(stream); // Chiudo il filestream
     return matrix;
 }
 
@@ -66,32 +66,27 @@ void separa(int **matrice, size_t righe, size_t colonne, int **bianchiOut, int *
     *neriOut    = neri;
 }
 
-void printSottoScacchiera(int *array, size_t righe, size_t colonne, colore coloreScacchiera) {
+colore colorCheck(size_t riga, size_t colonna) { // Restituisce se una cella è nell'array monocolore bianca o nera
+    return (riga + colonna) % 2 == 0 ? bianco : nero;
+}
+
+void printSottoScacchiera(int *array, size_t righe, size_t colonne, colore coloreArray) {
     /* Disegna una scacchiera di soli bianchi o soli neri a partire dalle dimensioni originali
        della scacchiera e da una matrice contenente solo i bianchi o solo i neri
        infine dealloca le matrici dei singoli colori */
+    size_t posizione = 0;
+    bool spaziatore  = coloreArray == nero;
 
-    size_t colonneMassime = elementiMassimi(colonne); // Scrivo il numero di colonne massime
-    size_t posizione      = 0;
-
-    for (size_t i = 0; i < righe; i++) { // Per ogni riga
-        // Se stiamo iniziando da una cella bianca indico il numero di colonne corrispettivo
-        size_t nColonne = coloreScacchiera == bianco ? colonneMassime : colonneMassime - 1;
-
-        if (coloreScacchiera == nero) { // Se inizio su una cella nera stampo lo spaziatore prima
-            printf("* ");
-        }
-        for (size_t j = 0; j < nColonne; j++) { // Per ogni colonna
-            printf("%d ", array[posizione++]);  // Stampo il valore della cella
-            if (j + 1 < nColonne) {             // Se non sono sull'ultima cella stampo lo spaziatore
+    for (size_t i = 0; i < righe; i++) {       // Per ogni riga
+        for (size_t j = 0; j < colonne; j++) { // Per ogni colonna
+            if (spaziatore) {
                 printf("* ");
+            } else {
+                printf("%d ", array[posizione++]); // Stampo il valore della cella
             }
-        }
-        if (coloreScacchiera == nero) { // Se inizio su una cella nera stampo lo spaziatore dopo
-            printf("* ");
+            spaziatore = !spaziatore;
         }
         printf("\n");
-        coloreScacchiera = coloreScacchiera == bianco ? nero : bianco; // Scambio il colore
     }
     free(array); // Dealloco la memoria
 }
