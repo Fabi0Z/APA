@@ -150,7 +150,6 @@ void printPietra(uint8_t p) { // Stampa una pietra
 }
 
 void printCollana(collana *c) { // Stampa una collana
-    puts("Collana:");
     puts("Sono presenti");
     printf("%d Zaffiri; %d Smeraldi; %d Rubini; %d Topazi\n", c->Pietre[zaffiro], c->Pietre[smeraldo], c->Pietre[rubino], c->Pietre[topazio]);
     puts("La collana è composta così:");
@@ -165,13 +164,26 @@ void printCollana(collana *c) { // Stampa una collana
 unsigned int generaCollane(unsigned int pos, collana *c) {
     unsigned int count = 0;
     if (pos >= c->Pietre[totale]) { // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
-        printCollana(c);            // Stampo la collana
-        printf("\n");
-        return 1;
+        if (verificaCollana(c)) {   // Se la collana è valida
+            printCollana(c);        // Stampo la collana
+            printf("\n");
+            return 1;
+        }
+        return 0;
     }
     for (size_t i = 0; i < c->Disposizioni.NumeroTipi; i++) { // Per ogni tipo di pietra
         c->Array[pos] = c->Disposizioni.Pietre[i];
         count += generaCollane(pos + 1, c); // Ricorsione nella posizione successiva
+    }
+    return count;
+}
+
+unsigned int collaneVarieLunghezze(collana *c) { // Genera collane con lunghezza variabile
+    unsigned int count = 0;
+    collana temp       = *c;
+    for (size_t i = 1; i < c->Pietre[totale] + 1; i++) { // Per un numero di volte pari al totale delle pietre
+        temp.Pietre[totale] = i;
+        count += generaCollane(0, &temp);
     }
     return count;
 }
@@ -182,6 +194,7 @@ int main() {
     printf("==> ");
     fgets(filename, (MAX_FILENAME - 1), stdin);
     collana c          = parseCollana(filename);
-    unsigned int count = generaCollane(0, &c);
+    unsigned int count = collaneVarieLunghezze(&c);
+    printf("Il numero totale di collane valide è %d\n", count);
     return 0;
 }
