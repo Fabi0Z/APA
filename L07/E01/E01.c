@@ -35,23 +35,13 @@ bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia ris
     for (size_t i = 0; i < c->Pietre[totale] - 1; i++) { // Per ogni pietra eccetto l'ultima
         check = false;
         switch (c->Array[i]) {
-            case zaffiro: {
+            case zaffiro || topazio: {
                 check = verificaZaffiriTopazi(&c->Array[i]);
                 break;
             }
 
-            case smeraldo: {
+            case smeraldo || rubino: {
                 check = verificaSmeraldiRubini(&c->Array[i]);
-                break;
-            }
-
-            case rubino: {
-                check = verificaSmeraldiRubini(&c->Array[i]);
-                break;
-            }
-
-            case topazio: {
-                check = verificaZaffiriTopazi(&c->Array[i]);
                 break;
             }
         }
