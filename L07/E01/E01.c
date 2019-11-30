@@ -32,7 +32,7 @@ bool verificaZaffiriTopazi(uint8_t *array) { // Verifica che l'ordine dei topazi
 
 bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia rispettato
     bool check;
-    for (size_t i = 0; i < c->TotalePietre - 1; i++) { // Per ogni pietra eccetto l'ultima
+    for (size_t i = 0; i < c->Pietre[totale] - 1; i++) { // Per ogni pietra eccetto l'ultima
         check = false;
         switch (c->Array[i]) {
             case zaffiro: {
