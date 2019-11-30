@@ -12,33 +12,31 @@ enum pietra { zaffiro,
               topazio,
               totale };
 
-typedef struct Collana { // Struttura rappresentante una collana
-    unsigned int Pietre[totale + 1];
-    uint8_t *Array;
-} collana;
-
 typedef struct ArrayDisposizioni { // Dato specifico contenente l'array dei valori per le disposizioni
     unsigned int *Pietre;
     uint8_t NumeroTipi; // Indica quanti tipi di pietre sono disposinibili
 } arrayDisposizioni;
 
+typedef struct Collana { // Struttura rappresentante una collana
+    unsigned int Pietre[totale + 1];
+    arrayDisposizioni Disposizioni;
+    uint8_t *Array;
+} collana;
+
 arrayDisposizioni generaArrayDisposizioni(collana *c) { // Genera l'array delle disposizioni relativo ad una collana
-    arrayDisposizioni result;
     unsigned int tempArray[totale];
-    result.NumeroTipi = 0;
+    c->Disposizioni.NumeroTipi = 0;
 
     for (size_t i = 0; i < totale; i++) { // Per ogni tipo esistente
         if (c->Pietre[i] != 0) {          // Se c'è almeno una pietra di quel tipo
-            tempArray[result.NumeroTipi] = i;
-            result.NumeroTipi++;
+            tempArray[c->Disposizioni.NumeroTipi] = i;
+            c->Disposizioni.NumeroTipi++;
         }
     }
 
     // Creo l'array
-    result.Pietre = (unsigned int *)calloc(result.NumeroTipi, sizeof(unsigned int));
-    memcpy(result.Pietre, tempArray, result.NumeroTipi * sizeof(unsigned int));
-
-    return result;
+    c->Disposizioni.Pietre = (unsigned int *)calloc(c->Disposizioni.NumeroTipi, sizeof(unsigned int));
+    memcpy(c->Disposizioni.Pietre, tempArray, c->Disposizioni.NumeroTipi * sizeof(unsigned int));
 }
 
 bool verificaSmeraldiRubini(uint8_t *array) { // Verifica che l'ordine dei rubini o degli smeraldi sia rispettato
@@ -113,6 +111,8 @@ collana parseCollana(char *string) { // Effettua il parse di una collana da stri
 
     c.Pietre[totale] = c.Pietre[zaffiro] + c.Pietre[smeraldo] + c.Pietre[rubino] + c.Pietre[topazio];
     c.Array          = (uint8_t *)calloc(c.Pietre[totale], sizeof(uint8_t)); // Alloco la memoria nell'array
+
+    generaArrayDisposizioni(&c); // Genero l'array delle disposizioni
     return c;
 }
 
@@ -152,9 +152,6 @@ int main() {
     printf("==> ");
     fgets(filename, (MAX_FILENAME - 1), stdin);
     collana c = parseCollana(filename);
-    uint8_t *sol;
-    sol                   = (uint8_t *)calloc(c.Pietre[totale], sizeof(uint8_t));
-    arrayDisposizioni val = generaArrayDisposizioni(&c);
-    unsigned int count    = disp_ripet(0, &val, sol, c.Pietre[totale]);
+    unsigned int count    = disp_ripet(0, &c.Disposizioni, &c.Array, c.Pietre[totale]);
     return 0;
 }

@@ -9,6 +9,7 @@
         "initializer_list": "c",
         "utility": "c",
         "valarray": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "functional": "c"
     }
 }
