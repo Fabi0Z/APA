@@ -8,14 +8,11 @@ const uint8_t MAX_FILENAME = 51;
 enum pietra { zaffiro,
               smeraldo,
               rubino,
-              topazio };
+              topazio,
+              totale };
 
 typedef struct Collana { // Struttura rappresentante una collana
-    unsigned int Zaffiri;
-    unsigned int Smeraldi;
-    unsigned int Rubini;
-    unsigned int Topazi;
-    unsigned int TotalePietre;
+    unsigned int Pietre[totale + 1];
     uint8_t *Array;
 } collana;
 
@@ -67,28 +64,13 @@ bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia ris
 
 collana parseCollana(char *string) { // Effettua il parse di una collana da stringa e svuota la stringa
     collana c;
-    sscanf(string, "%d %[^\n]", &c.Zaffiri, string);
-    sscanf(string, "%d %[^\n]", &c.Smeraldi, string);
-    sscanf(string, "%d %[^\n]", &c.Rubini, string);
-    sscanf(string, "%d", &c.Topazi);
+    sscanf(string, "%d %[^\n]", &c.Pietre[zaffiro], string);
+    sscanf(string, "%d %[^\n]", &c.Pietre[smeraldo], string);
+    sscanf(string, "%d %[^\n]", &c.Pietre[rubino], string);
+    sscanf(string, "%d", &c.Pietre[topazio]);
 
-    c.TotalePietre = c.Zaffiri + c.Smeraldi + c.Rubini + c.Topazi;
-    c.Array        = (uint8_t *)calloc(c.TotalePietre, sizeof(uint8_t)); // Alloco la memoria nell'array
-
-    size_t posizione = 0;
-    for (size_t i = 0; i < c.Zaffiri; i++) { // Per ogni zaffiro
-        c.Array[posizione++] = zaffiro;
-    }
-    for (size_t i = 0; i < c.Smeraldi; i++) { // Per ogni smeraldo
-        c.Array[posizione++] = smeraldo;
-    }
-    for (size_t i = 0; i < c.Rubini; i++) { // Per ogni rubino
-        c.Array[posizione++] = rubino;
-    }
-    for (size_t i = 0; i < c.Topazi; i++) { // Per ogni topazio
-        c.Array[posizione++] = topazio;
-    }
-
+    c.Pietre[totale] = c.Pietre[zaffiro] + c.Pietre[smeraldo] + c.Pietre[rubino] + c.Pietre[topazio];
+    c.Array          = (uint8_t *)calloc(c.Pietre[totale], sizeof(uint8_t)); // Alloco la memoria nell'array
     return c;
 }
 
@@ -132,7 +114,7 @@ int main() {
     // sol.Array   = (uint8_t *)calloc(sol.TotalePietre, sizeof(uint8_t));
     // disp_ripet(0, &c, &sol, 1);
     unsigned int val[4] = {zaffiro, smeraldo, topazio, rubino};
-    unsigned int k = 4*2;
+    unsigned int k      = 4 * 2;
     unsigned int sol[k];
     unsigned int c = disp_ripet(0, &val, &sol, 4, k);
     return 0;
