@@ -125,23 +125,19 @@ bool apriFile(char *filename, char *modalità, FILE **stream) { // Apre un file 
     return true;
 }
 
-unsigned int disp_ripet(unsigned int pos, arrayDisposizioni *val, uint8_t *sol, unsigned int k) {
-    /* 
-    k = numero di ripetizioni massime per ogni singolo elemento
-    count = conta il numero di soluzioni
-    */
+unsigned int generaCollane(unsigned int pos, collana *c) {
     unsigned int count = 0;
-    if (pos >= k) { // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
+    if (pos >= c->Pietre[totale]) { // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
         puts("Soluzione:");
-        for (size_t i = 0; i < k; i++) { // Per il numero di ripetizioni massime
-            printf("%d ", sol[i]);       // Stampo ogni elemento della soluzione
+        for (size_t i = 0; i < c->Pietre[totale]; i++) { // Per il numero di ripetizioni massime
+            printf("%d ", c->Array[i]);                  // Stampo ogni elemento della soluzione
         }
         printf("\n");
         return 1;
     }
-    for (size_t i = 0; i < val->NumeroTipi; i++) { // Per ogni tipo di pietra
-        sol[pos] = val->Pietre[i];
-        count += disp_ripet(pos + 1, val, sol, k); // Ricorsione nella posizione successiva
+    for (size_t i = 0; i < c->Disposizioni.NumeroTipi; i++) { // Per ogni tipo di pietra
+        c->Array[pos] = c->Disposizioni.Pietre[i];
+        count += generaCollane(pos + 1, c); // Ricorsione nella posizione successiva
     }
     return count;
 }
@@ -151,7 +147,7 @@ int main() {
     puts("Inserisci il numero di pietre secondo quest'ordine: z s r t");
     printf("==> ");
     fgets(filename, (MAX_FILENAME - 1), stdin);
-    collana c = parseCollana(filename);
-    unsigned int count    = disp_ripet(0, &c.Disposizioni, &c.Array, c.Pietre[totale]);
+    collana c          = parseCollana(filename);
+    unsigned int count = generaCollane(0, &c);
     return 0;
 }
