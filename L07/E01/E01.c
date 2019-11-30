@@ -181,7 +181,6 @@ void contaPietre(collana *c) { // Conta il numero di pietre in una collana
 
 void printCollana(collana *c) { // Stampa una collana
     contaPietre(c);
-    puts("Sono presenti");
     printf("%d Zaffiri; ", c->Pietre[zaffiro]);
     printf("%d Smeraldi; ", c->Pietre[smeraldo]);
     printf("%d Rubini; ", c->Pietre[rubino]);
@@ -200,8 +199,6 @@ unsigned int generaCollane(unsigned int pos, collana *c) {
     unsigned int count = 0;
     if (pos >= c->Pietre[totale]) { // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
         if (verificaCollana(c)) {   // Se la collana è valida
-            printCollana(c);        // Stampo la collana
-            printf("\n");
             return 1;
         }
         return 0;
@@ -215,11 +212,26 @@ unsigned int generaCollane(unsigned int pos, collana *c) {
 
 unsigned int collaneVarieLunghezze(collana *c) { // Genera collane con lunghezza variabile
     unsigned int count = 0;
-    collana temp       = *c;
-    for (size_t i = 1; i < c->Pietre[totale] + 1; i++) { // Per un numero di volte pari al totale delle pietre
-        temp.Pietre[totale] = i;
-        count += generaCollane(0, &temp);
+    collana max;
+    max.Pietre[totale]            = 0;
+    max.Array                     = (uint8_t *)malloc(sizeof(uint8_t));
+    unsigned int lunghezzaMassima = c->Pietre[totale];
+
+    for (size_t i = 1; i <= lunghezzaMassima; i++) { // Per un numero di volte pari al totale delle pietre
+        c->Pietre[totale] = i;
+        count += generaCollane(0, c);
+
+        // TODO: Move this check inside generaCollana
+        if (c->Pietre[totale] > max.Pietre[totale]) { // Se la collana generata ha lunghezza maggiore di quella massima
+            memcpy(max.Pietre, c->Pietre, sizeof(unsigned int) * totale + 1);
+            free(max.Array);
+            max.Array = (uint8_t *)calloc(max.Pietre[totale], sizeof(uint8_t));
+            memcpy(max.Array, c->Array, sizeof(uint8_t) * c->Pietre[totale]);
+        }
     }
+    bool check = verificaCollana(&max);
+    printf("Sono state generate %d collane, la seguente è quella di lunghezza massima:\n", count);
+    printCollana(&max);
     return count;
 }
 
@@ -228,8 +240,7 @@ int main() {
     puts("Inserisci il numero di pietre secondo quest'ordine: z s r t");
     printf("==> ");
     fgets(filename, (MAX_FILENAME - 1), stdin);
-    collana c          = parseCollana(filename);
-    unsigned int count = collaneVarieLunghezze(&c);
-    printf("Il numero totale di collane valide è %d\n", count);
+    collana c = parseCollana(filename);
+    collaneVarieLunghezze(&c);
     return 0;
 }
