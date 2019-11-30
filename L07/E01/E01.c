@@ -125,13 +125,42 @@ bool apriFile(char *filename, char *modalità, FILE **stream) { // Apre un file 
     return true;
 }
 
+void printCollana(collana *c) { // Stampa una collana
+    puts("Collana:");
+    puts("Sono presenti");
+    printf("%d Zaffiri; %d Smeraldi; %d Rubini; %d Topazi\n", c->Pietre[zaffiro], c->Pietre[smeraldo], c->Pietre[rubino], c->Pietre[topazio]);
+    puts("La collana è composta così:");
+    for (size_t i = 0; i < c->Pietre[totale]; i++) { // Per ogni pietra
+        switch (c->Array[i]) {
+            case zaffiro: {
+                printf("z");
+                break;
+            }
+
+            case smeraldo: {
+                printf("s");
+                break;
+            }
+
+            case rubino: {
+                printf("r");
+                break;
+            }
+
+            case topazio: {
+                printf("t");
+                break;
+            }
+        }
+        printf("-");
+    }
+    printf("\n");
+}
+
 unsigned int generaCollane(unsigned int pos, collana *c) {
     unsigned int count = 0;
     if (pos >= c->Pietre[totale]) { // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
-        puts("Soluzione:");
-        for (size_t i = 0; i < c->Pietre[totale]; i++) { // Per il numero di ripetizioni massime
-            printf("%d ", c->Array[i]);                  // Stampo ogni elemento della soluzione
-        }
+        printCollana(c);            // Stampo la collana
         printf("\n");
         return 1;
     }
