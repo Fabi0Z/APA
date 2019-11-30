@@ -125,34 +125,39 @@ bool apriFile(char *filename, char *modalità, FILE **stream) { // Apre un file 
     return true;
 }
 
+void printPietra(uint8_t p) { // Stampa una pietra
+    switch (p) {
+        case zaffiro: {
+            printf("z");
+            break;
+        }
+
+        case smeraldo: {
+            printf("s");
+            break;
+        }
+
+        case rubino: {
+            printf("r");
+            break;
+        }
+
+        case topazio: {
+            printf("t");
+            break;
+        }
+    }
+}
+
 void printCollana(collana *c) { // Stampa una collana
     puts("Collana:");
     puts("Sono presenti");
     printf("%d Zaffiri; %d Smeraldi; %d Rubini; %d Topazi\n", c->Pietre[zaffiro], c->Pietre[smeraldo], c->Pietre[rubino], c->Pietre[topazio]);
     puts("La collana è composta così:");
-    for (size_t i = 0; i < c->Pietre[totale]; i++) { // Per ogni pietra
-        switch (c->Array[i]) {
-            case zaffiro: {
-                printf("z");
-                break;
-            }
-
-            case smeraldo: {
-                printf("s");
-                break;
-            }
-
-            case rubino: {
-                printf("r");
-                break;
-            }
-
-            case topazio: {
-                printf("t");
-                break;
-            }
-        }
+    printPietra(c->Array[0]);
+    for (size_t i = 1; i < c->Pietre[totale]; i++) { // Per ogni pietra
         printf("-");
+        printPietra(c->Array[i]);
     }
     printf("\n");
 }
