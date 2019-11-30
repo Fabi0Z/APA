@@ -30,18 +30,45 @@ bool verificaZaffiriTopazi(uint8_t *array) { // Verifica che l'ordine dei topazi
     return false;
 }
 
-bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia rispettato
+bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia rispettato e che il numero di pietre sia corretto
     bool check;
+    unsigned int conteggio[totale] = {0, 0, 0, 0};
     for (size_t i = 0; i < c->Pietre[totale] - 1; i++) { // Per ogni pietra eccetto l'ultima
         check = false;
         switch (c->Array[i]) {
-            case zaffiro || topazio: {
+            case zaffiro: {
+                conteggio[zaffiro]++;
+                if (conteggio[zaffiro] > c->Pietre[zaffiro]) { // Se il numero di pietre eccede
+                    return false;                              // Restituisco false
+                }
                 check = verificaZaffiriTopazi(&c->Array[i]);
                 break;
             }
 
-            case smeraldo || rubino: {
+            case smeraldo: {
+                conteggio[smeraldo]++;
+                if (conteggio[smeraldo] > c->Pietre[smeraldo]) { // Se il numero di pietre eccede
+                    return false;                                // Restituisco false
+                }
                 check = verificaSmeraldiRubini(&c->Array[i]);
+                break;
+            }
+
+            case rubino: {
+                conteggio[rubino]++;
+                if (conteggio[rubino] > c->Pietre[rubino]) { // Se il numero di pietre eccede
+                    return false;                            // Restituisco false
+                }
+                check = verificaSmeraldiRubini(&c->Array[i]);
+                break;
+            }
+
+            case topazio: {
+                conteggio[topazio]++;
+                if (conteggio[topazio] > c->Pietre[topazio]) { // Se il numero di pietre eccede
+                    return false;                              // Restituisco false
+                }
+                check = verificaZaffiriTopazi(&c->Array[i]);
                 break;
             }
         }
