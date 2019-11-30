@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 const uint8_t MAX_FILENAME = 51;
 
@@ -15,6 +16,30 @@ typedef struct Collana { // Struttura rappresentante una collana
     unsigned int Pietre[totale + 1];
     uint8_t *Array;
 } collana;
+
+typedef struct ArrayDisposizioni { // Dato specifico contenente l'array dei valori per le disposizioni
+    unsigned int *Pietre;
+    uint8_t NumeroTipi; // Indica quanti tipi di pietre sono disposinibili
+} arrayDisposizioni;
+
+arrayDisposizioni generaArrayDisposizioni(collana *c) { // Genera l'array delle disposizioni relativo ad una collana
+    arrayDisposizioni result;
+    unsigned int tempArray[totale];
+    result.NumeroTipi = 0;
+
+    for (size_t i = 0; i < totale; i++) { // Per ogni tipo esistente
+        if (c->Array[i] != 0) {           // Se c'è almeno una pietra di quel tipo
+            tempArray[result.NumeroTipi] = i;
+            result.NumeroTipi += c->Array[i] != 0 ? 1 : 0;
+        }
+    }
+
+    // Creo l'array
+    result.Pietre = (unsigned int *)calloc(result.NumeroTipi, sizeof(unsigned int));
+    memcpy(result.Pietre, tempArray, result.NumeroTipi * sizeof(unsigned int));
+
+    return result;
+}
 
 bool verificaSmeraldiRubini(uint8_t *array) { // Verifica che l'ordine dei rubini o degli smeraldi sia rispettato
     if (array[1] == smeraldo || array[1] == topazio) {
