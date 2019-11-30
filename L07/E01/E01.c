@@ -149,9 +149,44 @@ void printPietra(uint8_t p) { // Stampa una pietra
     }
 }
 
+void contaPietre(collana *c) { // Conta il numero di pietre in una collana
+    c->Pietre[zaffiro]  = 0;
+    c->Pietre[smeraldo] = 0;
+    c->Pietre[rubino]   = 0;
+    c->Pietre[topazio]  = 0;
+    for (size_t i = 0; i < c->Pietre[totale]; i++) { // Per ogni pietra
+        switch (c->Array[i]) {
+            case zaffiro: {
+                c->Pietre[zaffiro]++;
+                break;
+            }
+
+            case smeraldo: {
+                c->Pietre[smeraldo]++;
+                break;
+            }
+
+            case rubino: {
+                c->Pietre[rubino]++;
+                break;
+            }
+
+            case topazio: {
+                c->Pietre[topazio]++;
+                break;
+            }
+        }
+    }
+}
+
 void printCollana(collana *c) { // Stampa una collana
+    contaPietre(c);
     puts("Sono presenti");
-    printf("%d Zaffiri; %d Smeraldi; %d Rubini; %d Topazi\n", c->Pietre[zaffiro], c->Pietre[smeraldo], c->Pietre[rubino], c->Pietre[topazio]);
+    printf("%d Zaffiri; ", c->Pietre[zaffiro]);
+    printf("%d Smeraldi; ", c->Pietre[smeraldo]);
+    printf("%d Rubini; ", c->Pietre[rubino]);
+    printf("%d Topazi; ", c->Pietre[topazio]);
+    printf("Totale %d pietre\n", c->Pietre[totale]);
     puts("La collana è composta così:");
     printPietra(c->Array[0]);
     for (size_t i = 1; i < c->Pietre[totale]; i++) { // Per ogni pietra
