@@ -28,9 +28,9 @@ arrayDisposizioni generaArrayDisposizioni(collana *c) { // Genera l'array delle 
     result.NumeroTipi = 0;
 
     for (size_t i = 0; i < totale; i++) { // Per ogni tipo esistente
-        if (c->Array[i] != 0) {           // Se c'è almeno una pietra di quel tipo
+        if (c->Pietre[i] != 0) {          // Se c'è almeno una pietra di quel tipo
             tempArray[result.NumeroTipi] = i;
-            result.NumeroTipi += c->Array[i] != 0 ? 1 : 0;
+            result.NumeroTipi++;
         }
     }
 
@@ -125,7 +125,7 @@ bool apriFile(char *filename, char *modalità, FILE **stream) { // Apre un file 
     return true;
 }
 
-unsigned int disp_ripet(unsigned int pos, unsigned int *val, unsigned int *sol, unsigned int n, unsigned int k) {
+unsigned int disp_ripet(unsigned int pos, arrayDisposizioni *val, uint8_t *sol, unsigned int k) {
     /* 
     k = numero di ripetizioni massime per ogni singolo elemento
     count = conta il numero di soluzioni
@@ -139,25 +139,22 @@ unsigned int disp_ripet(unsigned int pos, unsigned int *val, unsigned int *sol, 
         printf("\n");
         return 1;
     }
-    for (size_t i = 0; i < n; i++) { // Per ogni elemento dell'array dei valori
-        sol[pos] = val[i];
-        count += disp_ripet(pos + 1, val, sol, n, k); // Ricorsione nella posizione successiva
+    for (size_t i = 0; i < val->NumeroTipi; i++) { // Per ogni tipo di pietra
+        sol[pos] = val->Pietre[i];
+        count += disp_ripet(pos + 1, val, sol, k); // Ricorsione nella posizione successiva
     }
     return count;
 }
 
 int main() {
     char filename[MAX_FILENAME];
-    // puts("Inserisci il numero di pietre secondo quest'ordine: z s r t");
-    // printf("==> ");
-    // fgets(filename, (MAX_FILENAME - 1), stdin);
-    // collana c   = parseCollana(filename);
-    // collana sol = c;
-    // sol.Array   = (uint8_t *)calloc(sol.TotalePietre, sizeof(uint8_t));
-    // disp_ripet(0, &c, &sol, 1);
-    unsigned int val[4] = {zaffiro, smeraldo, topazio, rubino};
-    unsigned int k      = 4 * 2;
-    unsigned int sol[k];
-    unsigned int c = disp_ripet(0, &val, &sol, 4, k);
+    puts("Inserisci il numero di pietre secondo quest'ordine: z s r t");
+    printf("==> ");
+    fgets(filename, (MAX_FILENAME - 1), stdin);
+    collana c = parseCollana(filename);
+    uint8_t *sol;
+    sol                   = (uint8_t *)calloc(c.Pietre[totale], sizeof(uint8_t));
+    arrayDisposizioni val = generaArrayDisposizioni(&c);
+    unsigned int count    = disp_ripet(0, &val, sol, c.Pietre[totale]);
     return 0;
 }
