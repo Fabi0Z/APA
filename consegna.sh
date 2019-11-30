@@ -53,3 +53,9 @@ cd ..
 echo
 echo "Saved in "$FILENAME
 rm -rf $TEMP_DIR # Delete temp directory
+
+# git push
+git add $FILENAME
+git commit -m "ADD $FILENAME to consegne"
+git push
+
