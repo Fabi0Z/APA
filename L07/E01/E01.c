@@ -132,7 +132,8 @@ int main() {
     // sol.Array   = (uint8_t *)calloc(sol.TotalePietre, sizeof(uint8_t));
     // disp_ripet(0, &c, &sol, 1);
     unsigned int val[4] = {zaffiro, smeraldo, topazio, rubino};
-    unsigned int sol[4 * 2];
-    unsigned int c = disp_ripet(0, &val, &sol, 4, 2);
+    unsigned int k = 4*2;
+    unsigned int sol[k];
+    unsigned int c = disp_ripet(0, &val, &sol, 4, k);
     return 0;
 }
