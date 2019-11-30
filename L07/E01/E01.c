@@ -101,15 +101,16 @@ bool apriFile(char *filename, char *modalità, FILE **stream) { // Apre un file 
     return true;
 }
 
-/*
-k = numero di ripetizioni massime per ogni singolo elemento
-count conta il numero di soluzioni
-*/
 unsigned int disp_ripet(unsigned int pos, unsigned int *val, unsigned int *sol, unsigned int n, unsigned int k) {
-    unsigned int count = 0;              // Contatore per il numero di soluzioni
-    if (pos >= k) {                      // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
+    /* 
+    k = numero di ripetizioni massime per ogni singolo elemento
+    count = conta il numero di soluzioni
+    */
+    unsigned int count = 0;
+    if (pos >= k) { // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
+        puts("Soluzione:");
         for (size_t i = 0; i < k; i++) { // Per il numero di ripetizioni massime
-            printf("%d", sol[i]);        // Stampo ogni elemento della soluzione
+            printf("%d ", sol[i]);       // Stampo ogni elemento della soluzione
         }
         printf("\n");
         return 1;
@@ -123,12 +124,15 @@ unsigned int disp_ripet(unsigned int pos, unsigned int *val, unsigned int *sol, 
 
 int main() {
     char filename[MAX_FILENAME];
-    puts("Inserisci il numero di pietre secondo quest'ordine: z s r t");
-    printf("==> ");
-    fgets(filename, (MAX_FILENAME - 1), stdin);
-    collana c   = parseCollana(filename);
-    collana sol = c;
-    sol.Array   = (uint8_t *)calloc(sol.TotalePietre, sizeof(uint8_t));
-    disp_ripet(0, &c, &sol, 1);
+    // puts("Inserisci il numero di pietre secondo quest'ordine: z s r t");
+    // printf("==> ");
+    // fgets(filename, (MAX_FILENAME - 1), stdin);
+    // collana c   = parseCollana(filename);
+    // collana sol = c;
+    // sol.Array   = (uint8_t *)calloc(sol.TotalePietre, sizeof(uint8_t));
+    // disp_ripet(0, &c, &sol, 1);
+    unsigned int val[4] = {zaffiro, smeraldo, topazio, rubino};
+    unsigned int sol[4 * 2];
+    unsigned int c = disp_ripet(0, &val, &sol, 4, 2);
     return 0;
 }
