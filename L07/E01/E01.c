@@ -236,12 +236,31 @@ unsigned int collaneVarieLunghezze(collana *c) { // Genera collane con lunghezza
     return count;
 }
 
+bool checkFilestream(FILE *stream) { // Controlla errori di aperrtura del file
+    if (stream == NULL) {
+        puts("Errore apertura file");
+    }
+    return false;
+}
+
+void parseFromFile(char *filename) { // Esegue i vari test presenti in un file
+    FILE *stream = fopen(filename, "r");
+    checkFilestream(stream);
+    unsigned int nTest;
+    fscanf(stream, "%d", &nTest);
+    for (size_t i = 0; i < nTest; i++) { // Per ogni test
+        char riga[MAX_FILENAME];
+        fgets(riga, MAX_FILENAME - 1, stream);
+        collana c = parseCollana(riga);
+        collaneVarieLunghezze(&c);
+    }
+}
+
 int main() {
     char filename[MAX_FILENAME];
-    puts("Inserisci il numero di pietre secondo quest'ordine: z s r t");
+    puts("Inserisci il nome del file:");
     printf("==> ");
     fgets(filename, (MAX_FILENAME - 1), stdin);
-    collana c = parseCollana(filename);
-    collaneVarieLunghezze(&c);
+    parseFromFile(filename);
     return 0;
 }
