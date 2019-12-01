@@ -53,40 +53,28 @@ bool verificaZaffiriTopazi(uint8_t *array) { // Verifica che l'ordine dei topazi
     return false;
 }
 
-bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia rispettato e che il numero di pietre sia corretto
-    bool check;
-    for (size_t i = 0; i < c->Pietre[totale]; i++) { // Per ogni pietra
-        check = false;
-        switch (c->Array[i]) {
-            case zaffiro: {
-                // Eseguo il controllo dell'ordine solo se non mi trovo sull'ultima pietra
-                check = i == c->Pietre[totale] - 1 ? true : verificaZaffiriTopazi(&c->Array[i]);
-                break;
-            }
-
-            case smeraldo: {
-                // Eseguo il controllo dell'ordine solo se non mi trovo sull'ultima pietra
-                check = i == c->Pietre[totale] - 1 ? true : verificaSmeraldiRubini(&c->Array[i]);
-                break;
-            }
-
-            case rubino: {
-                // Eseguo il controllo dell'ordine solo se non mi trovo sull'ultima pietra
-                check = i == c->Pietre[totale] - 1 ? true : verificaSmeraldiRubini(&c->Array[i]);
-                break;
-            }
-
-            case topazio: {
-                // Eseguo il controllo dell'ordine solo se non mi trovo sull'ultima pietra
-                check = i == c->Pietre[totale] - 1 ? true : verificaZaffiriTopazi(&c->Array[i]);
-                break;
-            }
+bool verificaOrdine(uint8_t *array) { // Verifica che l'ordine della pietra successiva sia corretto
+    switch (array[0]) {
+        case zaffiro: {
+            // Eseguo il controllo dell'ordine solo se non mi trovo sull'ultima pietra
+            return verificaZaffiriTopazi(array);
         }
-        if (!check) { // Se trovo anche un solo errore nell'ordine restituisco false
-            return false;
+
+        case smeraldo: {
+            // Eseguo il controllo dell'ordine solo se non mi trovo sull'ultima pietra
+            return verificaSmeraldiRubini(array);
+        }
+
+        case rubino: {
+            // Eseguo il controllo dell'ordine solo se non mi trovo sull'ultima pietra
+            return verificaSmeraldiRubini(array);
+        }
+
+        case topazio: {
+            // Eseguo il controllo dell'ordine solo se non mi trovo sull'ultima pietra
+            return verificaZaffiriTopazi(array);
         }
     }
-    return true;
 }
 
 collana parseCollana(char *string) { // Effettua il parse di una collana da stringa e svuota la stringa
