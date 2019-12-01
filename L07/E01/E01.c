@@ -195,17 +195,23 @@ void printCollana(collana *c) { // Stampa una collana
     printf("\n");
 }
 
-unsigned int generaCollane(unsigned int pos, collana *c) {
+unsigned int generaCollane(unsigned int pos, collana *c, collana *max) {
     unsigned int count = 0;
-    if (pos >= c->Pietre[totale]) { // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
-        if (verificaCollana(c)) {   // Se la collana è valida
+    if (pos >= c->Pietre[totale]) {                       // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
+        if (verificaCollana(c)) {                         // Se la collana è valida
+            if (c->Pietre[totale] > max->Pietre[totale]) { // Se la collana generata ha lunghezza maggiore di quella massima
+                memcpy(max->Pietre, c->Pietre, sizeof(unsigned int) * totale + 1);
+                free(max->Array);
+                max->Array = (uint8_t *)calloc(max->Pietre[totale], sizeof(uint8_t));
+                memcpy(max->Array, c->Array, sizeof(uint8_t) * c->Pietre[totale]);
+            }
             return 1;
         }
         return 0;
     }
     for (size_t i = 0; i < c->Disposizioni.NumeroTipi; i++) { // Per ogni tipo di pietra
         c->Array[pos] = c->Disposizioni.Pietre[i];
-        count += generaCollane(pos + 1, c); // Ricorsione nella posizione successiva
+        count += generaCollane(pos + 1, c, max); // Ricorsione nella posizione successiva
     }
     return count;
 }
@@ -219,17 +225,8 @@ unsigned int collaneVarieLunghezze(collana *c) { // Genera collane con lunghezza
 
     for (size_t i = 1; i <= lunghezzaMassima; i++) { // Per un numero di volte pari al totale delle pietre
         c->Pietre[totale] = i;
-        count += generaCollane(0, c);
-
-        // TODO: Move this check inside generaCollana
-        if (c->Pietre[totale] > max.Pietre[totale]) { // Se la collana generata ha lunghezza maggiore di quella massima
-            memcpy(max.Pietre, c->Pietre, sizeof(unsigned int) * totale + 1);
-            free(max.Array);
-            max.Array = (uint8_t *)calloc(max.Pietre[totale], sizeof(uint8_t));
-            memcpy(max.Array, c->Array, sizeof(uint8_t) * c->Pietre[totale]);
-        }
+        count += generaCollane(0, c, &max);
     }
-    bool check = verificaCollana(&max);
     printf("Sono state generate %d collane, la seguente è quella di lunghezza massima:\n", count);
     printCollana(&max);
     return count;
