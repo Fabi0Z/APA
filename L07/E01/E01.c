@@ -65,7 +65,7 @@ bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia ris
                     return false;                              // Restituisco false
                 }
                 // Eseguo il controllo dell'ordine solo se non mi trovo sull'ultima pietra
-                check = i == c->Pietre[totale] ? true : verificaZaffiriTopazi(&c->Array[i]);
+                check = i == c->Pietre[totale] - 1 ? true : verificaZaffiriTopazi(&c->Array[i]);
                 break;
             }
 
@@ -75,7 +75,7 @@ bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia ris
                     return false;                                // Restituisco false
                 }
                 // Eseguo il controllo dell'ordine solo se non mi trovo sull'ultima pietra
-                check = i == c->Pietre[totale] ? true : verificaSmeraldiRubini(&c->Array[i]);
+                check = i == c->Pietre[totale] - 1 ? true : verificaSmeraldiRubini(&c->Array[i]);
                 break;
             }
 
@@ -85,7 +85,7 @@ bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia ris
                     return false;                            // Restituisco false
                 }
                 // Eseguo il controllo dell'ordine solo se non mi trovo sull'ultima pietra
-                check = i == c->Pietre[totale] ? true : verificaSmeraldiRubini(&c->Array[i]);
+                check = i == c->Pietre[totale] - 1 ? true : verificaSmeraldiRubini(&c->Array[i]);
                 break;
             }
 
@@ -95,7 +95,7 @@ bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia ris
                     return false;                              // Restituisco false
                 }
                 // Eseguo il controllo dell'ordine solo se non mi trovo sull'ultima pietra
-                check = i == c->Pietre[totale] ? true : verificaZaffiriTopazi(&c->Array[i]);
+                check = i == c->Pietre[totale] - 1 ? true : verificaZaffiriTopazi(&c->Array[i]);
                 break;
             }
         }
