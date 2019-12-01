@@ -56,7 +56,7 @@ bool verificaZaffiriTopazi(uint8_t *array) { // Verifica che l'ordine dei topazi
 bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia rispettato e che il numero di pietre sia corretto
     bool check;
     unsigned int conteggio[totale] = {0, 0, 0, 0};
-    for (size_t i = 0; i < c->Pietre[totale] - 1; i++) { // Per ogni pietra eccetto l'ultima
+    for (size_t i = 0; i < c->Pietre[totale]; i++) { // Per ogni pietra
         check = false;
         switch (c->Array[i]) {
             case zaffiro: {
@@ -64,7 +64,8 @@ bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia ris
                 if (conteggio[zaffiro] > c->Pietre[zaffiro]) { // Se il numero di pietre eccede
                     return false;                              // Restituisco false
                 }
-                check = verificaZaffiriTopazi(&c->Array[i]);
+                // Eseguo il controllo dell'ordine solo se non mi trovo sull'ultima pietra
+                check = i == c->Pietre[totale] ? true : verificaZaffiriTopazi(&c->Array[i]);
                 break;
             }
 
@@ -73,7 +74,8 @@ bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia ris
                 if (conteggio[smeraldo] > c->Pietre[smeraldo]) { // Se il numero di pietre eccede
                     return false;                                // Restituisco false
                 }
-                check = verificaSmeraldiRubini(&c->Array[i]);
+                // Eseguo il controllo dell'ordine solo se non mi trovo sull'ultima pietra
+                check = i == c->Pietre[totale] ? true : verificaSmeraldiRubini(&c->Array[i]);
                 break;
             }
 
@@ -82,7 +84,8 @@ bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia ris
                 if (conteggio[rubino] > c->Pietre[rubino]) { // Se il numero di pietre eccede
                     return false;                            // Restituisco false
                 }
-                check = verificaSmeraldiRubini(&c->Array[i]);
+                // Eseguo il controllo dell'ordine solo se non mi trovo sull'ultima pietra
+                check = i == c->Pietre[totale] ? true : verificaSmeraldiRubini(&c->Array[i]);
                 break;
             }
 
@@ -91,7 +94,8 @@ bool verificaCollana(collana *c) { // Verifica che l'ordine delle pietre sia ris
                 if (conteggio[topazio] > c->Pietre[topazio]) { // Se il numero di pietre eccede
                     return false;                              // Restituisco false
                 }
-                check = verificaZaffiriTopazi(&c->Array[i]);
+                // Eseguo il controllo dell'ordine solo se non mi trovo sull'ultima pietra
+                check = i == c->Pietre[totale] ? true : verificaZaffiriTopazi(&c->Array[i]);
                 break;
             }
         }
@@ -197,8 +201,8 @@ void printCollana(collana *c) { // Stampa una collana
 
 unsigned int generaCollane(unsigned int pos, collana *c, collana *max) {
     unsigned int count = 0;
-    if (pos >= c->Pietre[totale]) {                       // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
-        if (verificaCollana(c)) {                         // Se la collana è valida
+    if (pos >= c->Pietre[totale]) {                        // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
+        if (verificaCollana(c)) {                          // Se la collana è valida
             if (c->Pietre[totale] > max->Pietre[totale]) { // Se la collana generata ha lunghezza maggiore di quella massima
                 memcpy(max->Pietre, c->Pietre, sizeof(unsigned int) * totale + 1);
                 free(max->Array);
