@@ -247,7 +247,7 @@ void parseFromFile(char *filename) { // Esegue i vari test presenti in un file
     FILE *stream = fopen(filename, "r");
     checkFilestream(stream);
     unsigned int nTest;
-    fscanf(stream, "%d", &nTest);
+    fscanf(stream, "%d\n", &nTest);
     for (size_t i = 0; i < nTest; i++) { // Per ogni test
         char riga[MAX_FILENAME];
         fgets(riga, MAX_FILENAME - 1, stream);
