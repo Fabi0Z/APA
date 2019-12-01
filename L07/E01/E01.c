@@ -180,25 +180,25 @@ unsigned int generaCollane(unsigned int pos, collana *c, collana *max) {
         }
     }
 
-    if (pos >= c->Pietre[totale]) {                        // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
-        if (verificaCollana(c)) {                          // Se la collana è valida
-            if (c->Pietre[totale] > max->Pietre[totale]) { // Se la collana generata ha lunghezza maggiore di quella massima
-                free(max->Array);
-                max->Pietre[totale] = c->Pietre[totale]; // Salvo il numero totale di pietre
-                max->Array          = (uint8_t *)calloc(max->Pietre[totale], sizeof(uint8_t));
-                memcpy(max->Array, c->Array, sizeof(uint8_t) * c->Pietre[totale]);
-            }
-            return 1;
-        }
-        return 0;
+    if (pos >= c->Pietre[totale]) { // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
+        return 1;
     }
 
     for (size_t i = 0; i < c->Disposizioni.NumeroTipi; i++) { // Per ogni tipo di pietra
         c->Array[pos] = c->Disposizioni.Pietre[i];
-        c->Pietre[c->Disposizioni.Pietre[i]]++;            // Conto la pietra
-        unsigned int out = generaCollane(pos + 1, c, max); // Ricorsione nella posizione successiva
-        c->Pietre[c->Disposizioni.Pietre[i]]--;            // Rimuovo la pietra
-        count += out;
+        if (pos > 0) {
+            if (verificaOrdine(&c->Array[pos - 1])) {              // Verifico che l'ordine sia corretto
+                c->Pietre[c->Disposizioni.Pietre[i]]++;            // Conto la pietra
+                unsigned int out = generaCollane(pos + 1, c, max); // Ricorsione nella posizione successiva
+                c->Pietre[c->Disposizioni.Pietre[i]]--;            // Rimuovo la pietra
+                count += out;
+            }
+        } else {
+            c->Pietre[c->Disposizioni.Pietre[i]]++;            // Conto la pietra
+            unsigned int out = generaCollane(pos + 1, c, max); // Ricorsione nella posizione successiva
+            c->Pietre[c->Disposizioni.Pietre[i]]--;            // Rimuovo la pietra
+            count += out;
+        }
     }
     return count;
 }
