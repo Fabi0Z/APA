@@ -184,10 +184,16 @@ unsigned int collaneVarieLunghezze(collana *c, collana *max) {     // Genera col
     unsigned int lunghezzaMassima = c->Pietre[totale];
     c->Array                      = (pietra *)calloc(lunghezzaMassima, sizeof(pietra)); // Alloco la memoria nell'array
 
+    unsigned int maxAttuale = 0;
     for (size_t i = 1; i <= lunghezzaMassima; i++) {                   // Per un numero di volte pari al totale delle pietre
         memcpy(max->Pietre, c->Pietre, sizeof(unsigned int) * totale); // Copio il numero massimo di pietre
         c->Pietre[totale] = i;
         generaCollane(0, c, max);
+        if (max->Pietre[totale] > maxAttuale) {
+            maxAttuale = max->Pietre[totale];
+        } else {
+            break;
+        }
     }
 
     contaPietre(max);
@@ -215,7 +221,6 @@ void parseFromFile(char *filename) { // Esegue i vari test presenti in un file
         printf("TEST #%d\n", i + 1);
         collaneVarieLunghezze(&c, &max);
         printCollana(&max);
-        printf("Collana massima lunghezza %d\n", max.Pietre[totale]);
     }
 }
 
