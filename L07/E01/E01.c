@@ -12,32 +12,10 @@ typedef enum { zaffiro,
                smeraldo,
                totale } pietra;
 
-typedef struct ArrayDisposizioni { // Dato specifico contenente l'array dei valori per le disposizioni
-    unsigned int *Pietre;
-    uint8_t NumeroTipi; // Indica quanti tipi di pietre sono disposinibili
-} arrayDisposizioni;
-
 typedef struct Collana { // Struttura rappresentante una collana
     unsigned int Pietre[totale + 1];
-    arrayDisposizioni Disposizioni;
     pietra *Array;
 } collana;
-
-arrayDisposizioni generaArrayDisposizioni(collana *c) { // Genera l'array delle disposizioni relativo ad una collana
-    unsigned int tempArray[totale];
-    c->Disposizioni.NumeroTipi = 0;
-
-    for (size_t i = 0; i < totale; i++) { // Per ogni tipo esistente
-        if (c->Pietre[i] != 0) {          // Se c'è almeno una pietra di quel tipo
-            tempArray[c->Disposizioni.NumeroTipi] = i;
-            c->Disposizioni.NumeroTipi++;
-        }
-    }
-
-    // Creo l'array
-    c->Disposizioni.Pietre = (unsigned int *)calloc(c->Disposizioni.NumeroTipi, sizeof(unsigned int));
-    memcpy(c->Disposizioni.Pietre, tempArray, c->Disposizioni.NumeroTipi * sizeof(unsigned int));
-}
 
 bool verificaSmeraldiRubini(pietra *array) { // Verifica che l'ordine dei rubini o degli smeraldi sia rispettato
     if (array[1] == smeraldo || array[1] == topazio) {
@@ -85,9 +63,7 @@ collana parseCollana(char *string) { // Effettua il parse di una collana da stri
     sscanf(string, "%d", &c.Pietre[smeraldo]);
 
     c.Pietre[totale] = c.Pietre[zaffiro] + c.Pietre[smeraldo] + c.Pietre[rubino] + c.Pietre[topazio];
-    c.Array          = (pietra *)calloc(c.Pietre[totale], sizeof(pietra)); // Alloco la memoria nell'array
 
-    generaArrayDisposizioni(&c); // Genero l'array delle disposizioni
     return c;
 }
 
@@ -103,22 +79,22 @@ bool apriFile(char *filename, char *modalità, FILE **stream) { // Apre un file 
 void printPietra(pietra p) { // Stampa una pietra
     switch (p) {
         case zaffiro: {
-            printf("z");
+            printf("Z");
             break;
         }
 
         case smeraldo: {
-            printf("s");
+            printf("S");
             break;
         }
 
         case rubino: {
-            printf("r");
+            printf("R");
             break;
         }
 
         case topazio: {
-            printf("t");
+            printf("T");
             break;
         }
     }
@@ -155,68 +131,64 @@ void contaPietre(collana *c) { // Conta il numero di pietre in una collana
 }
 
 void printCollana(collana *c) { // Stampa una collana
-    printf("zaffiro = %d, ", c->Pietre[zaffiro]);
-    printf("rubino = %d, ", c->Pietre[rubino]);
-    printf("topazio = %d, ", c->Pietre[topazio]);
-    printf("smeraldo = %d, ", c->Pietre[smeraldo]);
-    printf("TOT = %d", c->Pietre[totale]);
-    // puts("La collana è composta così:");
-    // printPietra(c->Array[0]);
-    // for (size_t i = 1; i < c->Pietre[totale]; i++) { // Per ogni pietra
-    //     printf("-");
-    //     printPietra(c->Array[i]);
-    // }
+    printf("Sono presenti: %d Zaffiri; ", c->Pietre[zaffiro]);
+    printf("%d Rubini; ", c->Pietre[rubino]);
+    printf("%d Topazi; ", c->Pietre[topazio]);
+    printf("%d Smerladi; ", c->Pietre[smeraldo]);
+    printf("Totale %d pietre\n", c->Pietre[totale]);
+    printPietra(c->Array[0]);
+    for (size_t i = 1; i < c->Pietre[totale]; i++) { // Per ogni pietra
+        printf("-");
+        printPietra(c->Array[i]);
+    }
     printf("\n");
 }
 
-unsigned int generaCollane(unsigned int pos, collana *c, collana *max) {
-    unsigned int count = 0;
-
-    if (pos > 0) { // Se sono almeno in seconda posizione controllo che il numero di pietre sia corretto
-        pietra ultimaPietra = c->Array[pos - 1];
-        if (c->Pietre[ultimaPietra] > max->Pietre[ultimaPietra]) { // Se il numero di pietre eccede il valore massimo
-            return 0;
-        }
-    }
-
-    if (pos >= c->Pietre[totale]) {                    // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
+bool generaCollane(unsigned int pos, collana *c, collana *max) { // Restituisce true se è riuscito a trovare una combinazione, altrimenti false
+    // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
+    if (pos >= c->Pietre[totale]) {
         if (c->Pietre[totale] > max->Pietre[totale]) { // Se il numero di pietre è maggiore dell'attuale massimo
             max->Pietre[totale] = c->Pietre[totale];
             free(max->Array);
             max->Array = (pietra *)calloc(c->Pietre[totale], sizeof(pietra));
             memcpy(max->Array, c->Array, sizeof(pietra) * c->Pietre[totale]); // Copio l'array di pietre
         }
-        return 1;
+        return true;
     } else if (pos > 1) {                          // Se ho almeno due elementi
         if (!verificaOrdine(&c->Array[pos - 2])) { // Verifico che l'ordine dell'ultima pietra inserita sia corretto
-            return 0;
+            return false;
         }
     }
 
-    for (size_t i = 0; i < c->Disposizioni.NumeroTipi; i++) { // Per ogni tipo di pietra
-        c->Array[pos] = c->Disposizioni.Pietre[i];
-        contaPietre(c);                          // Riconto le pietre
-        count += generaCollane(pos + 1, c, max); // Ricorsione nella posizione successiva
+    for (pietra i = 0; i < totale; i++) { // Per ogni tipo di pietra
+        if (max->Pietre[i] > 0) {         // Se ho ancora disponibilità
+            max->Pietre[i]--;             // Tolgo la pietra
+            c->Array[pos] = i;
+            if (generaCollane(pos + 1, c, max)) { // Se trovo una collana successiva
+                return true;
+            }
+            max->Pietre[i]++; // Rimetto la pietra al suo posto
+        }
     }
-    return count;
+    return false;
 }
 
-unsigned int collaneVarieLunghezze(collana *c) { // Genera collane con lunghezza variabile
-    unsigned int count = 0;
-    collana max;
-    memcpy(max.Pietre, c->Pietre, sizeof(unsigned int) * totale); // Copio il numero massimo di pietre
-    max.Pietre[totale]            = 0;
-    max.Array                     = (pietra *)malloc(sizeof(pietra));
+unsigned int collaneVarieLunghezze(collana *c, collana *max) {     // Genera collane con lunghezza variabile
+    memcpy(max->Pietre, c->Pietre, sizeof(unsigned int) * totale); // Copio il numero massimo di pietre
+    max->Pietre[totale]           = 0;
+    max->Array                    = (pietra *)malloc(sizeof(pietra));
     unsigned int lunghezzaMassima = c->Pietre[totale];
+    c->Array                      = (pietra *)calloc(lunghezzaMassima, sizeof(pietra)); // Alloco la memoria nell'array
 
-    for (size_t i = 1; i <= lunghezzaMassima; i++) {         // Per un numero di volte pari al totale delle pietre
-        memset(c->Pietre, 0, sizeof(unsigned int) * totale); // Svuoto il contatore
+    for (size_t i = 1; i <= lunghezzaMassima; i++) {                   // Per un numero di volte pari al totale delle pietre
+        memcpy(max->Pietre, c->Pietre, sizeof(unsigned int) * totale); // Copio il numero massimo di pietre
         c->Pietre[totale] = i;
-        count += generaCollane(0, c, &max);
+        generaCollane(0, c, max);
     }
 
-    free(max.Array);
-    return max.Pietre[totale];
+    contaPietre(max);
+    free(c->Array);
+    return max->Pietre[totale];
 }
 
 bool checkFilestream(FILE *stream) { // Controlla errori di aperrtura del file
@@ -230,15 +202,16 @@ void parseFromFile(char *filename) { // Esegue i vari test presenti in un file
     FILE *stream = fopen(filename, "r");
     checkFilestream(stream);
     unsigned int nTest, massima;
+    collana max;
     fscanf(stream, "%d\n", &nTest);
     for (size_t i = 0; i < nTest; i++) { // Per ogni test
         char riga[MAX_FILENAME];
         fgets(riga, MAX_FILENAME - 1, stream);
         collana c = parseCollana(riga);
         printf("TEST #%d\n", i + 1);
-        printCollana(&c);
-        massima = collaneVarieLunghezze(&c);
-        printf("Collana massima lunghezza %d\n", massima);
+        collaneVarieLunghezze(&c, &max);
+        printCollana(&max);
+        printf("Collana massima lunghezza %d\n", max.Pietre[totale]);
     }
 }
 
