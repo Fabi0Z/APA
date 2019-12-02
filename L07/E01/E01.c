@@ -187,17 +187,16 @@ unsigned int generaCollane(unsigned int pos, collana *c, collana *max) {
             memcpy(max->Array, c->Array, sizeof(pietra) * c->Pietre[totale]); // Copio l'array di pietre
         }
         return 1;
-    } else if (pos > 1) {                         // Se ho almeno due elementi
-        if (verificaOrdine(&c->Array[pos - 2])) { // Verifico che l'ordine dell'ultima pietra inserita sia corretto
+    } else if (pos > 1) {                          // Se ho almeno due elementi
+        if (!verificaOrdine(&c->Array[pos - 2])) { // Verifico che l'ordine dell'ultima pietra inserita sia corretto
             return 0;
         }
     }
 
     for (size_t i = 0; i < c->Disposizioni.NumeroTipi; i++) { // Per ogni tipo di pietra
         c->Array[pos] = c->Disposizioni.Pietre[i];
-        c->Pietre[c->Disposizioni.Pietre[i]]++;  // Conto la pietra
+        contaPietre(c);                          // Riconto le pietre
         count += generaCollane(pos + 1, c, max); // Ricorsione nella posizione successiva
-        c->Pietre[c->Disposizioni.Pietre[i]]--;  // Rimuovo la pietra
     }
     return count;
 }
