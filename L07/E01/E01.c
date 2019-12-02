@@ -145,6 +145,14 @@ void printCollana(collana *c) { // Stampa una collana
 }
 
 bool generaCollane(unsigned int pos, collana *c, collana *max) { // Restituisce true se è riuscito a trovare una combinazione, altrimenti false
+
+    // Per collane con più di un elemento verifico l'ordine delle pietre
+    if (pos > 1) {
+        if (!verificaOrdine(&c->Array[pos - 2])) { // Verifico che l'ordine dell'ultima pietra inserita sia corretto
+            return false;
+        }
+    }
+
     // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
     if (pos >= c->Pietre[totale]) {
         if (c->Pietre[totale] > max->Pietre[totale]) { // Se il numero di pietre è maggiore dell'attuale massimo
@@ -154,10 +162,6 @@ bool generaCollane(unsigned int pos, collana *c, collana *max) { // Restituisce 
             memcpy(max->Array, c->Array, sizeof(pietra) * c->Pietre[totale]); // Copio l'array di pietre
         }
         return true;
-    } else if (pos > 1) {                          // Se ho almeno due elementi
-        if (!verificaOrdine(&c->Array[pos - 2])) { // Verifico che l'ordine dell'ultima pietra inserita sia corretto
-            return false;
-        }
     }
 
     for (pietra i = 0; i < totale; i++) { // Per ogni tipo di pietra
