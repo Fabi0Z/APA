@@ -7,9 +7,9 @@
 const uint8_t MAX_FILENAME = 51;
 
 enum pietra { zaffiro,
-              smeraldo,
               rubino,
               topazio,
+              smeraldo,
               totale };
 
 typedef struct ArrayDisposizioni { // Dato specifico contenente l'array dei valori per le disposizioni
@@ -80,9 +80,9 @@ bool verificaOrdine(uint8_t *array) { // Verifica che l'ordine della pietra succ
 collana parseCollana(char *string) { // Effettua il parse di una collana da stringa e svuota la stringa
     collana c;
     sscanf(string, "%d %[^\n]", &c.Pietre[zaffiro], string);
-    sscanf(string, "%d %[^\n]", &c.Pietre[smeraldo], string);
     sscanf(string, "%d %[^\n]", &c.Pietre[rubino], string);
-    sscanf(string, "%d", &c.Pietre[topazio]);
+    sscanf(string, "%d %[^\n]", &c.Pietre[topazio], string);
+    sscanf(string, "%d", &c.Pietre[smeraldo]);
 
     c.Pietre[totale] = c.Pietre[zaffiro] + c.Pietre[smeraldo] + c.Pietre[rubino] + c.Pietre[topazio];
     c.Array          = (uint8_t *)calloc(c.Pietre[totale], sizeof(uint8_t)); // Alloco la memoria nell'array
@@ -157,9 +157,9 @@ void contaPietre(collana *c) { // Conta il numero di pietre in una collana
 void printCollana(collana *c) { // Stampa una collana
     contaPietre(c);
     printf("%d Zaffiri; ", c->Pietre[zaffiro]);
-    printf("%d Smeraldi; ", c->Pietre[smeraldo]);
     printf("%d Rubini; ", c->Pietre[rubino]);
     printf("%d Topazi; ", c->Pietre[topazio]);
+    printf("%d Smeraldi; ", c->Pietre[smeraldo]);
     printf("Totale %d pietre\n", c->Pietre[totale]);
     puts("La collana è composta così:");
     printPietra(c->Array[0]);
@@ -180,25 +180,25 @@ unsigned int generaCollane(unsigned int pos, collana *c, collana *max) {
         }
     }
 
-    if (pos >= c->Pietre[totale]) { // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
+    if (pos >= c->Pietre[totale]) {                    // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
+        if (c->Pietre[totale] > max->Pietre[totale]) { // Se il numero di pietre è maggiore dell'attuale massimo
+            max->Pietre[totale] = c->Pietre[totale];
+            free(max->Array);
+            max->Array = (uint8_t *)calloc(c->Pietre[totale], sizeof(uint8_t));
+            memcpy(max->Array, c->Array, sizeof(uint8_t) * c->Pietre[totale]); // Copio l'array di pietre
+        }
         return 1;
+    } else if (pos > 1) {                         // Se ho almeno due elementi
+        if (verificaOrdine(&c->Array[pos - 2])) { // Verifico che l'ordine dell'ultima pietra inserita sia corretto
+            return 0;
+        }
     }
 
     for (size_t i = 0; i < c->Disposizioni.NumeroTipi; i++) { // Per ogni tipo di pietra
         c->Array[pos] = c->Disposizioni.Pietre[i];
-        if (pos > 0) {
-            if (verificaOrdine(&c->Array[pos - 1])) {              // Verifico che l'ordine sia corretto
-                c->Pietre[c->Disposizioni.Pietre[i]]++;            // Conto la pietra
-                unsigned int out = generaCollane(pos + 1, c, max); // Ricorsione nella posizione successiva
-                c->Pietre[c->Disposizioni.Pietre[i]]--;            // Rimuovo la pietra
-                count += out;
-            }
-        } else {
-            c->Pietre[c->Disposizioni.Pietre[i]]++;            // Conto la pietra
-            unsigned int out = generaCollane(pos + 1, c, max); // Ricorsione nella posizione successiva
-            c->Pietre[c->Disposizioni.Pietre[i]]--;            // Rimuovo la pietra
-            count += out;
-        }
+        c->Pietre[c->Disposizioni.Pietre[i]]++;  // Conto la pietra
+        count += generaCollane(pos + 1, c, max); // Ricorsione nella posizione successiva
+        c->Pietre[c->Disposizioni.Pietre[i]]--;  // Rimuovo la pietra
     }
     return count;
 }
@@ -246,6 +246,7 @@ int main() {
     puts("Inserisci il nome del file:");
     printf("==> ");
     fgets(filename, (MAX_FILENAME - 1), stdin);
+    sscanf(filename, "%s", filename);
     parseFromFile(filename);
     return 0;
 }
