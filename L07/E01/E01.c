@@ -155,18 +155,17 @@ void contaPietre(collana *c) { // Conta il numero di pietre in una collana
 }
 
 void printCollana(collana *c) { // Stampa una collana
-    contaPietre(c);
-    printf("%d Zaffiri; ", c->Pietre[zaffiro]);
-    printf("%d Rubini; ", c->Pietre[rubino]);
-    printf("%d Topazi; ", c->Pietre[topazio]);
-    printf("%d Smeraldi; ", c->Pietre[smeraldo]);
-    printf("Totale %d pietre\n", c->Pietre[totale]);
-    puts("La collana è composta così:");
-    printPietra(c->Array[0]);
-    for (size_t i = 1; i < c->Pietre[totale]; i++) { // Per ogni pietra
-        printf("-");
-        printPietra(c->Array[i]);
-    }
+    printf("zaffiro = %d, ", c->Pietre[zaffiro]);
+    printf("rubino = %d, ", c->Pietre[rubino]);
+    printf("topazio = %d, ", c->Pietre[topazio]);
+    printf("smeraldo = %d, ", c->Pietre[smeraldo]);
+    printf("TOT = %d", c->Pietre[totale]);
+    // puts("La collana è composta così:");
+    // printPietra(c->Array[0]);
+    // for (size_t i = 1; i < c->Pietre[totale]; i++) { // Per ogni pietra
+    //     printf("-");
+    //     printPietra(c->Array[i]);
+    // }
     printf("\n");
 }
 
@@ -216,9 +215,9 @@ unsigned int collaneVarieLunghezze(collana *c) { // Genera collane con lunghezza
         c->Pietre[totale] = i;
         count += generaCollane(0, c, &max);
     }
-    printf("Sono state generate %d collane, la seguente è quella di lunghezza massima:\n", count);
-    printCollana(&max);
-    return count;
+
+    free(max.Array);
+    return max.Pietre[totale];
 }
 
 bool checkFilestream(FILE *stream) { // Controlla errori di aperrtura del file
@@ -231,13 +230,16 @@ bool checkFilestream(FILE *stream) { // Controlla errori di aperrtura del file
 void parseFromFile(char *filename) { // Esegue i vari test presenti in un file
     FILE *stream = fopen(filename, "r");
     checkFilestream(stream);
-    unsigned int nTest;
+    unsigned int nTest, massima;
     fscanf(stream, "%d\n", &nTest);
     for (size_t i = 0; i < nTest; i++) { // Per ogni test
         char riga[MAX_FILENAME];
         fgets(riga, MAX_FILENAME - 1, stream);
         collana c = parseCollana(riga);
-        collaneVarieLunghezze(&c);
+        printf("TEST #%d\n", i + 1);
+        printCollana(&c);
+        massima   = collaneVarieLunghezze(&c);
+        printf("Collana massima lunghezza %d\n", massima);
     }
 }
 
