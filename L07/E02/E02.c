@@ -193,14 +193,8 @@ bool generaCollane(unsigned int pos, collana *c, collana *max) { // Restituisce 
     return false;
 }
 
-void aggiornaDisponibilit(collana *b, collana *a) { // Scrive in b la disponibilità massima di pietre rispetto ad a
-    for (size_t i = 0; i < totale; i++) {           // Per ogni pietra
-        b->Pietre[i] = a->Pietre[i] > a->RipetizioniMassime ? a->RipetizioniMassime : a->Pietre[i];
-    }
-}
-
 unsigned int collaneVarieLunghezze(collana *c, collana *max) {                 // Genera collane con lunghezza variabile
-    aggiornaDisponibilit(max, c);                                              // Copio il numero massimo di pietre
+    memcpy(max->Pietre, c->Pietre, sizeof(unsigned int) * totale);             // Copio il numero massimo di pietre
     memcpy(max->ValorePietre, c->ValorePietre, sizeof(unsigned int) * totale); // Copio il valore delle pietre
     max->RipetizioniMassime       = c->RipetizioniMassime;
     max->Pietre[totale]           = 0;
@@ -208,8 +202,8 @@ unsigned int collaneVarieLunghezze(collana *c, collana *max) {                 /
     unsigned int lunghezzaMassima = c->Pietre[totale];
     c->Array                      = (pietra *)calloc(lunghezzaMassima, sizeof(pietra)); // Alloco la memoria nell'array
 
-    for (size_t i = 1; i <= lunghezzaMassima; i++) { // Per un numero di volte pari al totale delle pietre
-        aggiornaDisponibilit(max, c);                // Copio il numero massimo di pietre
+    for (size_t i = 1; i <= lunghezzaMassima; i++) {                   // Per un numero di volte pari al totale delle pietre
+        memcpy(max->Pietre, c->Pietre, sizeof(unsigned int) * totale); // Copio il numero massimo di pietre
         c->Pietre[totale] = i;
         generaCollane(0, c, max);
     }
