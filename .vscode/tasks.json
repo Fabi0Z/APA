@@ -3,7 +3,7 @@
     "tasks": [
         {
             "type": "shell",
-            "label": "clang build active file",
+            "label": "clang build active file (Linux)",
             "command": "/usr/bin/clang",
             "args": [
                 "-g",
@@ -20,6 +20,27 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
+            }
+        },
+        {
+            "type": "shell",
+            "label": "clang build active file (macOS)",
+            "command": "/usr/bin/clang",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${workspaceFolder}/builds/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "/usr/bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
             }
         }
     ]
