@@ -1,6 +1,8 @@
 #include <inttypes.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 const uint8_t MAX_STRING = 50;
 
@@ -23,6 +25,24 @@ bool checkFilestream(FILE *stream) { // Controlla errori di apertura del file
         puts("Errore apertura file");
     }
     return false;
+}
+
+personaggioLink creaPersonaggioLink(personaggio *p) { // Salva un personaggio in un elemento di tipo personaggioLink
+    // Alloco la memoria
+    personaggioLink l = (personaggioLink)malloc(sizeof(personaggio));
+    l->Nome           = (char *)calloc(strlen(p->Nome), sizeof(char));
+    l->Classe         = (char *)calloc(strlen(p->Classe), sizeof(char));
+
+    // Copio i dati
+    *l = *p;
+    strcpy(l->Nome, p->Nome);
+    strcpy(l->Classe, p->Classe);
+
+    return l;
+}
+
+personaggioLink parsePersonaggi(FILE *stream) { // Legge i personaggi da file e li salva in una lista
+    personaggioLink head = (personaggioLink)malloc(sizeof(personaggio));
 }
 
 int main() {
