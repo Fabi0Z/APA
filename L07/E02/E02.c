@@ -160,11 +160,27 @@ void printCollana(collana *c) { // Stampa una collana
     printf("\n");
 }
 
+bool verificaRipetizioni(unsigned int pos, collana *c) { // Verifica che non si ecceda il numero massimo di ripetizioni
+    pietra controllo = c->Array[pos - 1];
+    for (size_t i = pos - 2; i >= (pos - 1) - c->RipetizioniMassime; i--) { // Per il numero di ripetizioni, contando all'indietro
+        if (c->Array[i] != controllo) {                                     // Se ne ho anche una sola differente
+            return true;
+        }
+    }
+    return false;
+}
+
 bool generaCollane(unsigned int pos, collana *c, collana *max) { // Restituisce true se è riuscito a trovare una combinazione, altrimenti false
 
     // Per collane con più di un elemento verifico l'ordine delle pietre
     if (pos > 1) {
         if (!verificaOrdine(&c->Array[pos - 2])) { // Verifico che l'ordine dell'ultima pietra inserita sia corretto
+            return false;
+        }
+    }
+
+    if (pos >= (c->RipetizioniMassime + 1)) { // Verifico le ripetizioni
+        if (!verificaRipetizioni(pos, c)) {   // Se le ripetizioni non sono rispettate
             return false;
         }
     }
