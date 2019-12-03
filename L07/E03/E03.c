@@ -1,5 +1,20 @@
+#include <inttypes.h>
 #include <stdbool.h>
 #include <stdio.h>
+
+const uint8_t MAX_STRING = 50;
+
+typedef struct Personaggio {
+    uint16_t ID;
+    char *Nome;
+    char *Classe;
+    uint16_t HP;
+    uint16_t MP;
+    uint16_t ATK;
+    uint16_t DEF;
+    uint16_t MAG;
+    uint16_t SPR;
+} personaggio;
 
 bool checkFilestream(FILE *stream) { // Controlla errori di apertura del file
     if (stream == NULL) {
