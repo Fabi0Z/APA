@@ -147,11 +147,11 @@ void contaPietre(collana *c) { // Conta il numero di pietre in una collana
 }
 
 void printCollana(collana *c) { // Stampa una collana
-    printf("Sono presenti: %d Zaffiri; ", c->Pietre[zaffiro]);
-    printf("%d Rubini; ", c->Pietre[rubino]);
-    printf("%d Topazi; ", c->Pietre[topazio]);
-    printf("%d Smerladi; ", c->Pietre[smeraldo]);
-    printf("Totale %d pietre\n", c->Pietre[totale]);
+    printf("Sono presenti: %d Zaffiri di valore %d; ", c->Pietre[zaffiro], c->ValorePietre[zaffiro]);
+    printf("%d Rubini di valore %d; ", c->Pietre[rubino], c->ValorePietre[rubino]);
+    printf("%d Topazi di valore %d; ", c->Pietre[topazio], c->ValorePietre[topazio]);
+    printf("%d Smerladi di valore %d;\n", c->Pietre[smeraldo], c->ValorePietre[smeraldo]);
+    printf("Totale %d pietre con ripetizione massima di %d\n", c->Pietre[totale], c->RipetizioniMassime);
     printPietra(c->Array[0]);
     for (size_t i = 1; i < c->Pietre[totale]; i++) { // Per ogni pietra
         printf("-");
