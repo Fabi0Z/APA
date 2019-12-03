@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-const uint8_t MAX_FILENAME = 51;
+const uint8_t MAX_FILENAME         = 51;
 const unsigned int MAX_RIPETIZIONI = 10;
 
 typedef enum { zaffiro,
@@ -186,6 +186,12 @@ bool generaCollane(unsigned int pos, collana *c, collana *max) { // Restituisce 
         }
     }
     return false;
+}
+
+void aggiornaDisponibilit(collana *a, collana *b) { // Scrive in b la disponibilità massima di pietre rispetto ad a
+    for (size_t i = 0; i < totale; i++) {           // Per ogni pietra
+        b->Pietre[i] = a->Pietre[i] > MAX_RIPETIZIONI ? MAX_RIPETIZIONI : a->Pietre[i];
+    }
 }
 
 unsigned int collaneVarieLunghezze(collana *c, collana *max) {     // Genera collane con lunghezza variabile
