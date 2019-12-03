@@ -5,6 +5,7 @@
 #include <string.h>
 
 const uint8_t MAX_FILENAME = 51;
+const unsigned int MAX_RIPETIZIONI = 10;
 
 typedef enum { zaffiro,
                rubino,
