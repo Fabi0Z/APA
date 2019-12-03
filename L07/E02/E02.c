@@ -147,7 +147,7 @@ void contaPietre(collana *c) { // Conta il numero di pietre in una collana
 }
 
 void printCollana(collana *c) { // Stampa una collana
-    printf("Sono presenti: %d Zaffiri di valore %d; ", c->Pietre[zaffiro], c->ValorePietre[zaffiro]);
+    printf("%d Zaffiri di valore %d; ", c->Pietre[zaffiro], c->ValorePietre[zaffiro]);
     printf("%d Rubini di valore %d; ", c->Pietre[rubino], c->ValorePietre[rubino]);
     printf("%d Topazi di valore %d; ", c->Pietre[topazio], c->ValorePietre[topazio]);
     printf("%d Smerladi di valore %d;\n", c->Pietre[smeraldo], c->ValorePietre[smeraldo]);
@@ -171,7 +171,7 @@ bool generaCollane(unsigned int pos, collana *c, collana *max) { // Restituisce 
 
     // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
     if (pos >= c->Pietre[totale]) {
-        if (c->Pietre[totale] > max->Pietre[totale]) { // Se il numero di pietre è maggiore dell'attuale massimo
+        if (calcolaValore(c) > calcolaValore(max)) { // Se il valore è maggiore
             max->Pietre[totale] = c->Pietre[totale];
             free(max->Array);
             max->Array = (pietra *)calloc(c->Pietre[totale], sizeof(pietra));
@@ -208,21 +208,15 @@ unsigned int collaneVarieLunghezze(collana *c, collana *max) {                 /
     unsigned int lunghezzaMassima = c->Pietre[totale];
     c->Array                      = (pietra *)calloc(lunghezzaMassima, sizeof(pietra)); // Alloco la memoria nell'array
 
-    unsigned int maxAttuale = 0;
     for (size_t i = 1; i <= lunghezzaMassima; i++) { // Per un numero di volte pari al totale delle pietre
         aggiornaDisponibilit(max, c);                // Copio il numero massimo di pietre
         c->Pietre[totale] = i;
         generaCollane(0, c, max);
-        if (max->Pietre[totale] > maxAttuale) {
-            maxAttuale = max->Pietre[totale];
-        } else {
-            break;
-        }
     }
 
     contaPietre(max);
     free(c->Array);
-    return max->Pietre[totale];
+    return calcolaValore(max);
 }
 
 bool checkFilestream(FILE *stream) { // Controlla errori di aperrtura del file
@@ -243,7 +237,8 @@ void parseFromFile(char *filename) { // Esegue i vari test presenti in un file
         fgets(riga, MAX_FILENAME - 1, stream);
         collana c = parseCollana(riga);
         printf("TEST #%d\n", i + 1);
-        collaneVarieLunghezze(&c, &max);
+        massima = collaneVarieLunghezze(&c, &max);
+        printf("Valore collana %d; ", massima);
         printCollana(&max);
     }
 }
