@@ -20,7 +20,7 @@ typedef struct Personaggio {
 
 typedef struct PersonaggioLink *personaggioLink;
 typedef struct PersonaggioLink {
-    personaggio Personaggio;
+    personaggio *Personaggio;
     personaggioLink Next;
 } personaggioLink;
 
@@ -57,19 +57,20 @@ personaggio creaPersonaggio(uint16_t ID, char *Nome, char *Classe, uint16_t HP, 
 personaggioLink creaPersonaggioLink(personaggio *p) { // Salva un personaggio in un elemento di tipo personaggioLink
     // Alloco la memoria
     personaggioLink l;
-    l.Personaggio.Nome   = (char *)calloc(strlen(p->Nome), sizeof(char));
-    l.Personaggio.Classe = (char *)calloc(strlen(p->Classe), sizeof(char));
+    l.Personaggio         = (personaggio *)malloc(sizeof(personaggio));
+    l.Personaggio->Nome   = (char *)calloc(strlen(p->Nome), sizeof(char));
+    l.Personaggio->Classe = (char *)calloc(strlen(p->Classe), sizeof(char));
 
     // Copio i dati
-    l.Personaggio = *p;
-    strcpy(l.Personaggio.Nome, p->Nome);
-    strcpy(l.Personaggio.Classe, p->Classe);
+    *l.Personaggio = *p;
+    strcpy(l.Personaggio->Nome, p->Nome);
+    strcpy(l.Personaggio->Classe, p->Classe);
 
     return l;
 }
 
 personaggioLink parsePersonaggi(FILE *stream) { // Legge i personaggi da file e li salva in una lista
-    personaggioLink head = ;
+    personaggioLink head;
 }
 
 int main() {
