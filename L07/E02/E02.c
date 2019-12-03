@@ -12,6 +12,8 @@ typedef enum { zaffiro,
                smeraldo,
                totale } pietra;
 
+const unsigned int VALORI_PIETRE[totale] = {1, 1, 1, 1}; // Array contenente il valore di ogni tipo di pietra
+
 typedef struct Collana { // Struttura rappresentante una collana
     unsigned int Pietre[totale + 1];
     pietra *Array;
