@@ -15,8 +15,8 @@ typedef enum { zaffiro,
 typedef struct Collana { // Struttura rappresentante una collana
     unsigned int Pietre[totale + 1];
     pietra *Array;
-    const unsigned int RipetizioniMassime;
-    const unsigned int ValorePietre[totale];
+    unsigned int RipetizioniMassime;
+    unsigned int ValorePietre[totale];
 } collana;
 
 unsigned int calcolaValore(collana *c) { // Calcola il valore di una collana
@@ -199,8 +199,10 @@ void aggiornaDisponibilit(collana *b, collana *a) { // Scrive in b la disponibil
     }
 }
 
-unsigned int collaneVarieLunghezze(collana *c, collana *max) {     // Genera collane con lunghezza variabile
-    memcpy(max->Pietre, c->Pietre, sizeof(unsigned int) * totale); // Copio il numero massimo di pietre
+unsigned int collaneVarieLunghezze(collana *c, collana *max) {                 // Genera collane con lunghezza variabile
+    aggiornaDisponibilit(max, c);                                              // Copio il numero massimo di pietre
+    memcpy(max->ValorePietre, c->ValorePietre, sizeof(unsigned int) * totale); // Copio il valore delle pietre
+    max->RipetizioniMassime       = c->RipetizioniMassime;
     max->Pietre[totale]           = 0;
     max->Array                    = (pietra *)malloc(sizeof(pietra));
     unsigned int lunghezzaMassima = c->Pietre[totale];
