@@ -19,6 +19,14 @@ typedef struct Collana { // Struttura rappresentante una collana
     pietra *Array;
 } collana;
 
+unsigned int calcolaValore(collana *c) { // Calcola il valore di una collana
+    unsigned int count = 0;
+    for (size_t i = 0; i < totale; i++) { // Per ogni pietra
+        count += c->Pietre[i] * VALORI_PIETRE[i];
+    }
+    return count;
+}
+
 bool verificaSmeraldiRubini(pietra *array) { // Verifica che l'ordine dei rubini o degli smeraldi sia rispettato
     if (array[1] == smeraldo || array[1] == topazio) {
         return true;
