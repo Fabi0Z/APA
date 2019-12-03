@@ -4,6 +4,7 @@
 
 const uint8_t MAX_STRING = 50;
 
+typedef struct Personaggio *personaggioLink;
 typedef struct Personaggio {
     uint16_t ID;
     char *Nome;
@@ -14,6 +15,7 @@ typedef struct Personaggio {
     uint16_t DEF;
     uint16_t MAG;
     uint16_t SPR;
+    personaggioLink Next;
 } personaggio;
 
 bool checkFilestream(FILE *stream) { // Controlla errori di apertura del file
