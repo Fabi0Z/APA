@@ -170,6 +170,14 @@ bool verificaRipetizioni(unsigned int pos, collana *c) { // Verifica che non si 
     return false;
 }
 
+bool controlloZaffiri(collana *c) { // Controlla che il numero di zaffiri non ecceda il numero di smeraldi
+    collana temp        = *c;
+    temp.Pietre[totale] = c->Pietre[totale];
+    memcpy(temp.Array, c->Array, c->Pietre[totale]);
+    contaPietre(&temp); // Riconto le pietre
+    return temp.Pietre[zaffiro] <= temp.Pietre[smeraldo];
+}
+
 bool generaCollane(unsigned int pos, collana *c, collana *max) { // Restituisce true se è riuscito a trovare una combinazione, altrimenti false
 
     // Per collane con più di un elemento verifico l'ordine delle pietre
@@ -187,6 +195,9 @@ bool generaCollane(unsigned int pos, collana *c, collana *max) { // Restituisce 
 
     // Condizione di terminazione, ovvero quando la posizione raggiunge il numero massimo di ripetizioni
     if (pos >= c->Pietre[totale]) {
+        if (!controlloZaffiri(c)) { // Se il controllo sul numero di zaffiri non è rispettato
+            return false;
+        }
         if (calcolaValore(c) > calcolaValore(max)) { // Se il valore è maggiore
             max->Pietre[totale] = c->Pietre[totale];
             free(max->Array);
