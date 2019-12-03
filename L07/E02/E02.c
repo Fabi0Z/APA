@@ -4,8 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-const uint8_t MAX_FILENAME         = 51;
-const unsigned int MAX_RIPETIZIONI = 10;
+const uint8_t MAX_FILENAME = 51;
 
 typedef enum { zaffiro,
                rubino,
@@ -13,17 +12,17 @@ typedef enum { zaffiro,
                smeraldo,
                totale } pietra;
 
-const unsigned int VALORI_PIETRE[totale] = {1, 1, 1, 1}; // Array contenente il valore di ogni tipo di pietra
-
 typedef struct Collana { // Struttura rappresentante una collana
     unsigned int Pietre[totale + 1];
     pietra *Array;
+    const unsigned int RipetizioniMassime;
+    const unsigned int ValorePietre[totale];
 } collana;
 
 unsigned int calcolaValore(collana *c) { // Calcola il valore di una collana
     unsigned int count = 0;
     for (size_t i = 0; i < totale; i++) { // Per ogni pietra
-        count += c->Pietre[i] * VALORI_PIETRE[i];
+        count += c->Pietre[i] * c->ValorePietre[i];
     }
     return count;
 }
@@ -68,12 +67,18 @@ bool verificaOrdine(pietra *array) { // Verifica che l'ordine della pietra succe
 
 collana parseCollana(char *string) { // Effettua il parse di una collana da stringa e svuota la stringa
     collana c;
-    sscanf(string, "%d %[^\n]", &c.Pietre[zaffiro], string);
-    sscanf(string, "%d %[^\n]", &c.Pietre[rubino], string);
-    sscanf(string, "%d %[^\n]", &c.Pietre[topazio], string);
-    sscanf(string, "%d", &c.Pietre[smeraldo]);
+    c.Pietre[totale] = 0;
 
-    c.Pietre[totale] = c.Pietre[zaffiro] + c.Pietre[smeraldo] + c.Pietre[rubino] + c.Pietre[topazio];
+    for (size_t i = 0; i < totale; i++) {                  // Per ogni pietra
+        sscanf(string, "%d %[^\n]", &c.Pietre[i], string); // Scrivo la disponibilità
+        c.Pietre[totale] += c.Pietre[i];
+    }
+
+    for (size_t i = 0; i < totale; i++) {                        // Per ogni pietra
+        sscanf(string, "%d %[^\n]", &c.ValorePietre[i], string); // Scrivo il valore
+    }
+
+    sscanf(string, "%d", &c.RipetizioniMassime);
 
     return c;
 }
@@ -188,9 +193,9 @@ bool generaCollane(unsigned int pos, collana *c, collana *max) { // Restituisce 
     return false;
 }
 
-void aggiornaDisponibilit(collana *a, collana *b) { // Scrive in b la disponibilità massima di pietre rispetto ad a
+void aggiornaDisponibilit(collana *b, collana *a) { // Scrive in b la disponibilità massima di pietre rispetto ad a
     for (size_t i = 0; i < totale; i++) {           // Per ogni pietra
-        b->Pietre[i] = a->Pietre[i] > MAX_RIPETIZIONI ? MAX_RIPETIZIONI : a->Pietre[i];
+        b->Pietre[i] = a->Pietre[i] > a->RipetizioniMassime ? a->RipetizioniMassime : a->Pietre[i];
     }
 }
 
@@ -202,8 +207,8 @@ unsigned int collaneVarieLunghezze(collana *c, collana *max) {     // Genera col
     c->Array                      = (pietra *)calloc(lunghezzaMassima, sizeof(pietra)); // Alloco la memoria nell'array
 
     unsigned int maxAttuale = 0;
-    for (size_t i = 1; i <= lunghezzaMassima; i++) {                   // Per un numero di volte pari al totale delle pietre
-        memcpy(max->Pietre, c->Pietre, sizeof(unsigned int) * totale); // Copio il numero massimo di pietre
+    for (size_t i = 1; i <= lunghezzaMassima; i++) { // Per un numero di volte pari al totale delle pietre
+        aggiornaDisponibilit(max, c);                // Copio il numero massimo di pietre
         c->Pietre[totale] = i;
         generaCollane(0, c, max);
         if (max->Pietre[totale] > maxAttuale) {
