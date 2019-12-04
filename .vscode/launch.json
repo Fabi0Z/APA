@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "clang build and debug active file (Linux)",
+            "name": "g++ build and debug active file",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
@@ -22,21 +22,45 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "clang build active file (Linux)",
-            "miDebuggerPath": "/usr/bin/gdb"
+            "preLaunchTask": "Build with gcc"
         },
         {
-            "name": "Clang launch and debug active file (macOS)",
+            "name": "clang build and debug active file (gdb)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
             "args": [],
-            "stopAtEntry": true,
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build with clang",
+            "logging": {
+                "trace": true,
+                "traceResponse": true,
+                "engineLogging": true
+            }
+        },
+        {
+            "name": "clang launch and debug active file (lldb)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
+            "args": [],
+            "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
             "externalConsole": true,
             "MIMode": "lldb",
-            "preLaunchTask": "Build with clang (macOS)",
+            "preLaunchTask": "Build with clang",
             "logging": {
                 "trace": true,
                 "traceResponse": true,

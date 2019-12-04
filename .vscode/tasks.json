@@ -3,8 +3,8 @@
     "tasks": [
         {
             "type": "shell",
-            "label": "clang build active file (Linux)",
-            "command": "/usr/bin/clang",
+            "label": "Build with gcc",
+            "command": "gcc",
             "args": [
                 "-g",
                 "${file}",
@@ -12,7 +12,7 @@
                 "${workspaceFolder}/builds/${fileBasenameNoExtension}"
             ],
             "options": {
-                "cwd": "/usr/bin"
+                "cwd": "${fileDirname}"
             },
             "problemMatcher": [
                 "$gcc"
@@ -21,7 +21,7 @@
         },
         {
             "type": "shell",
-            "label": "Build with clang (macOS)",
+            "label": "Build with clang",
             "command": "clang",
             "args": [
                 "-g",
