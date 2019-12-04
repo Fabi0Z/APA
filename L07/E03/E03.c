@@ -29,7 +29,7 @@ typedef struct Inventario {
 } inventario;
 
 typedef struct Equipaggiamento {
-    bool Attivo;
+    bool InUso;
     oggetto *Oggetti;
 } equipaggiamento;
 
@@ -222,7 +222,7 @@ bool leggiOggetto(char *string, oggetto *o) { // Effettua il parse di un persona
 void copiaEquipaggiamento(equipaggiamento *a, equipaggiamento *b) { // Copia l'equipaggiamento a in b
 
     // Copio i dati diretti
-    b->Attivo = a->Attivo;
+    b->InUso = a->InUso;
 
     // Copio i dati per puntatore
     memcpy(b->Oggetti, a->Oggetti, sizeof(equipaggiamento));
