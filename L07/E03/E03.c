@@ -36,6 +36,12 @@ void allocaPersonaggio(personaggio *i, unsigned int nomeSize, unsigned int class
     i->Classe = (char *)calloc(classeSize, sizeof(char));
 }
 
+void freePersonaggio(personaggio *p) { // Dealloca la memoria di un personaggio
+    free(p->Nome);
+    free(p->Classe);
+    free(p);
+}
+
 personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) { // Crea, alloca e restituisce un Item
     personaggio *temp = (personaggio *)malloc(sizeof(personaggio));
     allocaPersonaggio(temp, nomeSize, classeSize);
@@ -88,17 +94,34 @@ personaggio *getResizedPersonaggio(personaggio *temp) { // Alloca memoria per re
     return p;
 }
 
-personaggioLink parsePersonaggi(FILE *stream) { // Legge i personaggi da file e li salva in una lista
-    personaggio *temp = creaPersonaggio(MAX_STRING, MAX_STRING);
+void addNext(personaggioLink *l, personaggioLink *next) { // Aggiunge un elemento next subito dopo un elemento l in una lista
+    if (l->Next == NULL) {                                // Se si tratta dell'ultimo elemento
+        l->Next    = next;
+        next->Next = NULL;
+        return;
+    }
+
+    personaggioLink *temp = l->Next;
+    next->Next            = temp;
+    l->Next               = next;
+    return;
+}
+
+personaggioLink parsePersonaggi(personaggioLink *HEAD, FILE *stream) { // Legge i personaggi da file e li salva in una lista
+    personaggio *temp               = creaPersonaggio(MAX_STRING, MAX_STRING);
+    personaggioLink *ultimoInserito = HEAD;
 
     // Creo stringa di appoggio
     char string[MAX_STRING + 1];
     fgets(string, MAX_STRING, stream); // Leggo la prima riga del file
 
     while (leggiPersonaggio(string, temp)) { // Sinché leggo correttamente i personaggi
-        personaggioLink tempLink = creaPersonaggioLink(&temp);
-        aggiungiDopo(ultimoPersonaggio, &tempLink);
+        personaggio *p = getResizedPersonaggio(temp);
+        copiaPersonaggio(temp, p);
+        addNext(ultimoInserito, p);
     }
+
+    freePersonaggio(temp);
 }
 
 int main() {
