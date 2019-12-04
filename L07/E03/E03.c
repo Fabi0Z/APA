@@ -151,6 +151,9 @@ void printInventario(inventario *i) { // Stampa un inventario a video
     printInventarioFile(i, stdout);
 }
 
+personaggioLink *getNextItem(personaggioLink *item) { // Restituisce l'elemento successivo nella lista
+    return item->Next == NULL ? NULL : item->Next;
+}
 personaggioLink *creaLista(personaggio *p) { // Crea, alloca e restituisce un puntatore a personaggioLink
     personaggioLink *l = (personaggioLink *)malloc(sizeof(personaggioLink));
     l->Personaggio     = p;
