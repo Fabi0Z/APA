@@ -6,10 +6,19 @@
 
 const uint8_t MAX_STRING = 50;
 
+typedef struct Stats {
+    int16_t HP;
+    int16_t MP;
+    int16_t ATK;
+    int16_t DEF;
+    int16_t MAG;
+    int16_t SPR;
+} stats;
+
 typedef struct Oggetto {
     char *Nome;
     char *Tipo;
-    uint16_t Statistica;
+    stats Statistiche;
 } oggetto;
 
 typedef struct Inventario {
@@ -22,15 +31,6 @@ typedef struct Equipaggiamento {
     bool Attivo;
     oggetto *Oggetti;
 } equipaggiamento;
-
-typedef struct Stats {
-    uint16_t HP;
-    uint16_t MP;
-    uint16_t ATK;
-    uint16_t DEF;
-    uint16_t MAG;
-    uint16_t SPR;
-} stats;
 
 typedef struct Personaggio {
     uint16_t ID;
@@ -145,6 +145,20 @@ bool leggiPersonaggio(char *string, personaggio *p) { // Effettua il parse di un
     return conteggio == 17;
 }
 
+bool leggiOggetto(char *string, oggetto *o) { // Effettua il parse di un personaggio da stringa, restituisce se la lettura è andata a buon fine o meno
+    uint8_t conteggio = 0;
+    conteggio += sscanf(string, "PG%" SCNd16 "%[^\n]", &p->ID, string);
+    conteggio += sscanf(string, "%s %[^\n]", p->Nome, string);
+    conteggio += sscanf(string, "%s %[^\n]", p->Classe, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.HP, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.MP, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.ATK, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.DEF, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.MAG, string);
+    conteggio += sscanf(string, "%" SCNd16, &p->Statistiche.SPR);
+    return conteggio == 17;
+}
+
 void copiaEquipaggiamento(equipaggiamento *a, equipaggiamento *b) { // Copia l'equipaggiamento a in b
 
     // Copio i dati diretti
@@ -209,25 +223,40 @@ void parsePersonaggi(tabellaPersonaggio *TABLE, FILE *stream) { // Legge i perso
     freePersonaggio(temp);
 }
 
+inventario *parseInventario(FILE *stream) { // Effettua il parse dell'inventario
+    uint8_t oggettiInventario;
+    fscanf(stream, "%" SCNd8, &oggettiInventario);
+    inventario *i = (inventario *)calloc(oggettiInventario, sizeof(inventario));
+
+    for (size_t i = 0; i < oggettiInventario; i++) { // Per ogni oggetto nel file
+        }
+
+    return i;
+}
+
 int main() {
     // Apro i filestream
-    FILE *pg         = fopen("pg.txt", "r");
-    FILE *inventario = fopen("inventario.txt", "r");
+    FILE *pg  = fopen("pg.txt", "r");
+    FILE *inv = fopen("inventario.txt", "r");
 
     // Verifico i filestream
     if (!checkFilestream(pg)) {
         return 1;
     }
-    if (!checkFilestream(inventario)) {
+    if (!checkFilestream(inv)) {
         return 2;
     }
 
+    // Creo e inizializzo la tabella dei personaggi
     tabellaPersonaggio table;
     table.HEAD             = creaLista(NULL);
     table.TAIL             = table.HEAD;
     table.NumeroPersonaggi = 0;
     parsePersonaggi(&table, pg);
     printPersonaggioLink(table.HEAD);
+
+    // Creo e inizializzo l'array per l'inventario
+    inventario *inventory = parseInventario(inv);
 
     return 0;
 }
