@@ -202,6 +202,7 @@ void copiaOggetto(oggetto *dest, oggetto *src) { // Copia src in dest
     strcpy(dest->Nome, src->Nome);
     strcpy(dest->Tipo, src->Tipo);
 }
+void aggiungiEquipaggiamento(personaggio *p, oggetto *o) {} // TODO Aggiunge un oggetto all'equipaggiamento di un personaggio
 // * --------------------------------------------------------
 
 // * LETTURA DA FILE
