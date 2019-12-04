@@ -14,9 +14,10 @@
             "options": {
                 "cwd": "${fileDirname}"
             },
-            "problemMatcher": [
-                "$gcc"
-            ],
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": "autoDetect"
+            },
             "group": "build"
         },
         {
@@ -32,6 +33,10 @@
             ],
             "options": {
                 "cwd": "${fileDirname}"
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": "autoDetect"
             },
             "group": "build"
         }
