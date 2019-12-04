@@ -343,6 +343,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                     return 1;
                 }
                 parsePersonaggi(TABLE, pg);
+                fclose(pg);
                 printPersonaggioLink(TABLE->HEAD);
                 break;
             }
@@ -351,9 +352,10 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 FILE *inv = fopen("inventario.txt", "r");
                 // Verifico i filestream
                 if (!checkFilestream(inv)) {
-                    return 1;
+                    return 2;
                 }
                 *INVENTORY                      = parseInventario(inv);
+                fclose(inv);
                 INVENTORY->OggettiTrasportabili = MAX_TRASPORTABILI;
                 printInventario(INVENTORY);
                 break;
