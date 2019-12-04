@@ -81,7 +81,7 @@ void freePersonaggio(personaggio *p) { // Dealloca la memoria di un personaggio
 
 void freePersonaggioLink(personaggioLink *l) { // Dealloca la memoria di una lista ed il suo contenuto
     if (l->Personaggio != NULL) {              // Se non sono sulla HEAD
-        freeItem(l->Personaggio);
+        freePersonaggio(l->Personaggio);
     }
     free(l);
 }
