@@ -212,6 +212,18 @@ personaggio *getResizedPersonaggio(personaggio *temp) { // Alloca memoria per re
     return p;
 }
 
+void copiaOggetto(oggetto *dest, oggetto *src) { // Copia src in dest
+    dest->Statistiche = src->Statistiche;
+    strcpy(dest->Nome, src->Nome);
+    strcpy(dest->Tipo, src->Tipo);
+}
+
+void resizedCopyOggetto(oggetto *o) { // Restituisce una copia ridimensionata di o
+    oggetto *temp = creaOggetto(strlen(o->Nome), strlen(o->Tipo));
+    copiaOggetto(temp, o);
+    return temp;
+}
+
 void addNext(personaggioLink *l, personaggioLink *next) { // Aggiunge un elemento next subito dopo un elemento l in una lista
     if (l->Next == NULL) {                                // Se si tratta dell'ultimo elemento
         l->Next    = next;
@@ -256,6 +268,8 @@ inventario parseInventario(FILE *stream) { // Effettua il parse dell'inventario
     for (size_t i = 0; i < inv.NumeroOggetti; i++) { // Per ogni oggetto nel file
         fgets(string, MAX_STRING, stream);           // Leggo la riga successiva
         leggiOggetto(string, temp);
+        resizeOggetto(temp);
+        // copiaOggetto(&inv.Oggetti[i], temp);
     }
 
     return inv;
