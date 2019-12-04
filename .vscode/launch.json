@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "g++ build and debug active file",
+            "name": "gcc build and debug active file (gdb)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
@@ -23,6 +23,24 @@
                 }
             ],
             "preLaunchTask": "Build with gcc"
+        },
+        {
+            "name": "gcc launch and debug active file (lldb)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb",
+            "preLaunchTask": "Build with gcc",
+            "logging": {
+                "trace": true,
+                "traceResponse": true,
+                "engineLogging": true
+            }
         },
         {
             "name": "clang build and debug active file (gdb)",
