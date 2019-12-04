@@ -103,8 +103,9 @@ personaggioLink *creaLista(personaggio *p) { // Crea, alloca e restituisce un pu
     return l;
 }
 
-personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) { // Crea, alloca e restituisce un Item
-    personaggio *temp = (personaggio *)malloc(sizeof(personaggio));
+personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) { // Crea, alloca e restituisce un personaggio senza equipaggiamento
+    personaggio *temp     = (personaggio *)malloc(sizeof(personaggio));
+    temp->Equipaggiamento = NULL;
     allocaPersonaggio(temp, nomeSize, classeSize);
     return temp;
 }
