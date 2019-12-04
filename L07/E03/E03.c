@@ -54,6 +54,20 @@ void printPersonaggio(personaggio *p, FILE *stream) { // Stampa un personaggio
     fprintf(stream, "\n");
 }
 
+void printPersonaggioLinkFile(personaggioLink *l, FILE *stream) { // Stampa una lista di personaggi su file
+    puts("I personaggi presenti sono:");
+    personaggioLink temp = *l;
+    while (temp.Next != NULL) {                    // Sinché esiste un elemento successivo
+        printItem(temp.Next->Personaggio, stream); // Stampo l'elemento
+        temp = *temp.Next;                         // Passo all'elemento successivo in lista
+    }
+    printf("\n");
+}
+
+void printPersonaggioLink(personaggioLink *l) { // Stampa una lista di personaggi a video
+    printPersonaggioLinkFile(l, stdout);
+}
+
 personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) { // Crea, alloca e restituisce un Item
     personaggio *temp = (personaggio *)malloc(sizeof(personaggio));
     allocaPersonaggio(temp, nomeSize, classeSize);
