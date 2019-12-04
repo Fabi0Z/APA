@@ -386,6 +386,22 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 parsePersonaggi(TABLE, stdin);
             }
 
+            case eliminaPersonaggio: {
+                puts("Inserisci l'ID del personaggio da eliminare:");
+                printf("==> ");
+                uint16_t ID;
+                scanf("PG%" SCNd16, &ID);                                  // Leggo l'ID
+                personaggioLink *precedente = ricercaID(TABLE->HEAD, &ID); // Trovo l'elemento precedente
+                if (precedente != NULL) {                                  // Se ho trovato l'ID
+                    estraiAndPrint(precedente);
+
+                } else {
+                    puts("ID non trovato");
+                }
+                premiPerContinuare();
+                break;
+            }
+
             case stampaPersonaggi: {
                 printPersonaggioLink(TABLE->HEAD);
                 premiPerContinuare();
