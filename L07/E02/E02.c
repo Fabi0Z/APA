@@ -83,8 +83,8 @@ collana parseCollana(char *string) { // Effettua il parse di una collana da stri
     return c;
 }
 
-bool apriFile(char *filename, char *modalità, FILE **stream) { // Apre un file e controlla che l'operazione sia andata a buon fine
-    *stream = fopen(filename, modalità);
+bool apriFile(char *filename, char *modalita, FILE **stream) { // Apre un file e controlla che l'operazione sia andata a buon fine
+    *stream = fopen(filename, modalita);
     if (stream == NULL) { // Se l'apertura non è andata a buon fine
         puts("Errore apertura file");
         return false;
