@@ -70,8 +70,14 @@ void allocaOggetto(oggetto *o, unsigned int nomeSize, unsigned int tipoSize) { /
     o->Tipo = (char *)calloc(tipoSize, sizeof(char));
 }
 
+void freeOggetto(oggetto *o) { // Dealloca un elemento di tipo oggetto
+    free(o->Nome);
+    free(o->Tipo);
+    free(o);
+}
+
 void freeEquipaggiamento(equipaggiamento *e) { // Dealloca un elemento di tipo equipaggiamento
-    free(e->Oggetti);
+    freeOggetto(e->Oggetti);
     free(e);
 }
 
@@ -127,12 +133,6 @@ personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) { /
     personaggio *temp     = (personaggio *)malloc(sizeof(personaggio));
     temp->Equipaggiamento = NULL;
     allocaPersonaggio(temp, nomeSize, classeSize);
-    return temp;
-}
-
-oggetto *creaOggetto(unsigned int nomeSize, unsigned int tipoSize) {
-    oggetto *temp = (oggetto *)malloc(sizeof(oggetto));
-    allocaOggetto(temp, nomeSize, tipoSize);
     return temp;
 }
 
@@ -218,12 +218,6 @@ void copiaOggetto(oggetto *dest, oggetto *src) { // Copia src in dest
     strcpy(dest->Tipo, src->Tipo);
 }
 
-void resizedCopyOggetto(oggetto *o) { // Restituisce una copia ridimensionata di o
-    oggetto *temp = creaOggetto(strlen(o->Nome), strlen(o->Tipo));
-    copiaOggetto(temp, o);
-    return temp;
-}
-
 void addNext(personaggioLink *l, personaggioLink *next) { // Aggiunge un elemento next subito dopo un elemento l in una lista
     if (l->Next == NULL) {                                // Se si tratta dell'ultimo elemento
         l->Next    = next;
@@ -268,8 +262,8 @@ inventario parseInventario(FILE *stream) { // Effettua il parse dell'inventario
     for (size_t i = 0; i < inv.NumeroOggetti; i++) { // Per ogni oggetto nel file
         fgets(string, MAX_STRING, stream);           // Leggo la riga successiva
         leggiOggetto(string, temp);
-        resizeOggetto(temp);
-        // copiaOggetto(&inv.Oggetti[i], temp);
+        allocaOggetto(&inv.Oggetti[i], strlen(temp->Nome), strlen(temp->Tipo)); // Alloco la memoria necessaria
+        copiaOggetto(&inv.Oggetti[i], temp);
     }
 
     return inv;
