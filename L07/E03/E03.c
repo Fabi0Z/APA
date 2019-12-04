@@ -147,7 +147,11 @@ void copiaPersonaggio(personaggio *a, personaggio *b) { // Copia il personaggio 
     // Copio i dati per puntatore
     strcpy(b->Nome, a->Nome);
     strcpy(b->Classe, a->Classe);
-    copiaEquipaggiamento(a->Equipaggiamento, b->Equipaggiamento);
+    if (a->Equipaggiamento != NULL) { // Se è presente l'equipaggiamento
+        copiaEquipaggiamento(a->Equipaggiamento, b->Equipaggiamento);
+    } else {
+        b->Equipaggiamento = NULL;
+    }
 }
 
 personaggio *getResizedPersonaggio(personaggio *temp) { // Alloca memoria per realizzare una copia ridimensionata del personaggio
