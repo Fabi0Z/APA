@@ -144,6 +144,7 @@ void parsePersonaggi(personaggioLink *HEAD, FILE *stream) { // Legge i personagg
         tempList = creaPersonaggioLink(p);
         addNext(ultimoInserito, tempList);
         ultimoInserito = tempList;
+        fgets(string, MAX_STRING, stream); // Leggo la riga successiva
     }
 
     freePersonaggio(temp);
