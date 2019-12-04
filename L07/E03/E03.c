@@ -65,6 +65,11 @@ void allocaPersonaggio(personaggio *p, unsigned int nomeSize, unsigned int class
     p->Classe = (char *)calloc(classeSize, sizeof(char));
 }
 
+void allocaOggetto(oggetto *o, unsigned int nomeSize, unsigned int tipoSize) { // Alloca memoria per un oggetto di tipo oggetto
+    o->Nome = (char *)calloc(nomeSize, sizeof(char));                          // Alloco la memoria
+    o->Tipo = (char *)calloc(tipoSize, sizeof(char));
+}
+
 void freeEquipaggiamento(equipaggiamento *e) { // Dealloca un elemento di tipo equipaggiamento
     free(e->Oggetti);
     free(e);
@@ -122,6 +127,12 @@ personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) { /
     personaggio *temp     = (personaggio *)malloc(sizeof(personaggio));
     temp->Equipaggiamento = NULL;
     allocaPersonaggio(temp, nomeSize, classeSize);
+    return temp;
+}
+
+oggetto *creaOggetto(unsigned int nomeSize, unsigned int tipoSize) {
+    oggetto *temp = (oggetto *)malloc(sizeof(oggetto));
+    allocaOggetto(temp, nomeSize, tipoSize);
     return temp;
 }
 
@@ -240,10 +251,11 @@ inventario parseInventario(FILE *stream) { // Effettua il parse dell'inventario
     fscanf(stream, "%" SCNd8 "\n", &inv.NumeroOggetti);
     inv.Oggetti = (oggetto *)calloc(inv.NumeroOggetti, sizeof(oggetto));
     char string[MAX_STRING + 1];
+    oggetto *temp = creaOggetto(MAX_STRING, MAX_STRING);
 
     for (size_t i = 0; i < inv.NumeroOggetti; i++) { // Per ogni oggetto nel file
         fgets(string, MAX_STRING, stream);           // Leggo la riga successiva
-        leggiOggetto(string, &inv.Oggetti[i]);
+        leggiOggetto(string, temp);
     }
 
     return inv;
