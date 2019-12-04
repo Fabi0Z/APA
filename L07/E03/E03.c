@@ -310,6 +310,23 @@ void premiPerContinuare() {
     getchar();
 }
 
+personaggioLink *ricercaID(personaggioLink *HEAD, uint16_t *ID) { // Ricerca ricorsiva che restituisce l'elemento precedete a quello trovato
+    personaggioLink *pointer = getNextItem(HEAD);
+    if (pointer == NULL) { // Condizione di terminazione (lista vuota)
+        return NULL;
+    }
+
+    if (pointer->Next == NULL) { // Condizione di terminazione (lista di un elemento)
+        return pointer->Personaggio->ID == *ID ? HEAD : NULL;
+    }
+
+    if (pointer->Personaggio->ID == *ID) { // Se ho trovato la corrispondenza
+        return HEAD;
+    }
+
+    return ricercaID(pointer, ID); // Ricerco sull'elemento successivo
+}
+
 int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
     enum opzioneMenu { caricaPersonaggi,
                        caricaInventario,
