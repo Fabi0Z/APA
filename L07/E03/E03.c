@@ -235,15 +235,18 @@ void parsePersonaggi(tabellaPersonaggio *TABLE, FILE *stream) { // Legge i perso
     freePersonaggio(temp);
 }
 
-inventario *parseInventario(FILE *stream) { // Effettua il parse dell'inventario
-    uint8_t oggettiInventario;
-    fscanf(stream, "%" SCNd8, &oggettiInventario);
-    inventario *i = (inventario *)calloc(oggettiInventario, sizeof(inventario));
+inventario parseInventario(FILE *stream) { // Effettua il parse dell'inventario
+    inventario inv;
+    fscanf(stream, "%" SCNd8 "\n", &inv.NumeroOggetti);
+    inv.Oggetti = (oggetto *)calloc(inv.NumeroOggetti, sizeof(oggetto));
+    char string[MAX_STRING + 1];
 
-    for (size_t i = 0; i < oggettiInventario; i++) { // Per ogni oggetto nel file
+    for (size_t i = 0; i < inv.NumeroOggetti; i++) { // Per ogni oggetto nel file
+        fgets(string, MAX_STRING, stream);           // Leggo la riga successiva
+        leggiOggetto(string, &inv.Oggetti[i]);
     }
 
-    return i;
+    return inv;
 }
 
 int main() {
@@ -268,7 +271,7 @@ int main() {
     printPersonaggioLink(table.HEAD);
 
     // Creo e inizializzo l'array per l'inventario
-    inventario *inventory = parseInventario(inv);
+    inventario inventory = parseInventario(inv);
 
     return 0;
 }
