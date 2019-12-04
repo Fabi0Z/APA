@@ -65,10 +65,25 @@ void allocaPersonaggio(personaggio *p, unsigned int nomeSize, unsigned int class
     p->Classe = (char *)calloc(classeSize, sizeof(char));
 }
 
+void freeEquipaggiamento(equipaggiamento *e) { // Dealloca un elemento di tipo equipaggiamento
+    free(e->Oggetti);
+    free(e);
+}
+
 void freePersonaggio(personaggio *p) { // Dealloca la memoria di un personaggio
     free(p->Nome);
     free(p->Classe);
+    if (p->Equipaggiamento != NULL) { // Se è presente un equipaggiamento
+        freeEquipaggiamento(p->Equipaggiamento);
+    }
     free(p);
+}
+
+void freePersonaggioLink(personaggioLink *l) { // Dealloca la memoria di una lista ed il suo contenuto
+    if (l->Personaggio != NULL) {              // Se non sono sulla HEAD
+        freeItem(l->Personaggio);
+    }
+    free(l);
 }
 
 void printPersonaggio(personaggio *p, FILE *stream) { // Stampa un personaggio
