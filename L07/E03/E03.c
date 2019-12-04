@@ -36,6 +36,7 @@ typedef struct Personaggio {
     uint16_t ID;
     char *Nome;
     char *Classe;
+    equipaggiamento *Equipaggiamento;
     stats Statistiche;
 } personaggio;
 
@@ -128,6 +129,17 @@ bool leggiPersonaggio(char *string, personaggio *p) { // Effettua il parse di un
     return conteggio == 17;
 }
 
+void copiaEquipaggiamento(equipaggiamento *a, equipaggiamento *b) { // Copia l'equipaggiamento a in b
+
+    // Copio i dati diretti
+    b->ID          = a->ID;
+    b->Statistiche = a->Statistiche;
+
+    // Copio i dati per puntatore
+    strcpy(b->Nome, a->Nome);
+    strcpy(b->Classe, a->Classe);
+}
+
 void copiaPersonaggio(personaggio *a, personaggio *b) { // Copia il personaggio a in b
 
     // Copio i dati diretti
@@ -137,6 +149,7 @@ void copiaPersonaggio(personaggio *a, personaggio *b) { // Copia il personaggio 
     // Copio i dati per puntatore
     strcpy(b->Nome, a->Nome);
     strcpy(b->Classe, a->Classe);
+    copiaEquipaggiamento(a->Equipaggiamento, b->Equipaggiamento);
 }
 
 personaggio *getResizedPersonaggio(personaggio *temp) { // Alloca memoria per realizzare una copia ridimensionata del personaggio
