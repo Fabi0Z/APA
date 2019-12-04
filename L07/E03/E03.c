@@ -139,6 +139,7 @@ bool leggiStatistiche(char *string, stats *s) { // Effettua il parse delle stati
     conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.DEF, string);
     conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.MAG, string);
     conteggio += sscanf(string, "%" SCNd16, &p->Statistiche.SPR);
+    return conteggio == 11;
 }
 
 bool leggiPersonaggio(char *string, personaggio *p) { // Effettua il parse di un personaggio da stringa, restituisce se la lettura è andata a buon fine o meno
