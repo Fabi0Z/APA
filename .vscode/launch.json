@@ -26,25 +26,22 @@
             "miDebuggerPath": "/usr/bin/gdb"
         },
         {
-            "name": "clang build and debug active file (macOS)",
+            "name": "Clang launch and debug active file (macOS)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
             "args": [],
-            "stopAtEntry": false,
+            "stopAtEntry": true,
             "cwd": "${fileDirname}",
             "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ],
-            "preLaunchTask": "clang build active file (macOS)",
-            "miDebuggerPath": "/usr/local/bin/gdb"
+            "externalConsole": true,
+            "MIMode": "lldb",
+            "preLaunchTask": "Build with clang (macOS)",
+            "logging": {
+                "trace": true,
+                "traceResponse": true,
+                "engineLogging": true
+            }
         }
     ]
 }
