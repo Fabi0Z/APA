@@ -96,12 +96,12 @@ bool leggiPersonaggio(char *string, personaggio *p) { // Effettua il parse di un
     conteggio += sscanf(string, "PG%" SCNd16 "%[^\n]", &p->ID, string);
     conteggio += sscanf(string, "%s %[^\n]", p->Nome, string);
     conteggio += sscanf(string, "%s %[^\n]", p->Classe, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->HP, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->MP, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->ATK, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->DEF, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->MAG, string);
-    conteggio += sscanf(string, "%" SCNd16, &p->SPR);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.HP, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.MP, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.ATK, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.DEF, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.MAG, string);
+    conteggio += sscanf(string, "%" SCNd16, &p->Statistiche.SPR);
     return conteggio == 17;
 }
 
