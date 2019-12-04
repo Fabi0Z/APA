@@ -132,12 +132,10 @@ bool leggiPersonaggio(char *string, personaggio *p) { // Effettua il parse di un
 void copiaEquipaggiamento(equipaggiamento *a, equipaggiamento *b) { // Copia l'equipaggiamento a in b
 
     // Copio i dati diretti
-    b->ID          = a->ID;
-    b->Statistiche = a->Statistiche;
+    b->Attivo = a->Attivo;
 
     // Copio i dati per puntatore
-    strcpy(b->Nome, a->Nome);
-    strcpy(b->Classe, a->Classe);
+    memcpy(b->Oggetti, a->Oggetti, sizeof(equipaggiamento));
 }
 
 void copiaPersonaggio(personaggio *a, personaggio *b) { // Copia il personaggio a in b
