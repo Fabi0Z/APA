@@ -131,18 +131,29 @@ personaggioLink *creaPersonaggioLink(personaggio *p) { // Salva un personaggio i
     return l;
 }
 
-bool leggiPersonaggio(char *string, personaggio *p) { // Effettua il parse di un personaggio da stringa, restituisce se la lettura è andata a buon fine o meno
+bool leggiStatistiche(char *string, stats *s) { // Effettua il parse delle statistiche da stringa
     uint8_t conteggio = 0;
-    conteggio += sscanf(string, "PG%" SCNd16 "%[^\n]", &p->ID, string);
-    conteggio += sscanf(string, "%s %[^\n]", p->Nome, string);
-    conteggio += sscanf(string, "%s %[^\n]", p->Classe, string);
     conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.HP, string);
     conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.MP, string);
     conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.ATK, string);
     conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.DEF, string);
     conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.MAG, string);
     conteggio += sscanf(string, "%" SCNd16, &p->Statistiche.SPR);
-    return conteggio == 17;
+}
+
+bool leggiPersonaggio(char *string, personaggio *p) { // Effettua il parse di un personaggio da stringa, restituisce se la lettura è andata a buon fine o meno
+    uint8_t conteggio = 0;
+    conteggio += sscanf(string, "PG%" SCNd16 "%[^\n]", &p->ID, string);
+    conteggio += sscanf(string, "%s %[^\n]", p->Nome, string);
+    conteggio += sscanf(string, "%s %[^\n]", p->Classe, string);
+
+    stats s;    
+    if (!leggiStatistiche(string, &s)) { // Se la lettura delle statistiche fallisce
+        return false;
+    }
+    p->Statistiche = s;
+
+    return conteggio == 6;
 }
 
 bool leggiOggetto(char *string, oggetto *o) { // Effettua il parse di un personaggio da stringa, restituisce se la lettura è andata a buon fine o meno
@@ -229,7 +240,7 @@ inventario *parseInventario(FILE *stream) { // Effettua il parse dell'inventario
     inventario *i = (inventario *)calloc(oggettiInventario, sizeof(inventario));
 
     for (size_t i = 0; i < oggettiInventario; i++) { // Per ogni oggetto nel file
-        }
+    }
 
     return i;
 }
