@@ -68,6 +68,12 @@ void printPersonaggioLink(personaggioLink *l) { // Stampa una lista di personagg
     printPersonaggioLinkFile(l, stdout);
 }
 
+personaggioLink *creaLista(personaggio *p) { // Crea, alloca e restituisce un puntatore a personaggioLink
+    personaggioLink *l = (personaggioLink *)malloc(sizeof(personaggioLink));
+    l->Personaggio     = p;
+    return l;
+}
+
 personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) { // Crea, alloca e restituisce un Item
     personaggio *temp = (personaggio *)malloc(sizeof(personaggio));
     allocaPersonaggio(temp, nomeSize, classeSize);
@@ -122,7 +128,7 @@ void addNext(personaggioLink *l, personaggioLink *next) { // Aggiunge un element
     return;
 }
 
-personaggioLink parsePersonaggi(personaggioLink *HEAD, FILE *stream) { // Legge i personaggi da file e li salva in una lista
+void parsePersonaggi(personaggioLink *HEAD, FILE *stream) { // Legge i personaggi da file e li salva in una lista
     personaggio *temp               = creaPersonaggio(MAX_STRING, MAX_STRING);
     personaggioLink *ultimoInserito = HEAD;
 
@@ -152,6 +158,10 @@ int main() {
     if (!checkFilestream(inventario)) {
         return 2;
     }
+
+    personaggioLink *HEAD = creaLista(NULL);
+    parsePersonaggi(HEAD, pg);
+    printPersonaggioLink(HEAD);
 
     return 0;
 }
