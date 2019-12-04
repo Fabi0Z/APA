@@ -381,11 +381,6 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
 }
 
 int main() {
-    FILE *inv = fopen("inventario.txt", "r");
-    if (!checkFilestream(inv)) {
-        return 2;
-    }
-
     // Creo e inizializzo la tabella dei personaggi
     tabellaPersonaggio table;
     table.HEAD             = creaLista(NULL);
