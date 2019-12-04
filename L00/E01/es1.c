@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include <error.h>
+#include <stdlib.h>
 
 const int MAX_NUMBERS = 30;
 

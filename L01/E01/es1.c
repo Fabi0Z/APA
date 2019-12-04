@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include <error.h>
+#include <stdlib.h>
 
 const int MAX_SQUADRE = 20;
 const int MAX_GIORNATE = 20;
