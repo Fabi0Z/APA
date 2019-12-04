@@ -133,12 +133,12 @@ personaggioLink *creaPersonaggioLink(personaggio *p) { // Salva un personaggio i
 
 bool leggiStatistiche(char *string, stats *s) { // Effettua il parse delle statistiche da stringa
     uint8_t conteggio = 0;
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.HP, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.MP, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.ATK, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.DEF, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.MAG, string);
-    conteggio += sscanf(string, "%" SCNd16, &p->Statistiche.SPR);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &s->HP, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &s->MP, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &s->ATK, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &s->DEF, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &s->MAG, string);
+    conteggio += sscanf(string, "%" SCNd16, &s->SPR);
     return conteggio == 11;
 }
 
