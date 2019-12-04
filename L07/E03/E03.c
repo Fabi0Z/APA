@@ -50,12 +50,12 @@ void freePersonaggio(personaggio *p) { // Dealloca la memoria di un personaggio
 void printPersonaggio(personaggio *p, FILE *stream) { // Stampa un personaggio
     fprintf(stream, "PG%04" SCNd16, p->ID);
     fprintf(stream, " %s %s ", p->Nome, p->Classe);
-    fprintf(stream, "%" SCNd16, p->HP);
-    fprintf(stream, " %" SCNd16, p->MP);
-    fprintf(stream, " %" SCNd16, p->ATK);
-    fprintf(stream, " %" SCNd16, p->DEF);
-    fprintf(stream, " %" SCNd16, p->MAG);
-    fprintf(stream, " %" SCNd16, p->SPR);
+    fprintf(stream, "%" SCNd16, p->Statistiche.HP);
+    fprintf(stream, " %" SCNd16, p->Statistiche.MP);
+    fprintf(stream, " %" SCNd16, p->Statistiche.ATK);
+    fprintf(stream, " %" SCNd16, p->Statistiche.DEF);
+    fprintf(stream, " %" SCNd16, p->Statistiche.MAG);
+    fprintf(stream, " %" SCNd16, p->Statistiche.SPR);
     fprintf(stream, "\n");
 }
 
