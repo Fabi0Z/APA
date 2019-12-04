@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-const uint8_t MAX_STRING = 50;
+const uint8_t MAX_STRING        = 50;
+const uint8_t MAX_TRASPORTABILI = 8;
 
 typedef struct Stats {
     int16_t HP;
@@ -303,15 +304,84 @@ inventario parseInventario(FILE *stream) { // Effettua il parse dell'inventario
     return inv;
 }
 
-int main() {
-    // Apro i filestream
-    FILE *pg  = fopen("pg.txt", "r");
-    FILE *inv = fopen("inventario.txt", "r");
+void premiPerContinuare() {
+    puts("Premi qualisiasi tasto per continuare...");
+    getchar();
+    getchar();
+}
 
-    // Verifico i filestream
-    if (!checkFilestream(pg)) {
-        return 1;
+void promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
+    enum opzioneMenu { caricaPersonaggi,
+                       caricaInventario,
+                       aggiungiPersonaggio,
+                       eliminaPersonaggio,
+                       modificaEquipaggiamento,
+                       calcolaStatistiche,
+                       stampaPersonaggi,
+                       stampaInventario };
+    uint8_t lettura;
+
+    while (true) {
+        puts("0 - Carica i personaggi dal file");
+        puts("1 - Carica l'inventario dal file");
+        puts("2 - Aggiungi un personaggio");
+        puts("3 - Elimina un personaggio");
+        puts("4 - Aggiungi/Rimuovi un oggetto dall'equipaggiamento di un personaggio");
+        puts("5 - Calcola le statistiche di un personaggio");
+        puts("6 - Stampa la lista dei personaggi");
+        puts("7 - Stampa l'inventario");
+        puts("\nPremi CTRL + C per uscire");
+        printf("==> ");
+
+        scanf("%" SCNd8, &lettura);
+        printf("\n");
+        switch (lettura) {
+            case caricaPersonaggi: {
+                FILE *pg = fopen("pg.txt", "r");
+                // Verifico i filestream
+                if (!checkFilestream(pg)) {
+                    return 1;
+                }
+                parsePersonaggi(TABLE, pg);
+                printPersonaggioLink(TABLE->HEAD);
+                break;
+            }
+
+            case caricaInventario: {
+                FILE *inv = fopen("inventario.txt", "r");
+                // Verifico i filestream
+                if (!checkFilestream(inv)) {
+                    return 1;
+                }
+                *INVENTORY                      = parseInventario(inv);
+                INVENTORY->OggettiTrasportabili = MAX_TRASPORTABILI;
+                printInventario(INVENTORY);
+                break;
+            }
+
+            case stampaPersonaggi: {
+                printPersonaggioLink(TABLE->HEAD);
+                premiPerContinuare();
+                break;
+            }
+
+            case stampaInventario: {
+                printInventario(INVENTORY);
+                premiPerContinuare();
+                break;
+            }
+
+            default: {
+                puts("Opzione non valida!");
+                premiPerContinuare();
+                break;
+            }
+        }
     }
+}
+
+int main() {
+    FILE *inv = fopen("inventario.txt", "r");
     if (!checkFilestream(inv)) {
         return 2;
     }
@@ -321,12 +391,11 @@ int main() {
     table.HEAD             = creaLista(NULL);
     table.TAIL             = table.HEAD;
     table.NumeroPersonaggi = 0;
-    parsePersonaggi(&table, pg);
-    printPersonaggioLink(table.HEAD);
 
     // Creo e inizializzo l'array per l'inventario
-    inventario inventory           = parseInventario(inv);
-    inventory.OggettiTrasportabili = 8;
-    printInventario(&inventory);
+    inventario inventory;
+
+    // Apro il menu
+    promptMenu(&table, &inventory);
     return 0;
 }
