@@ -134,7 +134,7 @@ void printOggetto(oggetto *o, FILE *stream) { // Stampa un oggetto su file
 }
 
 void printInventarioFile(inventario *inv, FILE *stream) { // Stampa un inventario su file
-    if (stream != stdout) {                                // Se non sono sullo stdout
+    if (stream != stdout) {                               // Se non sono sullo stdout
         fprintf(stream, "%" SCNd8 "\n", inv->NumeroOggetti);
     }
 
@@ -269,8 +269,8 @@ void parsePersonaggi(tabellaPersonaggio *TABLE, FILE *stream) { // Legge i perso
     personaggioLink *tempList;
 
     // Creo stringa di appoggio
-    char string[(MAX_STRING + 1)*3];
-    fgets(string, MAX_STRING, stream); // Leggo la prima riga del file
+    char string[(MAX_STRING * 3) + 1];
+    fgets(string, MAX_STRING * 3, stream); // Leggo la prima riga del file
 
     while (leggiPersonaggio(string, temp)) { // Sinché leggo correttamente i personaggi
         personaggio *p = getResizedPersonaggio(temp);
@@ -279,7 +279,7 @@ void parsePersonaggi(tabellaPersonaggio *TABLE, FILE *stream) { // Legge i perso
         addNext(TABLE->TAIL, tempList);
         TABLE->NumeroPersonaggi++;
         TABLE->TAIL = tempList;
-        fgets(string, MAX_STRING, stream); // Leggo la riga successiva
+        fgets(string, MAX_STRING * 3, stream); // Leggo la riga successiva
     }
 
     freePersonaggio(temp);
@@ -289,11 +289,11 @@ inventario parseInventario(FILE *stream) { // Effettua il parse dell'inventario
     inventario inv;
     fscanf(stream, "%" SCNd8 "\n", &inv.NumeroOggetti);
     inv.Oggetti = (oggetto *)calloc(inv.NumeroOggetti, sizeof(oggetto));
-    char string[(MAX_STRING + 1) * 2];
+    char string[(MAX_STRING * 3) + 1];
     oggetto *temp = creaOggetto(MAX_STRING, MAX_STRING);
 
     for (size_t i = 0; i < inv.NumeroOggetti; i++) { // Per ogni oggetto nel file
-        fgets(string, MAX_STRING, stream);           // Leggo la riga successiva
+        fgets(string, MAX_STRING * 2, stream);       // Leggo la riga successiva
         leggiOggetto(string, temp);
         allocaOggetto(&inv.Oggetti[i], strlen(temp->Nome), strlen(temp->Tipo)); // Alloco la memoria necessaria
         copiaOggetto(&inv.Oggetti[i], temp);
