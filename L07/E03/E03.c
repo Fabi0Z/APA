@@ -28,6 +28,12 @@ typedef struct PersonaggioLink {
     personaggioLink *Next;
 } personaggioLink;
 
+typedef struct TabellaPersonaggio {
+    personaggioLink *HEAD;
+    personaggioLink *TAIL;
+    unsigned int NumeroPersonaggi;
+} tabellaPersonaggio;
+
 bool checkFilestream(FILE *stream) { // Controlla errori di apertura del file
     if (stream == NULL) {
         puts("Errore apertura file");
