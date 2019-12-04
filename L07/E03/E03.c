@@ -36,41 +36,15 @@ void allocaPersonaggio(personaggio *i, unsigned int nomeSize, unsigned int class
     i->Classe = (char *)calloc(classeSize, sizeof(char));
 }
 
-personaggio *creaPersonaggio(uint16_t ID, char *Nome, char *Classe, uint16_t HP, uint16_t MP,
-                             uint16_t ATK, uint16_t DEF, uint16_t MAG, uint16_t SPR) {
-    // Crea un personaggio a partire dai dati in ingresso
-
-    // Alloco i dati in memoria
-    personaggio p;
-    p.Nome   = (char *)calloc(strlen(Nome), sizeof(char));
-    p.Classe = (char *)calloc(strlen(Classe), sizeof(char));
-
-    // Copio il contenuto
-    p.ID  = ID;
-    p.HP  = HP;
-    p.MP  = MP;
-    p.ATK = ATK;
-    p.DEF = DEF;
-    p.MAG = MAG;
-    p.SPR = SPR;
-    strcpy(p.Nome, Nome);
-    strcpy(p.Classe, Classe);
-
-    return p;
+personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) { // Crea, alloca e restituisce un Item
+    personaggio *temp = (personaggio *)malloc(sizeof(personaggio));
+    allocaPersonaggio(temp, nomeSize, classeSize);
+    return temp;
 }
 
-personaggioLink creaPersonaggioLink(personaggio *p) { // Salva un personaggio in un elemento di tipo personaggioLink
-    // Alloco la memoria
-    personaggioLink l;
-    l.Personaggio         = (personaggio *)malloc(sizeof(personaggio));
-    l.Personaggio->Nome   = (char *)calloc(strlen(p->Nome), sizeof(char));
-    l.Personaggio->Classe = (char *)calloc(strlen(p->Classe), sizeof(char));
-
-    // Copio i dati
-    *l.Personaggio = *p;
-    strcpy(l.Personaggio->Nome, p->Nome);
-    strcpy(l.Personaggio->Classe, p->Classe);
-
+personaggioLink *creaPersonaggioLink(personaggio *p) { // Salva un personaggio in un elemento di tipo personaggioLink
+    personaggioLink *l = (personaggioLink *)malloc(sizeof(personaggioLink));
+    l->Personaggio     = p;
     return l;
 }
 
@@ -99,18 +73,29 @@ void aggiungiDopo(personaggioLink *p, personaggioLink *next) { // Aggiunge next 
     next->Next        = temp;
 }
 
-personaggioLink parsePersonaggi(FILE *stream) { // Legge i personaggi da file e li salva in una lista
-    personaggioLink head, *ultimoPersonaggio;
-    head.Personaggio = NULL;
+void copiaPersonaggio(personaggio *a, personaggio *b) { // Copia il personaggio a in b
 
-    // Creo PG temporaneo
-    personaggio temp;
-    temp.Nome   = (char *)calloc(MAX_STRING + 1, sizeof(char));
-    temp.Classe = (char *)calloc(MAX_STRING + 1, sizeof(char));
+    // Copio i dati diretti
+    *b = *a;
+
+    // Copio i dati per puntatore
+    strcpy(b->Nome, a->Nome);
+    strcpy(b->Classe, a->Classe);
+}
+
+personaggio *getResizedPersonaggio(personaggio *temp) { // Alloca memoria per realizzare una copia ridimensionata del personaggio
+    personaggio *p = creaItem(strlen(temp->Nome), strlen(temp->Classe));
+    return p;
+}
+
+personaggioLink parsePersonaggi(FILE *stream) { // Legge i personaggi da file e li salva in una lista
+    personaggio *temp = creaPersonaggio(MAX_STRING, MAX_STRING);
+
+    // Creo stringa di appoggio
     char string[MAX_STRING + 1];
     fgets(string, MAX_STRING, stream); // Leggo la prima riga del file
 
-    while (leggiPersonaggio(string, &temp)) { // Sinché leggo correttamente i personaggi
+    while (leggiPersonaggio(string, temp)) { // Sinché leggo correttamente i personaggi
         personaggioLink tempLink = creaPersonaggioLink(&temp);
         aggiungiDopo(ultimoPersonaggio, &tempLink);
     }
