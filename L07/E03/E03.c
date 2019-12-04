@@ -148,7 +148,7 @@ bool leggiPersonaggio(char *string, personaggio *p) { // Effettua il parse di un
     conteggio += sscanf(string, "%s %[^\n]", p->Nome, string);
     conteggio += sscanf(string, "%s %[^\n]", p->Classe, string);
 
-    stats s;    
+    stats s;
     if (!leggiStatistiche(string, &s)) { // Se la lettura delle statistiche fallisce
         return false;
     }
@@ -159,16 +159,16 @@ bool leggiPersonaggio(char *string, personaggio *p) { // Effettua il parse di un
 
 bool leggiOggetto(char *string, oggetto *o) { // Effettua il parse di un personaggio da stringa, restituisce se la lettura è andata a buon fine o meno
     uint8_t conteggio = 0;
-    conteggio += sscanf(string, "PG%" SCNd16 "%[^\n]", &p->ID, string);
-    conteggio += sscanf(string, "%s %[^\n]", p->Nome, string);
-    conteggio += sscanf(string, "%s %[^\n]", p->Classe, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.HP, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.MP, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.ATK, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.DEF, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->Statistiche.MAG, string);
-    conteggio += sscanf(string, "%" SCNd16, &p->Statistiche.SPR);
-    return conteggio == 17;
+    conteggio += sscanf(string, "%s %[^\n]", o->Nome, string);
+    conteggio += sscanf(string, "%s %[^\n]", o->Tipo, string);
+
+    stats s;
+    if (!leggiStatistiche(string, &s)) { // Se la lettura delle statistiche fallisce
+        return false;
+    }
+    o->Statistiche = s;
+
+    return conteggio == 4;
 }
 
 void copiaEquipaggiamento(equipaggiamento *a, equipaggiamento *b) { // Copia l'equipaggiamento a in b
