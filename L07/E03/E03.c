@@ -31,8 +31,13 @@ bool checkFilestream(FILE *stream) { // Controlla errori di apertura del file
     return false;
 }
 
-personaggio creaPersonaggio(uint16_t ID, char *Nome, char *Classe, uint16_t HP, uint16_t MP,
-                            uint16_t ATK, uint16_t DEF, uint16_t MAG, uint16_t SPR) {
+void allocaPersonaggio(personaggio *i, unsigned int nomeSize, unsigned int classeSize) { // Alloca memoria per un oggetto di tipo personaggio
+    i->Nome   = (char *)calloc(nomeSize, sizeof(char));                                  // Alloco la memoria
+    i->Classe = (char *)calloc(classeSize, sizeof(char));
+}
+
+personaggio *creaPersonaggio(uint16_t ID, char *Nome, char *Classe, uint16_t HP, uint16_t MP,
+                             uint16_t ATK, uint16_t DEF, uint16_t MAG, uint16_t SPR) {
     // Crea un personaggio a partire dai dati in ingresso
 
     // Alloco i dati in memoria
