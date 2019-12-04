@@ -330,9 +330,15 @@ personaggioLink *ricercaID(personaggioLink *HEAD, uint16_t *ID) { // Ricerca ric
     return ricercaID(pointer, ID); // Ricerco sull'elemento successivo
 }
 
-void estraiAndPrint(personaggioLink *previous) { // Estrare l'elemento successivo a quello dato da una lista, lo stampa e libera la memoria
+personaggioLink *estraiNext(personaggioLink *previous) { // Estrae l'elemento successivo in lista
+    personaggioLink *elemento = previous->Next;
+    previous->Next            = elemento->Next;
+    return elemento;
+}
+
+void eliminaAndPrint(personaggioLink *previous) { // Estrare l'elemento successivo a quello dato da una lista, lo stampa e libera la memoria
     previous = estraiNext(previous);
-    printf("L'elemento estratto è ---> ");
+    printf("L'elemento eliminato è ---> ");
     printPersonaggio(previous->Personaggio, stdout);
     freePersonaggioLink(previous);
 }
@@ -394,13 +400,14 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
             }
 
             case eliminaPersonaggio: {
-                puts("Inserisci l'ID del personaggio da eliminare:");
+                puts("Inserisci l'ID del personaggio da eliminare (senza \"PG\" davanti):");
                 printf("==> ");
                 uint16_t ID;
-                scanf("PG%" SCNd16, &ID);                                  // Leggo l'ID
+                getchar();
+                scanf("%" SCNd16, &ID);                                    // Leggo l'ID
                 personaggioLink *precedente = ricercaID(TABLE->HEAD, &ID); // Trovo l'elemento precedente
                 if (precedente != NULL) {                                  // Se ho trovato l'ID
-                    estraiAndPrint(precedente);
+                    eliminaAndPrint(precedente);
 
                 } else {
                     puts("ID non trovato");
