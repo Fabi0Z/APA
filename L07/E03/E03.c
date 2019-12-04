@@ -31,6 +31,7 @@ typedef struct Inventario {
 typedef struct Equipaggiamento {
     bool InUso;
     oggetto *Oggetti;
+    uint8_t NumeroOggetti;
 } equipaggiamento;
 
 typedef struct Personaggio {
@@ -144,6 +145,18 @@ void printInventarioFile(inventario *inv, FILE *stream) { // Stampa un inventari
 void printInventario(inventario *i) { // Stampa un inventario a video
     puts("L'inventario è composto da:");
     printInventarioFile(i, stdout);
+}
+
+void printEquipaggiamentoFile(equipaggiamento *e, FILE *stream) { // Stampa un equipaggiamento su file
+    for (size_t i = 0; i < e->NumeroOggetti; i++) {               // Per ogni oggetto
+        printOggetto(&e->Oggetti[i], stream);
+    }
+    printf("\n");
+}
+
+void printEquipaggiamento(equipaggiamento *e) { // Stampa un equipaggiamento a video
+    puts("L'equipaggiamento è composto da:");
+    printEquipaggiamentoFile(e, stdout);
 }
 
 personaggioLink *getNextItem(personaggioLink *item) { // Restituisce l'elemento successivo nella lista
@@ -342,7 +355,8 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                        modificaEquipaggiamento,
                        calcolaStatistiche,
                        stampaPersonaggi,
-                       stampaInventario };
+                       stampaInventario,
+                       stampaEquipaggiamento };
     uint8_t lettura;
 
     while (true) {
@@ -354,6 +368,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
         puts("5 - Calcola le statistiche di un personaggio");
         puts("6 - Stampa la lista dei personaggi");
         puts("7 - Stampa l'inventario");
+        puts("8 - Stampa l'equipaggiamento di un personaggio");
         puts("\nPremi CTRL + C per uscire");
         printf("==> ");
 
@@ -415,6 +430,23 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
 
             case stampaInventario: {
                 printInventario(INVENTORY);
+                premiPerContinuare();
+                break;
+            }
+
+            case stampaEquipaggiamento: {
+                puts("Inserisci l'ID del personaggio da eliminare (senza \"PG\" davanti):");
+                printf("==> ");
+                uint16_t ID;
+                getchar();
+                scanf("%" SCNd16, &ID);                                         // Leggo l'ID
+                personaggioLink *pg = getNextItem(ricercaID(TABLE->HEAD, &ID)); // Trovo il pg
+                if (pg != NULL) {                                               // Se ho trovato l'ID
+                    printEquipaggiamento(&pg->Personaggio->Equipaggiamento);
+
+                } else {
+                    puts("ID non trovato");
+                }
                 premiPerContinuare();
                 break;
             }
