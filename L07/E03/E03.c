@@ -98,7 +98,7 @@ bool leggiPersonaggio(char *string, personaggio *p) { // Effettua il parse di un
     conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->DEF, string);
     conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->MAG, string);
     conteggio += sscanf(string, "%" SCNd16, &p->SPR);
-    return conteggio == 9;
+    return conteggio == 17;
 }
 
 void copiaPersonaggio(personaggio *a, personaggio *b) { // Copia il personaggio a in b
