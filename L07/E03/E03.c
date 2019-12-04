@@ -104,7 +104,13 @@ bool leggiPersonaggio(char *string, personaggio *p) { // Effettua il parse di un
 void copiaPersonaggio(personaggio *a, personaggio *b) { // Copia il personaggio a in b
 
     // Copio i dati diretti
-    *b = *a;
+    b->ID  = a->ID;
+    b->HP  = a->HP;
+    b->MP  = a->MP;
+    b->ATK = a->ATK;
+    b->DEF = a->DEF;
+    b->MAG = a->MAG;
+    b->SPR = a->SPR;
 
     // Copio i dati per puntatore
     strcpy(b->Nome, a->Nome);
