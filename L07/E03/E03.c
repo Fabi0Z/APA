@@ -31,15 +31,27 @@ bool checkFilestream(FILE *stream) { // Controlla errori di apertura del file
     return false;
 }
 
-void allocaPersonaggio(personaggio *i, unsigned int nomeSize, unsigned int classeSize) { // Alloca memoria per un oggetto di tipo personaggio
-    i->Nome   = (char *)calloc(nomeSize, sizeof(char));                                  // Alloco la memoria
-    i->Classe = (char *)calloc(classeSize, sizeof(char));
+void allocaPersonaggio(personaggio *p, unsigned int nomeSize, unsigned int classeSize) { // Alloca memoria per un oggetto di tipo personaggio
+    p->Nome   = (char *)calloc(nomeSize, sizeof(char));                                  // Alloco la memoria
+    p->Classe = (char *)calloc(classeSize, sizeof(char));
 }
 
 void freePersonaggio(personaggio *p) { // Dealloca la memoria di un personaggio
     free(p->Nome);
     free(p->Classe);
     free(p);
+}
+
+void printPersonaggio(personaggio *p, FILE *stream) { // Stampa un personaggio
+    fprintf(stream, "PG%04" SCNd16, p->ID);
+    fprintf(stream, " %s %s ", p->Nome, p->Classe);
+    fprintf(stream, "%" SCNd16, p->HP);
+    fprintf(stream, " %" SCNd16, p->MP);
+    fprintf(stream, " %" SCNd16, p->ATK);
+    fprintf(stream, " %" SCNd16, p->DEF);
+    fprintf(stream, " %" SCNd16, p->MAG);
+    fprintf(stream, " %" SCNd16, p->SPR);
+    fprintf(stream, "\n");
 }
 
 personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) { // Crea, alloca e restituisce un Item
@@ -66,17 +78,6 @@ bool leggiPersonaggio(char *string, personaggio *p) { // Effettua il parse di un
     conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->MAG, string);
     conteggio += sscanf(string, "%" SCNd16, &p->SPR);
     return conteggio == 9;
-}
-
-void aggiungiDopo(personaggioLink *p, personaggioLink *next) { // Aggiunge next subito dopo p nella lista
-    if (p->Next == NULL) {                                     // Se non ho personaggio successivo
-        p->Next = *next;
-        return;
-    }
-
-    personaggio *temp = p->Next;
-    p->Next           = *next;
-    next->Next        = temp;
 }
 
 void copiaPersonaggio(personaggio *a, personaggio *b) { // Copia il personaggio a in b
@@ -119,6 +120,7 @@ personaggioLink parsePersonaggi(personaggioLink *HEAD, FILE *stream) { // Legge 
         personaggio *p = getResizedPersonaggio(temp);
         copiaPersonaggio(temp, p);
         addNext(ultimoInserito, p);
+        ultimoInserito = p;
     }
 
     freePersonaggio(temp);
