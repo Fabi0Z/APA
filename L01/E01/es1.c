@@ -70,6 +70,6 @@ int main() {
     FILE *input = apriFile(); // Apro il file indicato dall'utente
     dimensioniMatrice(input, &squadre, &giornate);
     int campionato[squadre][giornate];
-    leggiMatrice(input, campionato); // Copio i dati del file su una matrice
+    leggiMatrice(input, squadre, giornate, campionato); // Copio i dati del file su una matrice
     return 0;
 }
