@@ -27,8 +27,9 @@ typedef struct PersonaggioLink {
 bool checkFilestream(FILE *stream) { // Controlla errori di apertura del file
     if (stream == NULL) {
         puts("Errore apertura file");
+        return false;
     }
-    return false;
+    return true;
 }
 
 void allocaPersonaggio(personaggio *p, unsigned int nomeSize, unsigned int classeSize) { // Alloca memoria per un oggetto di tipo personaggio
@@ -151,7 +152,7 @@ void parsePersonaggi(personaggioLink *HEAD, FILE *stream) { // Legge i personagg
 int main() {
     // Apro i filestream
     FILE *pg         = fopen("pg.txt", "r");
-    FILE *inventario = fopen("inventario.txt", "R");
+    FILE *inventario = fopen("inventario.txt", "r");
 
     // Verifico i filestream
     if (!checkFilestream(pg)) {
