@@ -37,7 +37,7 @@ typedef struct Personaggio {
     uint16_t ID;
     char *Nome;
     char *Classe;
-    equipaggiamento *Equipaggiamento;
+    equipaggiamento Equipaggiamento;
     stats Statistiche;
 } personaggio;
 
@@ -77,17 +77,12 @@ void freeOggetto(oggetto *o) { // Dealloca un elemento di tipo oggetto
     free(o);
 }
 
-void freeEquipaggiamento(equipaggiamento *e) { // Dealloca un elemento di tipo equipaggiamento
-    freeOggetto(e->Oggetti);
-    free(e);
-}
-
-void freePersonaggio(personaggio *p) { // Dealloca la memoria di un personaggio
+void freePersonaggio(personaggio *p) {        // Dealloca la memoria di un personaggio
+    if (p->Equipaggiamento.Oggetti != NULL) { // Se è presente un equipaggiamento
+        freeOggetto(p->Equipaggiamento.Oggetti);
+    }
     free(p->Nome);
     free(p->Classe);
-    if (p->Equipaggiamento != NULL) { // Se è presente un equipaggiamento
-        freeEquipaggiamento(p->Equipaggiamento);
-    }
     free(p);
 }
 
@@ -167,8 +162,8 @@ oggetto *creaOggetto(unsigned int nomeSize, unsigned int tipoSize) { // Crea, al
 }
 
 personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) { // Crea, alloca e restituisce un personaggio senza equipaggiamento
-    personaggio *temp     = (personaggio *)malloc(sizeof(personaggio));
-    temp->Equipaggiamento = NULL;
+    personaggio *temp             = (personaggio *)malloc(sizeof(personaggio));
+    temp->Equipaggiamento.Oggetti = NULL;
     allocaPersonaggio(temp, nomeSize, classeSize);
     return temp;
 }
@@ -223,9 +218,9 @@ void copiaEquipaggiamento(equipaggiamento *a, equipaggiamento *b) { // Copia l'e
 
     // Copio i dati diretti
     b->InUso = a->InUso;
-
-    // Copio i dati per puntatore
-    memcpy(b->Oggetti, a->Oggetti, sizeof(equipaggiamento));
+    if (a->Oggetti != NULL) { // Se vi sono oggetti
+        memcpy(b->Oggetti, a->Oggetti, sizeof(equipaggiamento));
+    }
 }
 
 void copiaPersonaggio(personaggio *a, personaggio *b) { // Copia il personaggio a in b
@@ -237,11 +232,7 @@ void copiaPersonaggio(personaggio *a, personaggio *b) { // Copia il personaggio 
     // Copio i dati per puntatore
     strcpy(b->Nome, a->Nome);
     strcpy(b->Classe, a->Classe);
-    if (a->Equipaggiamento != NULL) { // Se è presente l'equipaggiamento
-        copiaEquipaggiamento(a->Equipaggiamento, b->Equipaggiamento);
-    } else {
-        b->Equipaggiamento = NULL;
-    }
+    copiaEquipaggiamento(&a->Equipaggiamento, &b->Equipaggiamento);
 }
 
 personaggio *getResizedPersonaggio(personaggio *temp) { // Alloca memoria per realizzare una copia ridimensionata del personaggio
