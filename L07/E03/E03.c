@@ -6,16 +6,20 @@
 
 const uint8_t MAX_STRING = 50;
 
-typedef struct Personaggio {
-    uint16_t ID;
-    char *Nome;
-    char *Classe;
+typedef struct Stats {
     uint16_t HP;
     uint16_t MP;
     uint16_t ATK;
     uint16_t DEF;
     uint16_t MAG;
     uint16_t SPR;
+} stats;
+
+typedef struct Personaggio {
+    uint16_t ID;
+    char *Nome;
+    char *Classe;
+    stats Statistiche;
 } personaggio;
 
 typedef struct PersonaggioLink personaggioLink;
