@@ -97,15 +97,19 @@ void freePersonaggioLink(personaggioLink *l) { // Dealloca la memoria di una lis
     free(l);
 }
 
+void printStatistiche(stats *s, FILE *stream) { // Stampa delle statistiche
+    fprintf(stream, "%" SCNd16, s->HP);
+    fprintf(stream, " %" SCNd16, s->MP);
+    fprintf(stream, " %" SCNd16, s->ATK);
+    fprintf(stream, " %" SCNd16, s->DEF);
+    fprintf(stream, " %" SCNd16, s->MAG);
+    fprintf(stream, " %" SCNd16, s->SPR);
+}
+
 void printPersonaggio(personaggio *p, FILE *stream) { // Stampa un personaggio
     fprintf(stream, "PG%04" SCNd16, p->ID);
     fprintf(stream, " %s %s ", p->Nome, p->Classe);
-    fprintf(stream, "%" SCNd16, p->Statistiche.HP);
-    fprintf(stream, " %" SCNd16, p->Statistiche.MP);
-    fprintf(stream, " %" SCNd16, p->Statistiche.ATK);
-    fprintf(stream, " %" SCNd16, p->Statistiche.DEF);
-    fprintf(stream, " %" SCNd16, p->Statistiche.MAG);
-    fprintf(stream, " %" SCNd16, p->Statistiche.SPR);
+    printStatistiche(&p->Statistiche, stream);
     fprintf(stream, "\n");
 }
 
@@ -121,6 +125,26 @@ void printPersonaggioLinkFile(personaggioLink *l, FILE *stream) { // Stampa una 
 
 void printPersonaggioLink(personaggioLink *l) { // Stampa una lista di personaggi a video
     printPersonaggioLinkFile(l, stdout);
+}
+
+void printOggetto(oggetto *o, FILE *stream) { // Stampa un oggetto su file
+    fprintf(stream, "%s %s ", o->Nome, o->Tipo);
+    printStatistiche(&o->Statistiche, stream);
+    fprintf(stream, "\n");
+}
+
+void printInventarioFile(inventario *inv, FILE *stream) { // Stampa un inventario su file
+    puts("L'inventario è composto da:");
+
+    for (size_t i = 0; i < inv->NumeroOggetti; i++) { // Per ogni oggetto
+        printOggetto(&inv->Oggetti[i], stream);
+    }
+
+    printf("\n");
+}
+
+void printInventario(inventario *i) { // Stampa un inventario a video
+    printInventarioFile(i, stdout);
 }
 
 personaggioLink *creaLista(personaggio *p) { // Crea, alloca e restituisce un puntatore a personaggioLink
