@@ -6,6 +6,23 @@
 
 const uint8_t MAX_STRING = 50;
 
+typedef struct Oggetto {
+    char *Nome;
+    char *Tipo;
+    uint16_t Statistica;
+} oggetto;
+
+typedef struct Inventario {
+    oggetto *Oggetti;
+    uint8_t NumeroOggetti;
+    uint8_t OggettiTrasportabili;
+} inventario;
+
+typedef struct Equipaggiamento {
+    bool Attivo;
+    oggetto *Oggetti;
+} equipaggiamento;
+
 typedef struct Stats {
     uint16_t HP;
     uint16_t MP;
