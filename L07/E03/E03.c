@@ -325,7 +325,8 @@ int main() {
     printPersonaggioLink(table.HEAD);
 
     // Creo e inizializzo l'array per l'inventario
-    inventario inventory = parseInventario(inv);
+    inventario inventory           = parseInventario(inv);
+    inventory.OggettiTrasportabili = 8;
     printInventario(&inventory);
     return 0;
 }
