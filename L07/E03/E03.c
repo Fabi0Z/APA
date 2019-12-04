@@ -140,10 +140,9 @@ void addNext(personaggioLink *l, personaggioLink *next) { // Aggiunge un element
     return;
 }
 
-void parsePersonaggi(personaggioLink *HEAD, FILE *stream) { // Legge i personaggi da file e li salva in una lista
+void parsePersonaggi(tabellaPersonaggio *TABLE, FILE *stream) { // Legge i personaggi da file e li salva in una lista
     personaggio *temp = creaPersonaggio(MAX_STRING, MAX_STRING);
-    personaggioLink *ultimoInserito, *tempList;
-    ultimoInserito = HEAD;
+    personaggioLink *tempList;
 
     // Creo stringa di appoggio
     char string[MAX_STRING + 1];
@@ -153,8 +152,9 @@ void parsePersonaggi(personaggioLink *HEAD, FILE *stream) { // Legge i personagg
         personaggio *p = getResizedPersonaggio(temp);
         copiaPersonaggio(temp, p);
         tempList = creaPersonaggioLink(p);
-        addNext(ultimoInserito, tempList);
-        ultimoInserito = tempList;
+        addNext(TABLE->TAIL, tempList);
+        TABLE->NumeroPersonaggi++;
+        TABLE->TAIL = tempList;
         fgets(string, MAX_STRING, stream); // Leggo la riga successiva
     }
 
@@ -174,9 +174,12 @@ int main() {
         return 2;
     }
 
-    personaggioLink *HEAD = creaLista(NULL);
-    parsePersonaggi(HEAD, pg);
-    printPersonaggioLink(HEAD);
+    tabellaPersonaggio table;
+    table.HEAD             = creaLista(NULL);
+    table.TAIL             = table.HEAD;
+    table.NumeroPersonaggi = 0;
+    parsePersonaggi(&table, pg);
+    printPersonaggioLink(table.HEAD);
 
     return 0;
 }
