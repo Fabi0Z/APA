@@ -344,7 +344,6 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 }
                 parsePersonaggi(TABLE, pg);
                 fclose(pg);
-                printPersonaggioLink(TABLE->HEAD);
                 break;
             }
 
@@ -354,11 +353,17 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 if (!checkFilestream(inv)) {
                     return 2;
                 }
-                *INVENTORY                      = parseInventario(inv);
+                *INVENTORY = parseInventario(inv);
                 fclose(inv);
                 INVENTORY->OggettiTrasportabili = MAX_TRASPORTABILI;
-                printInventario(INVENTORY);
                 break;
+            }
+
+            case aggiungiPersonaggio: {
+                puts("Inserisci i dati del personaggio:");
+                printf("==> ");
+                getchar();
+                parsePersonaggi(TABLE, stdin);
             }
 
             case stampaPersonaggi: {
