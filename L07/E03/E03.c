@@ -310,7 +310,7 @@ void premiPerContinuare() {
     getchar();
 }
 
-void promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
+int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
     enum opzioneMenu { caricaPersonaggi,
                        caricaInventario,
                        aggiungiPersonaggio,
@@ -396,6 +396,5 @@ int main() {
     inventario inventory;
 
     // Apro il menu
-    promptMenu(&table, &inventory);
-    return 0;
+    return promptMenu(&table, &inventory);
 }
