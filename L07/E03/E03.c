@@ -18,10 +18,10 @@ typedef struct Personaggio {
     uint16_t SPR;
 } personaggio;
 
-typedef struct PersonaggioLink *personaggioLink;
+typedef struct PersonaggioLink personaggioLink;
 typedef struct PersonaggioLink {
     personaggio *Personaggio;
-    personaggioLink Next;
+    personaggioLink *Next;
 } personaggioLink;
 
 bool checkFilestream(FILE *stream) { // Controlla errori di apertura del file
@@ -69,8 +69,46 @@ personaggioLink creaPersonaggioLink(personaggio *p) { // Salva un personaggio in
     return l;
 }
 
+bool leggiPersonaggio(char *string, personaggio *p) { // Effettua il parse di un personaggio da stringa, restituisce se la lettura è andata a buon fine o meno
+    uint8_t conteggio = 0;
+    conteggio += sscanf(string, "PG%" SCNd16 "%[^\n]", &p->ID, string);
+    conteggio += sscanf(string, "%s %[^\n]", p->Nome, string);
+    conteggio += sscanf(string, "%s %[^\n]", p->Classe, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->HP, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->MP, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->ATK, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->DEF, string);
+    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &p->MAG, string);
+    conteggio += sscanf(string, "%" SCNd16, &p->SPR);
+    return conteggio == 9;
+}
+
+void aggiungiDopo(personaggioLink *p, personaggioLink *next) { // Aggiunge next subito dopo p nella lista
+    if (p->Next == NULL) {                                     // Se non ho personaggio successivo
+        p->Next = *next;
+        return;
+    }
+
+    personaggio *temp = p->Next;
+    p->Next           = *next;
+    next->Next        = temp;
+}
+
 personaggioLink parsePersonaggi(FILE *stream) { // Legge i personaggi da file e li salva in una lista
-    personaggioLink head;
+    personaggioLink head, *ultimoPersonaggio;
+    head.Personaggio = NULL;
+
+    // Creo PG temporaneo
+    personaggio temp;
+    temp.Nome   = (char *)calloc(MAX_STRING + 1, sizeof(char));
+    temp.Classe = (char *)calloc(MAX_STRING + 1, sizeof(char));
+    char string[MAX_STRING + 1];
+    fgets(string, MAX_STRING, stream); // Leggo la prima riga del file
+
+    while (leggiPersonaggio(string, &temp)) { // Sinché leggo correttamente i personaggi
+        personaggioLink tempLink = creaPersonaggioLink(&temp);
+        aggiungiDopo(ultimoPersonaggio, &tempLink);
+    }
 }
 
 int main() {
