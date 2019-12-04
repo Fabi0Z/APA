@@ -330,6 +330,13 @@ personaggioLink *ricercaID(personaggioLink *HEAD, uint16_t *ID) { // Ricerca ric
     return ricercaID(pointer, ID); // Ricerco sull'elemento successivo
 }
 
+void estraiAndPrint(personaggioLink *previous) { // Estrare l'elemento successivo a quello dato da una lista, lo stampa e libera la memoria
+    previous = estraiNext(previous);
+    printf("L'elemento estratto è ---> ");
+    printPersonaggio(previous->Personaggio, stdout);
+    freePersonaggioLink(previous);
+}
+
 int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
     enum opzioneMenu { caricaPersonaggi,
                        caricaInventario,
