@@ -57,9 +57,9 @@ void printPersonaggio(personaggio *p, FILE *stream) { // Stampa un personaggio
 void printPersonaggioLinkFile(personaggioLink *l, FILE *stream) { // Stampa una lista di personaggi su file
     puts("I personaggi presenti sono:");
     personaggioLink temp = *l;
-    while (temp.Next != NULL) {                    // Sinché esiste un elemento successivo
-        printItem(temp.Next->Personaggio, stream); // Stampo l'elemento
-        temp = *temp.Next;                         // Passo all'elemento successivo in lista
+    while (temp.Next != NULL) {                           // Sinché esiste un elemento successivo
+        printPersonaggio(temp.Next->Personaggio, stream); // Stampo l'elemento
+        temp = *temp.Next;                                // Passo all'elemento successivo in lista
     }
     printf("\n");
 }
@@ -111,7 +111,7 @@ void copiaPersonaggio(personaggio *a, personaggio *b) { // Copia il personaggio 
 }
 
 personaggio *getResizedPersonaggio(personaggio *temp) { // Alloca memoria per realizzare una copia ridimensionata del personaggio
-    personaggio *p = creaItem(strlen(temp->Nome), strlen(temp->Classe));
+    personaggio *p = creaPersonaggio(strlen(temp->Nome), strlen(temp->Classe));
     return p;
 }
 
@@ -129,8 +129,9 @@ void addNext(personaggioLink *l, personaggioLink *next) { // Aggiunge un element
 }
 
 void parsePersonaggi(personaggioLink *HEAD, FILE *stream) { // Legge i personaggi da file e li salva in una lista
-    personaggio *temp               = creaPersonaggio(MAX_STRING, MAX_STRING);
-    personaggioLink *ultimoInserito = HEAD;
+    personaggio *temp = creaPersonaggio(MAX_STRING, MAX_STRING);
+    personaggioLink *ultimoInserito, *tempList;
+    ultimoInserito = HEAD;
 
     // Creo stringa di appoggio
     char string[MAX_STRING + 1];
@@ -139,8 +140,9 @@ void parsePersonaggi(personaggioLink *HEAD, FILE *stream) { // Legge i personagg
     while (leggiPersonaggio(string, temp)) { // Sinché leggo correttamente i personaggi
         personaggio *p = getResizedPersonaggio(temp);
         copiaPersonaggio(temp, p);
-        addNext(ultimoInserito, p);
-        ultimoInserito = p;
+        tempList = creaPersonaggioLink(p);
+        addNext(ultimoInserito, tempList);
+        ultimoInserito = tempList;
     }
 
     freePersonaggio(temp);
