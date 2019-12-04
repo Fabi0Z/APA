@@ -129,6 +129,12 @@ personaggioLink *creaLista(personaggio *p) { // Crea, alloca e restituisce un pu
     return l;
 }
 
+oggetto *creaOggetto(unsigned int nomeSize, unsigned int tipoSize) { // Crea, alloca e restituisce un oggetto
+    oggetto *temp = (oggetto *)malloc(sizeof(oggetto));
+    allocaOggetto(temp, nomeSize, tipoSize);
+    return temp;
+}
+
 personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) { // Crea, alloca e restituisce un personaggio senza equipaggiamento
     personaggio *temp     = (personaggio *)malloc(sizeof(personaggio));
     temp->Equipaggiamento = NULL;
@@ -265,6 +271,7 @@ inventario parseInventario(FILE *stream) { // Effettua il parse dell'inventario
         allocaOggetto(&inv.Oggetti[i], strlen(temp->Nome), strlen(temp->Tipo)); // Alloco la memoria necessaria
         copiaOggetto(&inv.Oggetti[i], temp);
     }
+    freeOggetto(temp);
 
     return inv;
 }
