@@ -76,7 +76,7 @@ void freeOggetto(oggetto *o) { // Dealloca un elemento di tipo oggetto
 }
 void freePersonaggio(personaggio *p) {        // Dealloca la memoria di un personaggio
     if (p->Equipaggiamento.Oggetti != NULL) { // Se è presente un equipaggiamento
-        freeOggetto(p->Equipaggiamento.Oggetti);
+        free(p->Equipaggiamento.Oggetti);
     }
     free(p->Nome);
     free(p->Classe);
@@ -139,7 +139,7 @@ void printInventario(inventario *i) { // Stampa un inventario a video
 }
 void printEquipaggiamentoFile(equipaggiamento *e, FILE *stream) { // Stampa un equipaggiamento su file
     for (size_t i = 0; i < e->NumeroOggetti; i++) {               // Per ogni oggetto
-        printOggetto(&e->Oggetti[i], stream);
+        printOggetto(e->Oggetti[i], stream);
     }
     printf("\n");
 }
@@ -211,10 +211,17 @@ bool aggiungiEquipaggiamento(personaggio *p, oggetto *o) { // Aggiunge un oggett
         }
     }
 
-    // Alloco memoria e metto il link all'oggetto
-    p->Equipaggiamento.Oggetti[p->Equipaggiamento.NumeroOggetti] = (oggetto **)malloc(sizeof(oggetto *));
-    p->Equipaggiamento.Oggetti[p->Equipaggiamento.NumeroOggetti] = o;
+    // Creo nuovo array oggetti
+    oggetto **new = (oggetto **)calloc(p->Equipaggiamento.NumeroOggetti + 1, sizeof(oggetto *));
+    memcpy(new, p->Equipaggiamento.Oggetti, sizeof(oggetto *) * p->Equipaggiamento.NumeroOggetti); // Copio i dati
+
+    // Metto il link all'oggetto
+    new[p->Equipaggiamento.NumeroOggetti] = o;
     p->Equipaggiamento.NumeroOggetti++; // Incremento gli oggetti disponibili
+
+    // Sostituisco l'array di oggetti
+    free(p->Equipaggiamento.Oggetti);
+    p->Equipaggiamento.Oggetti = new;
     return true;
 }
 // * --------------------------------------------------------
