@@ -454,6 +454,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
             }
 
             case modificaEquipaggiamento: {
+                printPersonaggioLink(TABLE->HEAD);
                 // Leggo il personaggio
                 puts("Inserisci l'ID del personaggio a cui modificare l'equipaggiamento (senza \"PG\" davanti):");
                 printf("==> ");
@@ -475,7 +476,6 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 puts("Inserisci 1 per aggiungere un oggetto o 0 per rimuoverlo");
                 printf("==> ");
                 uint8_t scelta;
-                getchar();
                 scanf("%" SCNd8, &scelta);
 
                 if (scelta == 0) {                                // Se l'utente desidera rimuovere
@@ -488,10 +488,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                     printEquipaggiamento(&pg->Equipaggiamento, true); // Stampo l'equipaggiamento con gli indici
                     puts("Inserisci il numero dell'oggetto");
                     printf("==> ");
-                    uint8_t scelta;
-                    getchar();
                     scanf("%" SCNd8, &scelta);
-
                     if (scelta >= pg->Equipaggiamento.NumeroOggetti) { // Controllo la validità della scelta
                         puts("Scelta non valida");
                         premiPerContinuare();
@@ -510,10 +507,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                     printInventario(INVENTORY, true); // Stampo l'inventario con gli indici
                     puts("Inserisci il numero dell'oggetto");
                     printf("==> ");
-                    uint8_t scelta;
-                    getchar();
                     scanf("%" SCNd8, &scelta);
-
                     if (scelta >= INVENTORY->NumeroOggetti) { // Controllo la validità della scelta
                         puts("Scelta non valida");
                         premiPerContinuare();
