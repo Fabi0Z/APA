@@ -20,7 +20,7 @@ typedef enum { HP,
 typedef struct Oggetto {
     char *Nome;
     char *Tipo;
-    uint16_t Statistiche[N_STATISTICHE];
+    int16_t Statistiche[N_STATISTICHE];
 } oggetto;
 typedef struct Inventario {
     oggetto *Oggetti;
@@ -36,7 +36,7 @@ typedef struct Personaggio {
     char *Nome;
     char *Classe;
     equipaggiamento Equipaggiamento;
-    uint16_t Statistiche[N_STATISTICHE];
+    int16_t Statistiche[N_STATISTICHE];
 } personaggio;
 typedef struct PersonaggioLink personaggioLink;
 typedef struct PersonaggioLink {
@@ -99,7 +99,7 @@ void freePersonaggioLink(personaggioLink *l) { // Dealloca la memoria di una lis
 // * --------------------------------------------------------
 
 // * STAMPA DATI
-void printStatistiche(uint16_t *s, FILE *stream) { // Stampa delle statistiche
+void printStatistiche(int16_t *s, FILE *stream) { // Stampa delle statistiche
     for (size_t i = 0; i < N_STATISTICHE; i++) {   // Per ogni statistica
         fprintf(stream, "%" SCNd16 " ", s[i]);
     }
@@ -207,7 +207,7 @@ void copiaPersonaggio(personaggio *a, personaggio *b) { // Copia il personaggio 
     // Copio i dati per puntatore
     strcpy(b->Nome, a->Nome);
     strcpy(b->Classe, a->Classe);
-    memcpy(b->Statistiche, a->Statistiche, sizeof(uint16_t) * N_STATISTICHE);
+    memcpy(b->Statistiche, a->Statistiche, sizeof(int16_t) * N_STATISTICHE);
     copiaEquipaggiamento(&a->Equipaggiamento, &b->Equipaggiamento);
 }
 personaggio *getResizedPersonaggio(personaggio *temp) { // Alloca memoria per realizzare una copia ridimensionata del personaggio
@@ -215,7 +215,7 @@ personaggio *getResizedPersonaggio(personaggio *temp) { // Alloca memoria per re
     return p;
 }
 void copiaOggetto(oggetto *dest, oggetto *src) { // Copia src in dest
-    memcpy(dest->Statistiche, src->Statistiche, sizeof(uint16_t) * N_STATISTICHE);
+    memcpy(dest->Statistiche, src->Statistiche, sizeof(int16_t) * N_STATISTICHE);
     strcpy(dest->Nome, src->Nome);
     strcpy(dest->Tipo, src->Tipo);
 }
@@ -252,14 +252,14 @@ bool rimuoviEquipaggiamento(personaggio *p, uint8_t indiceOggetto) { // Rimuove 
         p->Equipaggiamento.Oggetti = realloc(p->Equipaggiamento.Oggetti, p->Equipaggiamento.NumeroOggetti);
     }
 }
-void calcolaStatistiche(personaggio *p, uint16_t *s) {           // Calcola e restituisce le statistiche di un personaggio
-    memcpy(s, p->Statistiche, sizeof(uint16_t) * N_STATISTICHE); // Scrivo i valori del personaggio
+void calcolaStatistiche(personaggio *p, int16_t *s) {           // Calcola e restituisce le statistiche di un personaggio
+    memcpy(s, p->Statistiche, sizeof(int16_t) * N_STATISTICHE); // Scrivo i valori del personaggio
 
     if (p->Equipaggiamento.NumeroOggetti == 0) { // Se non ci sono oggetti nell'equipaggiamento mi interrompo
         return;
     }
 
-    uint16_t *sOggetto;
+    int16_t *sOggetto;
     for (size_t i = 0; i < N_STATISTICHE; i++) {                        // Per ogni statistica
         for (size_t j = 0; j < p->Equipaggiamento.NumeroOggetti; j++) { // Per ogni oggetto dell'equipaggiamento
             sOggetto = p->Equipaggiamento.Oggetti[j];
@@ -274,7 +274,7 @@ void calcolaStatistiche(personaggio *p, uint16_t *s) {           // Calcola e re
 // * --------------------------------------------------------
 
 // * LETTURA DA FILE
-bool leggiStatistiche(char *string, uint16_t *s) { // Effettua il parse delle statistiche da stringa
+bool leggiStatistiche(char *string, int16_t *s) { // Effettua il parse delle statistiche da stringa
     uint8_t conteggio = 0;
     for (size_t i = 0; i < N_STATISTICHE; i++) { // Per ogni statistica
         conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &s[i], string);
@@ -287,11 +287,11 @@ bool leggiPersonaggio(char *string, personaggio *p) { // Effettua il parse di un
     conteggio += sscanf(string, "%s %[^\n]", p->Nome, string);
     conteggio += sscanf(string, "%s %[^\n]", p->Classe, string);
 
-    uint16_t s[N_STATISTICHE];
+    int16_t s[N_STATISTICHE];
     if (!leggiStatistiche(string, s)) { // Se la lettura delle statistiche fallisce
         return false;
     }
-    memcpy(p->Statistiche, s, sizeof(uint16_t) * N_STATISTICHE);
+    memcpy(p->Statistiche, s, sizeof(int16_t) * N_STATISTICHE);
     return conteggio == 6;
 }
 bool leggiOggetto(char *string, oggetto *o) { // Effettua il parse di un personaggio da stringa, restituisce se la lettura è andata a buon fine o meno
@@ -299,11 +299,11 @@ bool leggiOggetto(char *string, oggetto *o) { // Effettua il parse di un persona
     conteggio += sscanf(string, "%s %[^\n]", o->Nome, string);
     conteggio += sscanf(string, "%s %[^\n]", o->Tipo, string);
 
-    uint16_t s[N_STATISTICHE];
+    int16_t s[N_STATISTICHE];
     if (!leggiStatistiche(string, s)) { // Se la lettura delle statistiche fallisce
         return false;
     }
-    memcpy(o->Statistiche, s, sizeof(uint16_t) * N_STATISTICHE);
+    memcpy(o->Statistiche, s, sizeof(int16_t) * N_STATISTICHE);
     return conteggio == 4;
 }
 // * --------------------------------------------------------
