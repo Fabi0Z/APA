@@ -461,10 +461,47 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 personaggioLink *precedente = ricercaID(TABLE->HEAD, &ID); // Trovo l'elemento precedente
                 if (precedente == NULL) {                                  // Se non ho trovato l'ID
                     puts("ID non trovato");
+                    premiPerContinuare();
+                    break;
                 }
-                // Stampo l'equipaggiamento
+                personaggio *pg = precedente->Next->Personaggio;
+                puts("Questi sono gli oggetti presenti nell'equipaggiamento:");
+                printEquipaggiamento(&pg->Equipaggiamento, false); // Stampo l'equipaggiamento
+                premiPerContinuare();
+
+                // Leggo l'azione dell'utente
+                puts("Inserisci 1 per aggiungere un oggetto o 0 per rimuoverlo");
+                printf("==> ");
+                uint8_t scelta;
+                getchar();
+                scanf("%" SCNd8, &scelta);
+
+                if (scelta == 0) {                                // Se l'utente desidera rimuovere
+                    if (pg->Equipaggiamento.NumeroOggetti == 0) { // Se l'equipaggiamento è vuoto
+                        puts("Non è possibile rimuovere oggetti a questo personaggio");
+                        premiPerContinuare();
+                        break;
+                    }
+
+                    printEquipaggiamento(&pg->Equipaggiamento, true); // Stampo l'equipaggiamento con gli indici
+                    puts("Inserisci il numero dell'oggetto");
+                    printf("==> ");
+                    uint8_t scelta;
+                    getchar();
+                    scanf("%" SCNd8, &scelta);
+
+                    if (scelta >= pg->Equipaggiamento.NumeroOggetti) { // Controllo la validità della scelta
+                        puts("Scelta non valida");
+                        premiPerContinuare();
+                        break;
+                    }
+
+                    rimuoviEquipaggiamento(pg, scelta);
+                    puts("Oggetto rimosso!");
+                }
+
                 // Leggo l'oggetto
-                puts("Inserisci il nome dell'oggetto che vuoi aggiungere/rimuovere (senza \"PG\" davanti):");
+                puts("Inserisci il numero dell'oggetto che vuoi aggiungere/rimuovere (senza \"PG\" davanti):");
                 printf("==> ");
                 char Nome[MAX_STRING + 1];
                 getchar();
@@ -495,7 +532,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 scanf("%" SCNd16, &ID);                                         // Leggo l'ID
                 personaggioLink *pg = getNextItem(ricercaID(TABLE->HEAD, &ID)); // Trovo il pg
                 if (pg != NULL) {                                               // Se ho trovato l'ID
-                    printEquipaggiamento(&pg->Personaggio->Equipaggiamento);
+                    printEquipaggiamento(&pg->Personaggio->Equipaggiamento, false);
 
                 } else {
                     puts("ID non trovato");
