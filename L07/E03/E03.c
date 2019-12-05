@@ -536,6 +536,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
             }
 
             case stampaEquipaggiamento: {
+                printPersonaggioLink(TABLE->HEAD);
                 puts("Inserisci l'ID del personaggio di cui vuoi stampare l'equipaggiamento (senza \"PG\" davanti):");
                 printf("==> ");
                 uint16_t ID;
