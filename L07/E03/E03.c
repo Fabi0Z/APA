@@ -30,7 +30,7 @@ typedef struct Inventario {
 } inventario;
 typedef struct Equipaggiamento {
     bool InUso;
-    oggetto *Oggetti;
+    oggetto **Oggetti;
     uint8_t NumeroOggetti;
 } equipaggiamento;
 typedef struct Personaggio {
@@ -202,7 +202,19 @@ void copiaOggetto(oggetto *dest, oggetto *src) { // Copia src in dest
     strcpy(dest->Nome, src->Nome);
     strcpy(dest->Tipo, src->Tipo);
 }
-void aggiungiEquipaggiamento(personaggio *p, oggetto *o) {} // TODO Aggiunge un oggetto all'equipaggiamento di un personaggio
+bool aggiungiEquipaggiamento(personaggio *p, oggetto *o) { // Aggiunge un oggetto all'equipaggiamento di un personaggio
+    p->Equipaggiamento.InUso = true;                       // Abilito l'equipaggiamento
+
+    for (size_t i = 0; i < p->Equipaggiamento.NumeroOggetti; i++) { // Per ogni oggetto
+        if (p->Equipaggiamento.Oggetti[i] == o) { // Se l'oggetto è già assegnato
+            return false;
+        }
+    }
+
+    p->Equipaggiamento.Oggetti[p->Equipaggiamento.NumeroOggetti] = (oggetto **)malloc(sizeof(oggetto*));
+    p->Equipaggiamento.Oggetti[p->Equipaggiamento.NumeroOggetti] = o;
+    return true;
+}
 // * --------------------------------------------------------
 
 // * LETTURA DA FILE
