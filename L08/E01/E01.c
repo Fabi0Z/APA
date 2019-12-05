@@ -89,6 +89,10 @@ void ordina(attivita *a, uint8_t numeroAttivita) {                          // M
 }
 // * -------------------------------------------------------------
 
+// * CALCOLO COMBINATORIO
+// TODO 
+// * -------------------------------------------------------------
+
 int main() {
     FILE *stream = fopen("att.txt", "r");
     checkFilestream(stream);
