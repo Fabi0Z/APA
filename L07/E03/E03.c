@@ -548,7 +548,8 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                     calcolaStatistiche(pg, s);
                     puts("Le statistiche sono");
                     printf("==> ");
-                    printStatistiche(s, stdin);
+                    printStatistiche(s, stdout);
+                    printf("\n");
 
                 } else {
                     puts("ID non trovato");
