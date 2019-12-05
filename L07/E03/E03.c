@@ -52,11 +52,21 @@ typedef struct TabellaPersonaggio {
 } tabellaPersonaggio;
 // * --------------------------------------------------------
 
-// * FUNZIONI GENERALI
+// * FUNZIONI GENERALI E CONTROLLI
 void premiPerContinuare() {
     puts("Premi qualisiasi tasto per continuare...");
     getchar();
     getchar();
+}
+bool checkFilestream(FILE *stream) { // Controlla errori di apertura del file
+    if (stream == NULL) {
+        puts("Errore apertura file");
+        return false;
+    }
+    return true;
+}
+bool checkLimiteEquipaggiamento(personaggio *p, inventario *i) { // Controlla se un personaggio ha raggiunto il limite di oggetti equipaggiabili
+    return p->Equipaggiamento.NumeroOggetti >= i->OggettiTrasportabili;
 }
 // * --------------------------------------------------------
 
@@ -262,13 +272,6 @@ bool rimuoviEquipaggiamento(personaggio *p, oggetto *o) { // Rimuove un oggetto 
 // * --------------------------------------------------------
 
 // * LETTURA DA FILE
-bool checkFilestream(FILE *stream) { // Controlla errori di apertura del file
-    if (stream == NULL) {
-        puts("Errore apertura file");
-        return false;
-    }
-    return true;
-}
 bool leggiStatistiche(char *string, stats *s) { // Effettua il parse delle statistiche da stringa
     uint8_t conteggio = 0;
     conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &s->HP, string);
