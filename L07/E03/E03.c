@@ -100,7 +100,7 @@ void freePersonaggioLink(personaggioLink *l) { // Dealloca la memoria di una lis
 
 // * STAMPA DATI
 void printStatistiche(int16_t *s, FILE *stream) { // Stampa delle statistiche
-    for (size_t i = 0; i < N_STATISTICHE; i++) {   // Per ogni statistica
+    for (size_t i = 0; i < N_STATISTICHE; i++) {  // Per ogni statistica
         fprintf(stream, "%" SCNd16 " ", s[i]);
     }
 }
@@ -259,11 +259,11 @@ void calcolaStatistiche(personaggio *p, int16_t *s) {           // Calcola e res
         return;
     }
 
-    int16_t *sOggetto;
+    oggetto *o;
     for (size_t i = 0; i < N_STATISTICHE; i++) {                        // Per ogni statistica
         for (size_t j = 0; j < p->Equipaggiamento.NumeroOggetti; j++) { // Per ogni oggetto dell'equipaggiamento
-            sOggetto = p->Equipaggiamento.Oggetti[j];
-            s[i] += sOggetto[i];
+            o = p->Equipaggiamento.Oggetti[j];
+            s[i] += o->Statistiche[i];
         }
 
         if (s[i] < 1) {
@@ -394,7 +394,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                        aggiungiPersonaggio,
                        eliminaPersonaggio,
                        modificaEquipaggiamento,
-                       calcolaStatistiche,
+                       contaStatistiche,
                        stampaPersonaggi,
                        stampaInventario,
                        stampaEquipaggiamento };
@@ -406,7 +406,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
         puts("2 - Aggiungi un personaggio");
         puts("3 - Elimina un personaggio");
         puts("4 - Aggiungi/Rimuovi un oggetto dall'equipaggiamento di un personaggio");
-        puts("5 - Calcola le statistiche di un personaggio");
+        puts("5 - Calcola le statistiche di un personaggio con i modificatori");
         puts("6 - Stampa la lista dei personaggi");
         puts("7 - Stampa l'inventario");
         puts("8 - Stampa l'equipaggiamento di un personaggio");
@@ -534,6 +534,29 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 break;
             }
 
+            case contaStatistiche: {
+                printPersonaggioLink(TABLE->HEAD);
+                puts("Inserisci l'ID del personaggio di cui vuoi calcolare le statistiche (senza \"PG\" davanti):");
+                printf("==> ");
+                uint16_t ID;
+                getchar();
+                scanf("%" SCNd16, &ID);                                    // Leggo l'ID
+                personaggioLink *precedente = ricercaID(TABLE->HEAD, &ID); // Trovo il pg
+                if (precedente != NULL) {                                  // Se ho trovato l'ID
+                    personaggio *pg = getNextItem(precedente)->Personaggio;
+                    int16_t s[N_STATISTICHE];
+                    calcolaStatistiche(pg, s);
+                    puts("Le statistiche sono");
+                    printf("==> ");
+                    printStatistiche(s, stdin);
+
+                } else {
+                    puts("ID non trovato");
+                }
+                premiPerContinuare();
+                break;
+            }
+
             case stampaPersonaggi: {
                 printPersonaggioLink(TABLE->HEAD);
                 premiPerContinuare();
@@ -553,9 +576,10 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 uint16_t ID;
                 getchar();
                 scanf("%" SCNd16, &ID);                                         // Leggo l'ID
-                personaggioLink *pg = getNextItem(ricercaID(TABLE->HEAD, &ID)); // Trovo il pg
-                if (pg != NULL) {                                               // Se ho trovato l'ID
-                    printEquipaggiamento(&pg->Personaggio->Equipaggiamento, false);
+                personaggioLink *precedente = ricercaID(TABLE->HEAD, &ID); // Trovo il pg
+                if (precedente != NULL) {   // Se ho trovato l'ID
+                    equipaggiamento *e = &precedente->Next->Personaggio->Equipaggiamento;                                         
+                    printEquipaggiamento(e, false);
 
                 } else {
                     puts("ID non trovato");
