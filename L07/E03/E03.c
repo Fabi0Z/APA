@@ -29,7 +29,6 @@ typedef struct Inventario {
     uint8_t OggettiTrasportabili;
 } inventario;
 typedef struct Equipaggiamento {
-    bool InUso;
     oggetto **Oggetti;
     uint8_t NumeroOggetti;
 } equipaggiamento;
@@ -173,7 +172,7 @@ oggetto *creaOggetto(unsigned int nomeSize, unsigned int tipoSize) { // Crea, al
     allocaOggetto(temp, nomeSize, tipoSize);
     return temp;
 }
-personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) { // Crea, alloca e restituisce un personaggio senza equipaggiamento
+personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) { // ! FIXME equipaggiamento Crea, alloca e restituisce un personaggio senza equipaggiamento
     personaggio *temp             = (personaggio *)malloc(sizeof(personaggio));
     temp->Equipaggiamento.Oggetti = NULL;
     allocaPersonaggio(temp, nomeSize, classeSize);
@@ -184,11 +183,9 @@ personaggioLink *creaPersonaggioLink(personaggio *p) { // Salva un personaggio i
     l->Personaggio     = p;
     return l;
 }
-void copiaEquipaggiamento(equipaggiamento *a, equipaggiamento *b) { // Copia l'equipaggiamento a in b
-
-    // Copio i dati diretti
-    b->InUso = a->InUso;
-    if (a->Oggetti != NULL) { // Se vi sono oggetti
+void copiaEquipaggiamento(equipaggiamento *a, equipaggiamento *b) { // ! FIXME equipaggiamento Copia l'equipaggiamento a in b
+    // Se vi sono oggetti
+    if (a->Oggetti != NULL) {
         memcpy(b->Oggetti, a->Oggetti, sizeof(equipaggiamento));
     }
 }
@@ -213,9 +210,7 @@ void copiaOggetto(oggetto *dest, oggetto *src) { // Copia src in dest
     strcpy(dest->Tipo, src->Tipo);
 }
 bool aggiungiEquipaggiamento(personaggio *p, oggetto *o) { // Aggiunge un oggetto all'equipaggiamento di un personaggio
-    p->Equipaggiamento.InUso = true;                       // Abilito l'equipaggiamento
-
-    if (p->Equipaggiamento.NumeroOggetti == 0) { // Se non ho oggetti
+    if (p->Equipaggiamento.NumeroOggetti == 0) {           // Se non ho oggetti
         p->Equipaggiamento.Oggetti    = (oggetto **)calloc(p->Equipaggiamento.NumeroOggetti + 1, sizeof(oggetto *));
         p->Equipaggiamento.Oggetti[0] = 0;
         p->Equipaggiamento.NumeroOggetti++;
@@ -464,6 +459,29 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 }
                 premiPerContinuare();
                 break;
+            }
+
+            case modificaEquipaggiamento: {
+                // Leggo il personaggio
+                puts("Inserisci l'ID del personaggio a cui modificare l'equipaggiamento (senza \"PG\" davanti):");
+                printf("==> ");
+                uint16_t ID;
+                getchar();
+                scanf("%" SCNd16, &ID);                                    // Leggo l'ID
+                personaggioLink *precedente = ricercaID(TABLE->HEAD, &ID); // Trovo l'elemento precedente
+                if (precedente == NULL) {                                  // Se non ho trovato l'ID
+                    puts("ID non trovato");
+                }
+                // Leggo l'oggetto
+                puts("Inserisci il nome dell'oggetto che vuoi aggiungere/rimuovere (senza \"PG\" davanti):");
+                printf("==> ");
+                char Nome[MAX_STRING + 1];
+                getchar();
+                scanf("%s", Nome);                            // Leggo l'ID
+                oggetto *o = ricercaOggetto(INVENTORY, Nome); // Trovo l'oggetto
+                if (o == NULL) {                              // Se non ho trovato l'ID
+                    puts("Oggetto non trovato");
+                }
             }
 
             case stampaPersonaggi: {
