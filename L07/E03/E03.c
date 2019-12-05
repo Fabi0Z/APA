@@ -205,6 +205,13 @@ void copiaOggetto(oggetto *dest, oggetto *src) { // Copia src in dest
 bool aggiungiEquipaggiamento(personaggio *p, oggetto *o) { // Aggiunge un oggetto all'equipaggiamento di un personaggio
     p->Equipaggiamento.InUso = true;                       // Abilito l'equipaggiamento
 
+    if (p->Equipaggiamento.NumeroOggetti == 0) { // Se non ho oggetti
+        p->Equipaggiamento.Oggetti    = (oggetto **)calloc(p->Equipaggiamento.NumeroOggetti + 1, sizeof(oggetto *));
+        p->Equipaggiamento.Oggetti[0] = 0;
+        p->Equipaggiamento.NumeroOggetti++;
+        return true;
+    }
+
     for (size_t i = 0; i < p->Equipaggiamento.NumeroOggetti; i++) { // Per ogni oggetto
         if (p->Equipaggiamento.Oggetti[i] == o) {                   // Se l'oggetto è già assegnato
             return false;
