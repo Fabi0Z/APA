@@ -230,33 +230,17 @@ bool aggiungiEquipaggiamento(personaggio *p, oggetto *o) { // Aggiunge un oggett
     p->Equipaggiamento.Oggetti = new;
     return true;
 }
-bool rimuoviEquipaggiamento(personaggio *p, oggetto *o) { // Rimuove un oggetto all'equipaggiamento di un personaggio
-    if (p->Equipaggiamento.NumeroOggetti == 0) {          // Se non ci sono elementi mi interrompo
-        return false;
+bool rimuoviEquipaggiamento(personaggio *p, uint8_t indiceOggetto) { // Rimuove un oggetto dall'equipaggiamento di un personaggio
+    p->Equipaggiamento.NumeroOggetti--;
+    for (uint8_t i = indiceOggetto; i < p->Equipaggiamento.NumeroOggetti; i++) { // Per ogni oggetto successivo
+        p->Equipaggiamento.Oggetti[i] = p->Equipaggiamento.Oggetti[i + 1];
     }
-
-    uint8_t posEQ = 0;
-    bool trovato  = false;
-    for (size_t i = 0; i < p->Equipaggiamento.NumeroOggetti; i++) { // Per ogni oggetto
-        if (p->Equipaggiamento.Oggetti[i] == o) {                   // Se trovo l'oggetto
-            posEQ   = i;
-            trovato = true;
-            break;
-        }
+    if (p->Equipaggiamento.NumeroOggetti == 0) { // Se ho 0 oggetti
+        free(p->Equipaggiamento.Oggetti);
+        p->Equipaggiamento.Oggetti = NULL;
+    } else {
+        p->Equipaggiamento.Oggetti = realloc(p->Equipaggiamento.Oggetti, p->Equipaggiamento.NumeroOggetti);
     }
-
-    if (trovato) { // Se ho trovato l'equipaggiamento
-        p->Equipaggiamento.NumeroOggetti--;
-        for (uint8_t i = posEQ; i < p->Equipaggiamento.NumeroOggetti; i++) { // Per ogni oggetto successivo
-            p->Equipaggiamento.Oggetti[i] = p->Equipaggiamento.Oggetti[i + 1];
-        }
-        if (p->Equipaggiamento.NumeroOggetti == 0) { // Se ho 0 oggetti
-            free(p->Equipaggiamento.Oggetti);
-        } else {
-            p->Equipaggiamento.Oggetti = realloc(p->Equipaggiamento.Oggetti, p->Equipaggiamento.NumeroOggetti);
-        }
-    }
-    return trovato;
 }
 // * --------------------------------------------------------
 
