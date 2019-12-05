@@ -99,8 +99,8 @@ void freePersonaggioLink(personaggioLink *l) { // Dealloca la memoria di una lis
 // * --------------------------------------------------------
 
 // * STAMPA DATI
-void printStatistiche(uint16_t *s, FILE *stream) {  // Stampa delle statistiche
-    for (size_t i = 0; i < N_STATISTICHE; i++) { // Per ogni statistica
+void printStatistiche(uint16_t *s, FILE *stream) { // Stampa delle statistiche
+    for (size_t i = 0; i < N_STATISTICHE; i++) {   // Per ogni statistica
         fprintf(stream, "%" SCNd16 " ", s[i]);
     }
 }
@@ -252,8 +252,24 @@ bool rimuoviEquipaggiamento(personaggio *p, uint8_t indiceOggetto) { // Rimuove 
         p->Equipaggiamento.Oggetti = realloc(p->Equipaggiamento.Oggetti, p->Equipaggiamento.NumeroOggetti);
     }
 }
-void calcolaStatistiche(personaggio *p, uint16_t *s) { // Calcola e restituisce le statistiche di un personaggio
-    memset(s, 0, sizeof(uint16_t) * N_STATISTICHE);    // Azzero i valori
+void calcolaStatistiche(personaggio *p, uint16_t *s) {           // Calcola e restituisce le statistiche di un personaggio
+    memcpy(s, p->Statistiche, sizeof(uint16_t) * N_STATISTICHE); // Scrivo i valori del personaggio
+
+    if (p->Equipaggiamento.NumeroOggetti == 0) { // Se non ci sono oggetti nell'equipaggiamento mi interrompo
+        return;
+    }
+
+    uint16_t *sOggetto;
+    for (size_t i = 0; i < N_STATISTICHE; i++) {                        // Per ogni statistica
+        for (size_t j = 0; j < p->Equipaggiamento.NumeroOggetti; j++) { // Per ogni oggetto dell'equipaggiamento
+            sOggetto = p->Equipaggiamento.Oggetti[j];
+            s[i] += sOggetto[i];
+        }
+
+        if (s[i] < 1) {
+            s[i] = 1;
+        }
+    }
 }
 // * --------------------------------------------------------
 
