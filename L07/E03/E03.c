@@ -172,9 +172,10 @@ oggetto *creaOggetto(unsigned int nomeSize, unsigned int tipoSize) { // Crea, al
     allocaOggetto(temp, nomeSize, tipoSize);
     return temp;
 }
-personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) { // ! FIXME equipaggiamento Crea, alloca e restituisce un personaggio senza equipaggiamento
-    personaggio *temp             = (personaggio *)malloc(sizeof(personaggio));
-    temp->Equipaggiamento.Oggetti = NULL;
+personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) { // Crea, alloca e restituisce un personaggio senza equipaggiamento
+    personaggio *temp                   = (personaggio *)malloc(sizeof(personaggio));
+    temp->Equipaggiamento.Oggetti       = NULL;
+    temp->Equipaggiamento.NumeroOggetti = 0;
     allocaPersonaggio(temp, nomeSize, classeSize);
     return temp;
 }
@@ -183,11 +184,18 @@ personaggioLink *creaPersonaggioLink(personaggio *p) { // Salva un personaggio i
     l->Personaggio     = p;
     return l;
 }
-void copiaEquipaggiamento(equipaggiamento *a, equipaggiamento *b) { // ! FIXME equipaggiamento Copia l'equipaggiamento a in b
+void copiaEquipaggiamento(equipaggiamento *a, equipaggiamento *b) { // Copia l'equipaggiamento a in b
     // Se vi sono oggetti
-    if (a->Oggetti != NULL) {
-        memcpy(b->Oggetti, a->Oggetti, sizeof(equipaggiamento));
+    if (a->NumeroOggetti = 0) {
+        b->NumeroOggetti = 0;
+        if (b->Oggetti != NULL) {
+            free(b->Oggetti);
+            b->Oggetti == NULL;
+        }
+        return;
     }
+    b->NumeroOggetti = a->NumeroOggetti;
+    memcpy(b->Oggetti, a->Oggetti, sizeof(oggetto **) * a->NumeroOggetti);
 }
 void copiaPersonaggio(personaggio *a, personaggio *b) { // Copia il personaggio a in b
 
