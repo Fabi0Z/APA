@@ -225,9 +225,9 @@ void copiaOggetto(oggetto *dest, oggetto *src) { // Copia src in dest
 }
 bool aggiungiEquipaggiamento(personaggio *p, oggetto *o) { // Aggiunge un oggetto all'equipaggiamento di un personaggio
     if (p->Equipaggiamento.NumeroOggetti == 0) {           // Se non ho oggetti
-        p->Equipaggiamento.Oggetti    = (oggetto **)calloc(p->Equipaggiamento.NumeroOggetti + 1, sizeof(oggetto *));
-        p->Equipaggiamento.Oggetti[0] = 0;
         p->Equipaggiamento.NumeroOggetti++;
+        p->Equipaggiamento.Oggetti    = (oggetto **)calloc(p->Equipaggiamento.NumeroOggetti, sizeof(oggetto *));
+        p->Equipaggiamento.Oggetti[0] = o;
         return true;
     }
 
