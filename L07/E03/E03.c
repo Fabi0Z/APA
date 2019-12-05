@@ -7,21 +7,20 @@
 // * VARIABILI GLOBALI
 const uint8_t MAX_STRING        = 50;
 const uint8_t MAX_TRASPORTABILI = 8;
+typedef enum { HP,
+               MP,
+               ATK,
+               DEF,
+               MAG,
+               SPR,
+               N_STATISTICHE } stats;
 // * --------------------------------------------------------
 
 // * STRUTTURE
-typedef struct Stats {
-    int16_t HP;
-    int16_t MP;
-    int16_t ATK;
-    int16_t DEF;
-    int16_t MAG;
-    int16_t SPR;
-} stats;
 typedef struct Oggetto {
     char *Nome;
     char *Tipo;
-    stats Statistiche;
+    uint16_t Statistiche[N_STATISTICHE];
 } oggetto;
 typedef struct Inventario {
     oggetto *Oggetti;
@@ -37,7 +36,7 @@ typedef struct Personaggio {
     char *Nome;
     char *Classe;
     equipaggiamento Equipaggiamento;
-    stats Statistiche;
+    uint16_t Statistiche[N_STATISTICHE];
 } personaggio;
 typedef struct PersonaggioLink personaggioLink;
 typedef struct PersonaggioLink {
@@ -100,18 +99,15 @@ void freePersonaggioLink(personaggioLink *l) { // Dealloca la memoria di una lis
 // * --------------------------------------------------------
 
 // * STAMPA DATI
-void printStatistiche(stats *s, FILE *stream) { // Stampa delle statistiche
-    fprintf(stream, "%" SCNd16, s->HP);
-    fprintf(stream, " %" SCNd16, s->MP);
-    fprintf(stream, " %" SCNd16, s->ATK);
-    fprintf(stream, " %" SCNd16, s->DEF);
-    fprintf(stream, " %" SCNd16, s->MAG);
-    fprintf(stream, " %" SCNd16, s->SPR);
+void printStatistiche(uint16_t *s, FILE *stream) {  // Stampa delle statistiche
+    for (size_t i = 0; i < N_STATISTICHE; i++) { // Per ogni statistica
+        fprintf(stream, "%" SCNd16 " ", s[i]);
+    }
 }
 void printPersonaggio(personaggio *p, FILE *stream) { // Stampa un personaggio
     fprintf(stream, "PG%04" SCNd16, p->ID);
     fprintf(stream, " %s %s ", p->Nome, p->Classe);
-    printStatistiche(&p->Statistiche, stream);
+    printStatistiche(p->Statistiche, stream);
     fprintf(stream, "\n");
 }
 void printPersonaggioLinkFile(personaggioLink *l, FILE *stream) { // Stampa una lista di personaggi su file
@@ -128,7 +124,7 @@ void printPersonaggioLink(personaggioLink *l) { // Stampa una lista di personagg
 }
 void printOggetto(oggetto *o, FILE *stream) { // Stampa un oggetto su file
     fprintf(stream, "%s %s ", o->Nome, o->Tipo);
-    printStatistiche(&o->Statistiche, stream);
+    printStatistiche(o->Statistiche, stream);
     fprintf(stream, "\n");
 }
 void printInventarioFile(inventario *inv, FILE *stream, bool indici) { // Stampa un inventario su file
@@ -206,12 +202,12 @@ void copiaEquipaggiamento(equipaggiamento *a, equipaggiamento *b) { // Copia l'e
 void copiaPersonaggio(personaggio *a, personaggio *b) { // Copia il personaggio a in b
 
     // Copio i dati diretti
-    b->ID          = a->ID;
-    b->Statistiche = a->Statistiche;
+    b->ID = a->ID;
 
     // Copio i dati per puntatore
     strcpy(b->Nome, a->Nome);
     strcpy(b->Classe, a->Classe);
+    memcpy(b->Statistiche, a->Statistiche, sizeof(uint16_t) * N_STATISTICHE);
     copiaEquipaggiamento(&a->Equipaggiamento, &b->Equipaggiamento);
 }
 personaggio *getResizedPersonaggio(personaggio *temp) { // Alloca memoria per realizzare una copia ridimensionata del personaggio
@@ -219,7 +215,7 @@ personaggio *getResizedPersonaggio(personaggio *temp) { // Alloca memoria per re
     return p;
 }
 void copiaOggetto(oggetto *dest, oggetto *src) { // Copia src in dest
-    dest->Statistiche = src->Statistiche;
+    memcpy(dest->Statistiche, src->Statistiche, sizeof(uint16_t) * N_STATISTICHE);
     strcpy(dest->Nome, src->Nome);
     strcpy(dest->Tipo, src->Tipo);
 }
@@ -256,17 +252,17 @@ bool rimuoviEquipaggiamento(personaggio *p, uint8_t indiceOggetto) { // Rimuove 
         p->Equipaggiamento.Oggetti = realloc(p->Equipaggiamento.Oggetti, p->Equipaggiamento.NumeroOggetti);
     }
 }
+void calcolaStatistiche(personaggio *p, uint16_t *s) { // Calcola e restituisce le statistiche di un personaggio
+    memset(s, 0, sizeof(uint16_t) * N_STATISTICHE);    // Azzero i valori
+}
 // * --------------------------------------------------------
 
 // * LETTURA DA FILE
-bool leggiStatistiche(char *string, stats *s) { // Effettua il parse delle statistiche da stringa
+bool leggiStatistiche(char *string, uint16_t *s) { // Effettua il parse delle statistiche da stringa
     uint8_t conteggio = 0;
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &s->HP, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &s->MP, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &s->ATK, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &s->DEF, string);
-    conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &s->MAG, string);
-    conteggio += sscanf(string, "%" SCNd16, &s->SPR);
+    for (size_t i = 0; i < N_STATISTICHE; i++) { // Per ogni statistica
+        conteggio += sscanf(string, "%" SCNd16 "%[^\n]", &s[i], string);
+    }
     return conteggio == 11;
 }
 bool leggiPersonaggio(char *string, personaggio *p) { // Effettua il parse di un personaggio da stringa, restituisce se la lettura è andata a buon fine o meno
@@ -275,12 +271,11 @@ bool leggiPersonaggio(char *string, personaggio *p) { // Effettua il parse di un
     conteggio += sscanf(string, "%s %[^\n]", p->Nome, string);
     conteggio += sscanf(string, "%s %[^\n]", p->Classe, string);
 
-    stats s;
-    if (!leggiStatistiche(string, &s)) { // Se la lettura delle statistiche fallisce
+    uint16_t s[N_STATISTICHE];
+    if (!leggiStatistiche(string, s)) { // Se la lettura delle statistiche fallisce
         return false;
     }
-    p->Statistiche = s;
-
+    memcpy(p->Statistiche, s, sizeof(uint16_t) * N_STATISTICHE);
     return conteggio == 6;
 }
 bool leggiOggetto(char *string, oggetto *o) { // Effettua il parse di un personaggio da stringa, restituisce se la lettura è andata a buon fine o meno
@@ -288,12 +283,11 @@ bool leggiOggetto(char *string, oggetto *o) { // Effettua il parse di un persona
     conteggio += sscanf(string, "%s %[^\n]", o->Nome, string);
     conteggio += sscanf(string, "%s %[^\n]", o->Tipo, string);
 
-    stats s;
-    if (!leggiStatistiche(string, &s)) { // Se la lettura delle statistiche fallisce
+    uint16_t s[N_STATISTICHE];
+    if (!leggiStatistiche(string, s)) { // Se la lettura delle statistiche fallisce
         return false;
     }
-    o->Statistiche = s;
-
+    memcpy(o->Statistiche, s, sizeof(uint16_t) * N_STATISTICHE);
     return conteggio == 4;
 }
 // * --------------------------------------------------------
