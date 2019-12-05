@@ -8,7 +8,8 @@ Spesso non faccio merge sul branch principale sinché non sono sicuro che il mio
 
 ## APA e VS Code
 
-Nella cartella `.vscode` sono presenti delle configurazioni per poter avviare e debuggare programmi in C/C++ su sistemi GNU/Linux, le attuali configurazioni sono pensate per usare come compilatore `clang`, debugger `gdb` e funzionano mediante l'estensione ufficiale Microsoft per C/C++, più info [qui](https://code.visualstudio.com/docs/languages/cpp)
+Nella cartella `.vscode` sono presenti delle configurazioni per poter avviare e debuggare programmi in C/C++ su sistemi GNU/Linux, le attuali configurazioni sono pensate per usare come compilatori `clang` o `gcc` e come debugger `gdb` o `lldb`, sono presenti 4 task già pronte per le varie combinazioni.
+Il tutto è pensato per funzionare mediante l'estensione ufficiale Microsoft per C/C++, più info [qui](https://code.visualstudio.com/docs/languages/cpp)
 
 ## Script per la consegna
 
