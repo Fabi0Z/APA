@@ -507,33 +507,26 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                         break;
                     }
 
-                    printEquipaggiamento(&pg->Equipaggiamento, true); // Stampo l'equipaggiamento con gli indici
+                    printInventario(INVENTORY, true); // Stampo l'inventario con gli indici
                     puts("Inserisci il numero dell'oggetto");
                     printf("==> ");
                     uint8_t scelta;
                     getchar();
                     scanf("%" SCNd8, &scelta);
 
-                    if (scelta >= pg->Equipaggiamento.NumeroOggetti) { // Controllo la validità della scelta
+                    if (scelta >= INVENTORY->NumeroOggetti) { // Controllo la validità della scelta
                         puts("Scelta non valida");
                         premiPerContinuare();
                         break;
                     }
 
-                    rimuoviEquipaggiamento(pg, scelta);
-                    puts("Oggetto rimosso!");
+                    aggiungiEquipaggiamento(pg, &INVENTORY->Oggetti[scelta]);
+                    puts("Oggetto aggiunto!");
+                } else { // Se la scelta non è valida
+                    puts("Scelta non valida!");
                 }
-
-                // Leggo l'oggetto
-                puts("Inserisci il numero dell'oggetto che vuoi aggiungere/rimuovere (senza \"PG\" davanti):");
-                printf("==> ");
-                char Nome[MAX_STRING + 1];
-                getchar();
-                scanf("%s", Nome);                            // Leggo l'ID
-                oggetto *o = ricercaOggetto(INVENTORY, Nome); // Trovo l'oggetto
-                if (o == NULL) {                              // Se non ho trovato l'ID
-                    puts("Oggetto non trovato");
-                }
+                premiPerContinuare();
+                break;
             }
 
             case stampaPersonaggi: {
@@ -543,7 +536,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
             }
 
             case stampaInventario: {
-                printInventario(INVENTORY);
+                printInventario(INVENTORY, false);
                 premiPerContinuare();
                 break;
             }
