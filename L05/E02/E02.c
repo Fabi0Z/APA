@@ -27,7 +27,7 @@ int **malloc2dR(size_t *righe, size_t *colonne) { // Effettua il parse della mat
         }
     }
 
-    // fclose(stream); // Chiudo il filestream
+    fclose(stream); // Chiudo il filestream
     return matrix;
 }
 
