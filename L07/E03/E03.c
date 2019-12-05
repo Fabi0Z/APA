@@ -131,27 +131,29 @@ void printOggetto(oggetto *o, FILE *stream) { // Stampa un oggetto su file
     printStatistiche(&o->Statistiche, stream);
     fprintf(stream, "\n");
 }
-void printInventarioFile(inventario *inv, FILE *stream) { // Stampa un inventario su file
-    if (stream != stdout) {                               // Se non sono sullo stdout
+void printInventarioFile(inventario *inv, FILE *stream, bool indici) { // Stampa un inventario su file
+    if (stream != stdout) {                                            // Se non sono sullo stdout
         fprintf(stream, "%" SCNd8 "\n", inv->NumeroOggetti);
     }
 
     for (size_t i = 0; i < inv->NumeroOggetti; i++) { // Per ogni oggetto
+        if (indici) {
+            fprintf(stream, "%zu - ", i);
+        }
         printOggetto(&inv->Oggetti[i], stream);
     }
 
     printf("\n");
 }
-void printInventario(inventario *i) { // Stampa un inventario a video
+void printInventario(inventario *i, bool indici) { // Stampa un inventario a video
     puts("L'inventario è composto da:");
-    printInventarioFile(i, stdout);
+    printInventarioFile(i, stdout, indici);
 }
 void printEquipaggiamentoFile(equipaggiamento *e, FILE *stream, bool indici) { // Stampa un equipaggiamento su file
     for (size_t i = 0; i < e->NumeroOggetti; i++) {                            // Per ogni oggetto
         if (indici) {
             fprintf(stream, "%zu - ", i);
         }
-
         printOggetto(e->Oggetti[i], stream);
     }
     printf("\n");
@@ -479,6 +481,28 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 if (scelta == 0) {                                // Se l'utente desidera rimuovere
                     if (pg->Equipaggiamento.NumeroOggetti == 0) { // Se l'equipaggiamento è vuoto
                         puts("Non è possibile rimuovere oggetti a questo personaggio");
+                        premiPerContinuare();
+                        break;
+                    }
+
+                    printEquipaggiamento(&pg->Equipaggiamento, true); // Stampo l'equipaggiamento con gli indici
+                    puts("Inserisci il numero dell'oggetto");
+                    printf("==> ");
+                    uint8_t scelta;
+                    getchar();
+                    scanf("%" SCNd8, &scelta);
+
+                    if (scelta >= pg->Equipaggiamento.NumeroOggetti) { // Controllo la validità della scelta
+                        puts("Scelta non valida");
+                        premiPerContinuare();
+                        break;
+                    }
+
+                    rimuoviEquipaggiamento(pg, scelta);
+                    puts("Oggetto rimosso!");
+                } else if (scelta == 1) {                            // Se l'utente desidera aggiungere
+                    if (checkLimiteEquipaggiamento(pg, INVENTORY)) { // Se l'equipaggiamento è pieno
+                        puts("Non è possibile aggiungere oggetti a questo personaggio");
                         premiPerContinuare();
                         break;
                     }
