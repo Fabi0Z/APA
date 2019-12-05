@@ -217,12 +217,6 @@ bool aggiungiEquipaggiamento(personaggio *p, oggetto *o) { // Aggiunge un oggett
         return true;
     }
 
-    for (size_t i = 0; i < p->Equipaggiamento.NumeroOggetti; i++) { // Per ogni oggetto
-        if (p->Equipaggiamento.Oggetti[i] == o) {                   // Se l'oggetto è già assegnato
-            return false;
-        }
-    }
-
     // Creo nuovo array oggetti
     oggetto **new = (oggetto **)calloc(p->Equipaggiamento.NumeroOggetti + 1, sizeof(oggetto *));
     memcpy(new, p->Equipaggiamento.Oggetti, sizeof(oggetto *) * p->Equipaggiamento.NumeroOggetti); // Copio i dati
