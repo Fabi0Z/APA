@@ -437,6 +437,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
             }
 
             case eliminaPersonaggio: {
+                printPersonaggioLink(TABLE->HEAD);
                 puts("Inserisci l'ID del personaggio da eliminare (senza \"PG\" davanti):");
                 printf("==> ");
                 uint16_t ID;
