@@ -536,7 +536,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
             }
 
             case stampaEquipaggiamento: {
-                puts("Inserisci l'ID del personaggio da eliminare (senza \"PG\" davanti):");
+                puts("Inserisci l'ID del personaggio di cui vuoi stampare l'equipaggiamento (senza \"PG\" davanti):");
                 printf("==> ");
                 uint16_t ID;
                 getchar();
