@@ -146,15 +146,19 @@ void printInventario(inventario *i) { // Stampa un inventario a video
     puts("L'inventario è composto da:");
     printInventarioFile(i, stdout);
 }
-void printEquipaggiamentoFile(equipaggiamento *e, FILE *stream) { // Stampa un equipaggiamento su file
-    for (size_t i = 0; i < e->NumeroOggetti; i++) {               // Per ogni oggetto
+void printEquipaggiamentoFile(equipaggiamento *e, FILE *stream, bool indici) { // Stampa un equipaggiamento su file
+    for (size_t i = 0; i < e->NumeroOggetti; i++) {                            // Per ogni oggetto
+        if (indici) {
+            fprintf(stream, "%zu - ", i);
+        }
+
         printOggetto(e->Oggetti[i], stream);
     }
     printf("\n");
 }
-void printEquipaggiamento(equipaggiamento *e) { // Stampa un equipaggiamento a video
+void printEquipaggiamento(equipaggiamento *e, bool indici) { // Stampa un equipaggiamento a video
     puts("L'equipaggiamento è composto da:");
-    printEquipaggiamentoFile(e, stdout);
+    printEquipaggiamentoFile(e, stdout, indici);
 }
 // * --------------------------------------------------------
 
@@ -458,6 +462,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 if (precedente == NULL) {                                  // Se non ho trovato l'ID
                     puts("ID non trovato");
                 }
+                // Stampo l'equipaggiamento
                 // Leggo l'oggetto
                 puts("Inserisci il nome dell'oggetto che vuoi aggiungere/rimuovere (senza \"PG\" davanti):");
                 printf("==> ");
