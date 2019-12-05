@@ -206,13 +206,15 @@ bool aggiungiEquipaggiamento(personaggio *p, oggetto *o) { // Aggiunge un oggett
     p->Equipaggiamento.InUso = true;                       // Abilito l'equipaggiamento
 
     for (size_t i = 0; i < p->Equipaggiamento.NumeroOggetti; i++) { // Per ogni oggetto
-        if (p->Equipaggiamento.Oggetti[i] == o) { // Se l'oggetto è già assegnato
+        if (p->Equipaggiamento.Oggetti[i] == o) {                   // Se l'oggetto è già assegnato
             return false;
         }
     }
 
-    p->Equipaggiamento.Oggetti[p->Equipaggiamento.NumeroOggetti] = (oggetto **)malloc(sizeof(oggetto*));
+    // Alloco memoria e metto il link all'oggetto
+    p->Equipaggiamento.Oggetti[p->Equipaggiamento.NumeroOggetti] = (oggetto **)malloc(sizeof(oggetto *));
     p->Equipaggiamento.Oggetti[p->Equipaggiamento.NumeroOggetti] = o;
+    p->Equipaggiamento.NumeroOggetti++; // Incremento gli oggetti disponibili
     return true;
 }
 // * --------------------------------------------------------
