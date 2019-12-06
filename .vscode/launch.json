@@ -13,7 +13,10 @@
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
-            "externalConsole": false,
+            "externalConsole": true,
+            "linux": {
+                "externalConsole": false
+            },
             "MIMode": "gdb",
             "setupCommands": [
                 {
@@ -39,6 +42,9 @@
             "cwd": "${fileDirname}",
             "environment": [],
             "externalConsole": true,
+            "linux": {
+                "externalConsole": false
+            },
             "MIMode": "lldb",
             "preLaunchTask": "Build with clang",
             "logging": {
@@ -56,7 +62,10 @@
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],
-            "externalConsole": false,
+            "externalConsole": true,
+            "linux": {
+                "externalConsole": false
+            },
             "MIMode": "gdb",
             "setupCommands": [
                 {
@@ -77,6 +86,9 @@
             "cwd": "${fileDirname}",
             "environment": [],
             "externalConsole": true,
+            "linux": {
+                "externalConsole": false
+            },
             "MIMode": "lldb",
             "preLaunchTask": "Build with gcc",
             "logging": {
