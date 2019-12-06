@@ -5,44 +5,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "gcc build and debug active file (gdb)",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "externalConsole": false,
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ],
-            "preLaunchTask": "Build with gcc"
-        },
-        {
-            "name": "gcc launch and debug active file (lldb)",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "externalConsole": true,
-            "MIMode": "lldb",
-            "preLaunchTask": "Build with gcc",
-            "logging": {
-                "trace": true,
-                "traceResponse": true,
-                "engineLogging": true
-            }
-        },
-        {
             "name": "clang build and debug active file (gdb)",
             "type": "cppdbg",
             "request": "launch",
@@ -68,7 +30,7 @@
             }
         },
         {
-            "name": "clang launch and debug active file (lldb)",
+            "name": "clang build and debug active file (lldb)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
@@ -79,6 +41,44 @@
             "externalConsole": true,
             "MIMode": "lldb",
             "preLaunchTask": "Build with clang",
+            "logging": {
+                "trace": true,
+                "traceResponse": true,
+                "engineLogging": true
+            }
+        },
+        {
+            "name": "gcc build and debug active file (gdb)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build with gcc"
+        },
+        {
+            "name": "gcc build and debug active file (lldb)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb",
+            "preLaunchTask": "Build with gcc",
             "logging": {
                 "trace": true,
                 "traceResponse": true,
