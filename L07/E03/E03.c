@@ -241,17 +241,26 @@ bool aggiungiEquipaggiamento(personaggio *p, oggetto *o) { // Aggiunge un oggett
     p->Equipaggiamento->Oggetti = new;
     return true;
 }
-bool rimuoviEquipaggiamento(personaggio *p, uint8_t indiceOggetto) { // Rimuove un oggetto dall'equipaggiamento di un personaggio
+void rimuoviEquipaggiamento(personaggio *p, uint8_t indiceOggetto) { // Rimuove un oggetto dall'equipaggiamento di un personaggio
     p->Equipaggiamento->NumeroOggetti--;
-    for (uint8_t i = indiceOggetto; i < p->Equipaggiamento->NumeroOggetti; i++) { // Per ogni oggetto successivo
-        p->Equipaggiamento->Oggetti[i] = p->Equipaggiamento->Oggetti[i + 1];
-    }
     if (p->Equipaggiamento->NumeroOggetti == 0) { // Se ho 0 oggetti
         free(p->Equipaggiamento->Oggetti);
         p->Equipaggiamento->Oggetti = NULL;
-    } else {
-        p->Equipaggiamento->Oggetti = realloc(p->Equipaggiamento->Oggetti, p->Equipaggiamento->NumeroOggetti);
+        return;
     }
+
+    oggetto **o = (oggetto **)calloc(p->Equipaggiamento->NumeroOggetti, sizeof(oggetto *));
+
+    for (uint8_t i = 0; i < indiceOggetto; i++) { // Per ogni oggetto precedente a quello da eliminare
+        o[i] = p->Equipaggiamento->Oggetti[i];
+    }
+
+    for (uint8_t i = indiceOggetto; i < p->Equipaggiamento->NumeroOggetti; i++) { // Per ogni oggetto successivo
+        o[i] = p->Equipaggiamento->Oggetti[i + 1];
+    }
+
+    free(p->Equipaggiamento->Oggetti);
+    p->Equipaggiamento->Oggetti = o;
 }
 void calcolaStatistiche(personaggio *p, int16_t *s) {           // Calcola e restituisce le statistiche di un personaggio
     memcpy(s, p->Statistiche, sizeof(int16_t) * N_STATISTICHE); // Scrivo i valori del personaggio
@@ -482,7 +491,6 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 personaggio *pg = precedente->Next->Personaggio;
                 puts("Questi sono gli oggetti presenti nell'equipaggiamento:");
                 printEquipaggiamento(pg->Equipaggiamento, false); // Stampo l'equipaggiamento
-                premiPerContinuare();
 
                 // Leggo l'azione dell'utente
                 puts("Inserisci 1 per aggiungere un oggetto o 0 per rimuoverlo");
