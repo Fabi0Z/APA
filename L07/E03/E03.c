@@ -28,6 +28,7 @@ typedef struct Inventario {
     uint8_t OggettiTrasportabili;
 } inventario;
 typedef struct Equipaggiamento {
+    bool InUso;
     oggetto **Oggetti;
     uint8_t NumeroOggetti;
 } equipaggiamento;
