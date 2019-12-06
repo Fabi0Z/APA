@@ -7,7 +7,7 @@
             "command": "gcc",
             "args": [
                 "-g",
-                "${file}",
+                "${fileDirname}/*.c",
                 "-o",
                 "${workspaceFolder}/builds/${fileBasenameNoExtension}"
             ],
@@ -26,7 +26,7 @@
             "command": "clang",
             "args": [
                 "-g",
-                "${file}",
+                "${fileDirname}/*.c",
                 "-o",
                 "${workspaceFolder}/builds/${fileBasenameNoExtension}",
                 "--debug"
