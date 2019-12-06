@@ -28,6 +28,7 @@ typedef struct Inventario {
     uint8_t OggettiTrasportabili;
 } inventario;
 typedef struct Equipaggiamento {
+    bool InUso;
     oggetto **Oggetti;
     uint8_t NumeroOggetti;
 } equipaggiamento;
@@ -35,7 +36,7 @@ typedef struct Personaggio {
     uint16_t ID;
     char *Nome;
     char *Classe;
-    equipaggiamento Equipaggiamento;
+    equipaggiamento *Equipaggiamento;
     int16_t Statistiche[N_STATISTICHE];
 } personaggio;
 typedef struct PersonaggioLink personaggioLink;
@@ -64,7 +65,7 @@ bool checkFilestream(FILE *stream) { // Controlla errori di apertura del file
     return true;
 }
 bool checkLimiteEquipaggiamento(personaggio *p, inventario *i) { // Controlla se un personaggio ha raggiunto il limite di oggetti equipaggiabili
-    return p->Equipaggiamento.NumeroOggetti >= i->OggettiTrasportabili;
+    return p->Equipaggiamento->NumeroOggetti >= i->OggettiTrasportabili;
 }
 // * --------------------------------------------------------
 
@@ -82,9 +83,9 @@ void freeOggetto(oggetto *o) { // Dealloca un elemento di tipo oggetto
     free(o->Tipo);
     free(o);
 }
-void freePersonaggio(personaggio *p) {        // Dealloca la memoria di un personaggio
-    if (p->Equipaggiamento.Oggetti != NULL) { // Se è presente un equipaggiamento
-        free(p->Equipaggiamento.Oggetti);
+void freePersonaggio(personaggio *p) {         // Dealloca la memoria di un personaggio
+    if (p->Equipaggiamento->Oggetti != NULL) { // Se è presente un equipaggiamento
+        free(p->Equipaggiamento->Oggetti);
     }
     free(p->Nome);
     free(p->Classe);
@@ -175,9 +176,10 @@ oggetto *creaOggetto(unsigned int nomeSize, unsigned int tipoSize) { // Crea, al
     return temp;
 }
 personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) { // Crea, alloca e restituisce un personaggio senza equipaggiamento
-    personaggio *temp                   = (personaggio *)malloc(sizeof(personaggio));
-    temp->Equipaggiamento.Oggetti       = NULL;
-    temp->Equipaggiamento.NumeroOggetti = 0;
+    personaggio *temp                    = (personaggio *)malloc(sizeof(personaggio));
+    temp->Equipaggiamento                = (equipaggiamento *)malloc(sizeof(equipaggiamento));
+    temp->Equipaggiamento->Oggetti       = NULL;
+    temp->Equipaggiamento->NumeroOggetti = 0;
     allocaPersonaggio(temp, nomeSize, classeSize);
     return temp;
 }
@@ -208,7 +210,7 @@ void copiaPersonaggio(personaggio *a, personaggio *b) { // Copia il personaggio 
     strcpy(b->Nome, a->Nome);
     strcpy(b->Classe, a->Classe);
     memcpy(b->Statistiche, a->Statistiche, sizeof(int16_t) * N_STATISTICHE);
-    copiaEquipaggiamento(&a->Equipaggiamento, &b->Equipaggiamento);
+    copiaEquipaggiamento(a->Equipaggiamento, b->Equipaggiamento);
 }
 personaggio *getResizedPersonaggio(personaggio *temp) { // Alloca memoria per realizzare una copia ridimensionata del personaggio
     personaggio *p = creaPersonaggio(strlen(temp->Nome), strlen(temp->Classe));
@@ -220,49 +222,58 @@ void copiaOggetto(oggetto *dest, oggetto *src) { // Copia src in dest
     strcpy(dest->Tipo, src->Tipo);
 }
 bool aggiungiEquipaggiamento(personaggio *p, oggetto *o) { // Aggiunge un oggetto all'equipaggiamento di un personaggio
-    if (p->Equipaggiamento.NumeroOggetti == 0) {           // Se non ho oggetti
-        p->Equipaggiamento.NumeroOggetti++;
-        p->Equipaggiamento.Oggetti    = (oggetto **)calloc(p->Equipaggiamento.NumeroOggetti, sizeof(oggetto *));
-        p->Equipaggiamento.Oggetti[0] = o;
+    if (p->Equipaggiamento->NumeroOggetti == 0) {          // Se non ho oggetti
+        p->Equipaggiamento->NumeroOggetti++;
+        p->Equipaggiamento->Oggetti    = (oggetto **)calloc(p->Equipaggiamento->NumeroOggetti, sizeof(oggetto *));
+        p->Equipaggiamento->Oggetti[0] = o;
         return true;
     }
 
     // Creo nuovo array oggetti
-    oggetto **new = (oggetto **)calloc(p->Equipaggiamento.NumeroOggetti + 1, sizeof(oggetto *));
-    memcpy(new, p->Equipaggiamento.Oggetti, sizeof(oggetto *) * p->Equipaggiamento.NumeroOggetti); // Copio i dati
+    oggetto **new = (oggetto **)calloc(p->Equipaggiamento->NumeroOggetti + 1, sizeof(oggetto *));
+    memcpy(new, p->Equipaggiamento->Oggetti, sizeof(oggetto *) * p->Equipaggiamento->NumeroOggetti); // Copio i dati
 
     // Metto il link all'oggetto
-    new[p->Equipaggiamento.NumeroOggetti] = o;
-    p->Equipaggiamento.NumeroOggetti++; // Incremento gli oggetti disponibili
+    new[p->Equipaggiamento->NumeroOggetti] = o;
+    p->Equipaggiamento->NumeroOggetti++; // Incremento gli oggetti disponibili
 
     // Sostituisco l'array di oggetti
-    free(p->Equipaggiamento.Oggetti);
-    p->Equipaggiamento.Oggetti = new;
+    free(p->Equipaggiamento->Oggetti);
+    p->Equipaggiamento->Oggetti = new;
     return true;
 }
-bool rimuoviEquipaggiamento(personaggio *p, uint8_t indiceOggetto) { // Rimuove un oggetto dall'equipaggiamento di un personaggio
-    p->Equipaggiamento.NumeroOggetti--;
-    for (uint8_t i = indiceOggetto; i < p->Equipaggiamento.NumeroOggetti; i++) { // Per ogni oggetto successivo
-        p->Equipaggiamento.Oggetti[i] = p->Equipaggiamento.Oggetti[i + 1];
+void rimuoviEquipaggiamento(personaggio *p, uint8_t indiceOggetto) { // Rimuove un oggetto dall'equipaggiamento di un personaggio
+    p->Equipaggiamento->NumeroOggetti--;
+    if (p->Equipaggiamento->NumeroOggetti == 0) { // Se ho 0 oggetti
+        free(p->Equipaggiamento->Oggetti);
+        p->Equipaggiamento->Oggetti = NULL;
+        return;
     }
-    if (p->Equipaggiamento.NumeroOggetti == 0) { // Se ho 0 oggetti
-        free(p->Equipaggiamento.Oggetti);
-        p->Equipaggiamento.Oggetti = NULL;
-    } else {
-        p->Equipaggiamento.Oggetti = realloc(p->Equipaggiamento.Oggetti, p->Equipaggiamento.NumeroOggetti);
+
+    oggetto **o = (oggetto **)calloc(p->Equipaggiamento->NumeroOggetti, sizeof(oggetto *));
+
+    for (uint8_t i = 0; i < indiceOggetto; i++) { // Per ogni oggetto precedente a quello da eliminare
+        o[i] = p->Equipaggiamento->Oggetti[i];
     }
+
+    for (uint8_t i = indiceOggetto; i < p->Equipaggiamento->NumeroOggetti; i++) { // Per ogni oggetto successivo
+        o[i] = p->Equipaggiamento->Oggetti[i + 1];
+    }
+
+    free(p->Equipaggiamento->Oggetti);
+    p->Equipaggiamento->Oggetti = o;
 }
 void calcolaStatistiche(personaggio *p, int16_t *s) {           // Calcola e restituisce le statistiche di un personaggio
     memcpy(s, p->Statistiche, sizeof(int16_t) * N_STATISTICHE); // Scrivo i valori del personaggio
 
-    if (p->Equipaggiamento.NumeroOggetti == 0) { // Se non ci sono oggetti nell'equipaggiamento mi interrompo
+    if (p->Equipaggiamento->NumeroOggetti == 0) { // Se non ci sono oggetti nell'equipaggiamento mi interrompo
         return;
     }
 
     oggetto *o;
-    for (size_t i = 0; i < N_STATISTICHE; i++) {                        // Per ogni statistica
-        for (size_t j = 0; j < p->Equipaggiamento.NumeroOggetti; j++) { // Per ogni oggetto dell'equipaggiamento
-            o = p->Equipaggiamento.Oggetti[j];
+    for (size_t i = 0; i < N_STATISTICHE; i++) {                         // Per ogni statistica
+        for (size_t j = 0; j < p->Equipaggiamento->NumeroOggetti; j++) { // Per ogni oggetto dell'equipaggiamento
+            o = p->Equipaggiamento->Oggetti[j];
             s[i] += o->Statistiche[i];
         }
 
@@ -480,8 +491,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 }
                 personaggio *pg = precedente->Next->Personaggio;
                 puts("Questi sono gli oggetti presenti nell'equipaggiamento:");
-                printEquipaggiamento(&pg->Equipaggiamento, false); // Stampo l'equipaggiamento
-                premiPerContinuare();
+                printEquipaggiamento(pg->Equipaggiamento, false); // Stampo l'equipaggiamento
 
                 // Leggo l'azione dell'utente
                 puts("Inserisci 1 per aggiungere un oggetto o 0 per rimuoverlo");
@@ -489,18 +499,18 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 uint8_t scelta;
                 scanf("%" SCNd8, &scelta);
 
-                if (scelta == 0) {                                // Se l'utente desidera rimuovere
-                    if (pg->Equipaggiamento.NumeroOggetti == 0) { // Se l'equipaggiamento è vuoto
+                if (scelta == 0) {                                 // Se l'utente desidera rimuovere
+                    if (pg->Equipaggiamento->NumeroOggetti == 0) { // Se l'equipaggiamento è vuoto
                         puts("Non è possibile rimuovere oggetti a questo personaggio");
                         premiPerContinuare();
                         break;
                     }
 
-                    printEquipaggiamento(&pg->Equipaggiamento, true); // Stampo l'equipaggiamento con gli indici
+                    printEquipaggiamento(pg->Equipaggiamento, true); // Stampo l'equipaggiamento con gli indici
                     puts("Inserisci il numero dell'oggetto");
                     printf("==> ");
                     scanf("%" SCNd8, &scelta);
-                    if (scelta >= pg->Equipaggiamento.NumeroOggetti) { // Controllo la validità della scelta
+                    if (scelta >= pg->Equipaggiamento->NumeroOggetti) { // Controllo la validità della scelta
                         puts("Scelta non valida");
                         premiPerContinuare();
                         break;
@@ -576,10 +586,10 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 printf("==> ");
                 uint16_t ID;
                 getchar();
-                scanf("%" SCNd16, &ID);                                         // Leggo l'ID
+                scanf("%" SCNd16, &ID);                                    // Leggo l'ID
                 personaggioLink *precedente = ricercaID(TABLE->HEAD, &ID); // Trovo il pg
-                if (precedente != NULL) {   // Se ho trovato l'ID
-                    equipaggiamento *e = &precedente->Next->Personaggio->Equipaggiamento;                                         
+                if (precedente != NULL) {                                  // Se ho trovato l'ID
+                    equipaggiamento *e = precedente->Next->Personaggio->Equipaggiamento;
                     printEquipaggiamento(e, false);
 
                 } else {
