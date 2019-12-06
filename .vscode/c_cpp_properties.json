@@ -36,6 +36,25 @@
                 ],
                 "limitSymbolsToIncludedHeaders": true
             }
+        },
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${vcpkgRoot}/x86-windows/include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "C:\\mingw-w64\\x86_64-8.1.0-win32-seh-rt_v6-rev0\\mingw64\\bin\\g++.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++20",
+            "intelliSenseMode": "${default}",
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true
+            }
         }
     ],
     "version": 4
