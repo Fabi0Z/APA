@@ -9,6 +9,7 @@ Spesso non faccio merge sul branch principale sinché non sono sicuro che il mio
 ## APA e VS Code
 
 Nella cartella `.vscode` sono presenti delle configurazioni per poter avviare e debuggare programmi in C/C++ su sistemi GNU/Linux, le attuali configurazioni sono pensate per usare come compilatori `clang` o `gcc` e come debugger `gdb` o `lldb`, sono presenti 4 task già pronte per le varie combinazioni.
+Le task per buildare i programmi sono pensare per compilare tutti i file c presenti nella cartella contenente il file c che si è richiesto di compilare, il vantaggio di ciò è che, se un programma è suddiviso in più files che si trovano nella stessa cartella, essi verranno automaticamente *dati in pasto* al compilatore, lo *svantaggio* è che ogni programma deve stare in una cartella a se stante.
 Il tutto è pensato per funzionare mediante l'estensione ufficiale Microsoft per C/C++, più info [qui](https://code.visualstudio.com/docs/languages/cpp)
 
 ## Script per la consegna
@@ -17,7 +18,7 @@ Il tutto è pensato per funzionare mediante l'estensione ufficiale Microsoft per
 
 ```bash
 ./consegna.sh 1 251489
-# Crea l'archivio per la consegna 1 contenente i Lab 1, 2, 3 
+# Crea l'archivio per la consegna 1 contenente i Lab 1, 2, 3
 # tramite il numero di matricola 251489
 ```
 
