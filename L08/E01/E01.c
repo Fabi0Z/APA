@@ -38,6 +38,12 @@ unsigned int powerset(uint8_t posizione, attivita *a, attivita *soluzione,
     count += powerset(posizione, a, soluzione, maxLunghezza, maxLunghezza);
     return count;
 }
+// Stampa le attività selezionate
+void attSel(int N, attivita *v) {
+    attivita b[N];
+    unsigned int risultati = powerset(0, v, b, N, 0);
+    printf("Sono state generate %d combinazioni di attività\n", risultati);
+}
 // * -------------------------------------------------------------
 
 int main() {
@@ -52,9 +58,6 @@ int main() {
     printf("Sul file sono presenti ");
     printArrayAttivita(a, numeroAttivita);
     printf("\nLe combinazioni ottenute sono:\n\n");
-
-    attivita b[numeroAttivita];
-    unsigned int risultati = powerset(0, a, b, numeroAttivita, 0);
-    printf("Sono state generate %d combinazioni di attività\n", risultati);
+    attSel(numeroAttivita, a);
     return 0;
 }
