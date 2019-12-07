@@ -8,20 +8,34 @@
 // * CALCOLO COMBINATORIO
 
 // Powerset
-void powerset(uint8_t posizione, attivita *a, attivita *soluzione,
-              uint8_t maxLunghezza, uint8_t start) {
+unsigned int powerset(uint8_t posizione, attivita *a, attivita *soluzione,
+                      uint8_t maxLunghezza, uint8_t start) {
+    unsigned int count = 0;
 
-    if (start >= maxLunghezza) {                 // Se ho raggiunto la lunghezza massima
-        printArrayAttivita(soluzione, posizione); // Stampo soluzione
-        return;
+    if (start >= maxLunghezza) {                      // Se ho raggiunto la lunghezza massima
+        if (posizione > 0) {                          // Se ho almeno un elemento
+            printArrayAttivita(soluzione, posizione); // Stampo soluzione
+            return 1;
+        }
+        return 0;
     }
 
     for (uint8_t i = start; i < maxLunghezza; i++) { // Per ogni posizione rimanente
-        soluzione[posizione] = a[i];
-        powerset(posizione + 1, a, soluzione, maxLunghezza, i + 1);
+        if (posizione > 1) {                         // Se ho almeno un'attività giaà presente nelle soluzioni
+
+            while (attivitaSovvrapposta(&soluzione[posizione - 1], &a[i]) && i < maxLunghezza) { // Sinché l'attività successiva è sovrapposta
+                i++;
+            }
+        }
+
+        if (i < maxLunghezza) { // Se la condizione è ancora valida
+            soluzione[posizione] = a[i];
+            count += powerset(posizione + 1, a, soluzione, maxLunghezza, i + 1);
+        }
     }
 
-    powerset(posizione, a, soluzione, maxLunghezza, maxLunghezza);
+    count += powerset(posizione, a, soluzione, maxLunghezza, maxLunghezza);
+    return count;
 }
 // * -------------------------------------------------------------
 
@@ -37,6 +51,7 @@ int main() {
     printArrayAttivita(a, numeroAttivita);
 
     attivita b[numeroAttivita];
-    powerset(0, a, b, numeroAttivita, 0);
+    unsigned int risultati = powerset(0, a, b, numeroAttivita, 0);
+    printf("Sono state generate %d attività\n", risultati);
     return 0;
 }
