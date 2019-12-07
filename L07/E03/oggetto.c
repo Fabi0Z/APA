@@ -44,6 +44,7 @@ bool leggiOggetto(char *string, oggetto *o) {
     if (!leggiStatistiche(string, s)) { // Se la lettura delle statistiche fallisce
         return false;
     }
+    o->Statistiche = creaStatistiche();
     copiaStatistiche(o->Statistiche, s);
     free(s);
     return conteggio == 4;
