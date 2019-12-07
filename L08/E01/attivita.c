@@ -30,22 +30,6 @@ void leggiAttivita(FILE *stream, attivita *a, uint8_t numeroAttivita) {
 }
 // * -------------------------------------------------------------
 
-// * STAMPA DATI
-
-// Stampa un'attività
-void printAttivita(attivita *a) {
-    printf("Inizio %" SCNd8 "; Fine %" SCNd8 ";\n", a->Inizio, a->Fine);
-}
-// Stampa un array di attivita
-void printArrayAttivita(attivita *a, uint8_t numeroAttivita) {
-    printf("Sono presenti %d attività\n", numeroAttivita);
-    for (size_t i = 0; i < numeroAttivita; i++) {
-        printAttivita(&a[i]);
-    }
-    printf("\n");
-}
-// * -------------------------------------------------------------
-
 // * MANIPOLAZIONE DATI
 
 // Unisce i due sottovettori ordinandoli
@@ -87,5 +71,29 @@ void ordina(attivita *a, uint8_t numeroAttivita) {
     attivita *b    = (attivita *)malloc(numeroAttivita * sizeof(attivita)); // Creo l'array d'appoggio
     uint8_t inizio = 0, fine = numeroAttivita - 1;
     ordinaRicorsivo(a, b, inizio, fine);
+}
+
+// Calcola la durata di un'attività
+uint8_t durataAttivita(attivita *a) {
+    return a->Fine - a->Inizio;
+}
+// * -------------------------------------------------------------
+
+// * STAMPA DATI
+
+// Stampa un'attività e restitusice la durata
+uint8_t printAttivita(attivita *a) {
+    uint8_t durata = durataAttivita(a);
+    printf("Inizio %" SCNd8 "; Fine %" SCNd8 "; Durata %" SCNd8 " ore\n", a->Inizio, a->Fine, durata);
+    return durata;
+}
+// Stampa un array di attivita
+void printArrayAttivita(attivita *a, uint8_t numeroAttivita) {
+    printf("Sono presenti %d attività\n", numeroAttivita);
+    unsigned int durata = 0;
+    for (size_t i = 0; i < numeroAttivita; i++) {
+        durata += printAttivita(&a[i]);
+    }
+    printf("La durata totale è di %d ore\n", durata);
 }
 // * -------------------------------------------------------------
