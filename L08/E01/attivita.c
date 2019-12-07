@@ -6,14 +6,6 @@
 
 // * FUNZIONI DI CONTROLLO
 
-// Controlla errori di apertura del file
-bool checkFilestream(FILE *stream) {
-    if (stream == NULL) {
-        puts("Errore apertura file");
-        exit(1);
-    }
-    return true;
-}
 // Controlla se due attività sono sovvrapposte
 bool attivitaSovvrapposta(attivita *a, attivita *b) {
     return a->Inizio < b->Fine && b->Inizio < a->Fine;
@@ -89,6 +81,7 @@ void ordinaRicorsivo(attivita *a, attivita *b, uint8_t inizio, uint8_t fine) {
     ordinaRicorsivo(a, b, centro + 1, fine); // Ordina a destra
     merge(a, b, inizio, centro, fine);       // Unisco i due array
 }
+
 // Ordina un array di attività tramite il Merge Sort
 void ordina(attivita *a, uint8_t numeroAttivita) {
     attivita *b    = (attivita *)malloc(numeroAttivita * sizeof(attivita)); // Creo l'array d'appoggio

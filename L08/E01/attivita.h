@@ -15,8 +15,6 @@ typedef struct Attivita {
 
 // * FUNZIONI DI CONTROLLO
 
-// Controlla errori di apertura del file
-bool checkFilestream(FILE *stream);
 // Controlla se due attività sono sovvrapposte
 bool attivitaSovvrapposta(attivita *a, attivita *b);
 // * -------------------------------------------------------------
