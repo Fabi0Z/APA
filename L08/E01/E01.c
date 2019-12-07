@@ -54,6 +54,7 @@ int main() {
     fscanf(stream, "%" SCNd8 "\n", &numeroAttivita);
     attivita a[numeroAttivita];
     leggiAttivita(stream, a, numeroAttivita);
+    fclose(stream);
     ordina(a, numeroAttivita);
     printf("Sul file sono presenti ");
     printArrayAttivita(a, numeroAttivita);
