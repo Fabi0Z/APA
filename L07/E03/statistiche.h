@@ -17,5 +17,6 @@ typedef int16_t *stats;
 bool leggiStatistiche(char *string, stats s);
 void printStatistiche(stats s, FILE *stream);
 stats creaStatistiche();
+void copiaStatistiche(stats dest, stats src);
 
 #endif // STATISTICHE_H

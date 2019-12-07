@@ -24,3 +24,8 @@ bool leggiStatistiche(char *string, stats s) {
     }
     return conteggio == 11;
 }
+
+// Copia src in dest
+void copiaStatistiche(stats dest, stats src) {
+    memcpy(dest, src, sizeof(int16_t) * N_STATISTICHE);
+}
