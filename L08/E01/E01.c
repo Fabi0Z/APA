@@ -15,6 +15,7 @@ unsigned int powerset(uint8_t posizione, attivita *a, attivita *soluzione,
     if (start >= maxLunghezza) {                      // Se ho raggiunto la lunghezza massima
         if (posizione > 0) {                          // Se ho almeno un elemento
             printArrayAttivita(soluzione, posizione); // Stampo soluzione
+            printf("\n");
             return 1;
         }
         return 0;
@@ -48,10 +49,12 @@ int main() {
     attivita a[numeroAttivita];
     leggiAttivita(stream, a, numeroAttivita);
     ordina(a, numeroAttivita);
+    printf("Sul file sono presenti ");
     printArrayAttivita(a, numeroAttivita);
+    printf("\nLe combinazioni ottenute sono:\n\n");
 
     attivita b[numeroAttivita];
     unsigned int risultati = powerset(0, a, b, numeroAttivita, 0);
-    printf("Sono state generate %d attività\n", risultati);
+    printf("Sono state generate %d combinazioni di attività\n", risultati);
     return 0;
 }

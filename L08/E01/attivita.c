@@ -89,7 +89,7 @@ uint8_t printAttivita(attivita *a) {
 }
 // Stampa un array di attivita
 void printArrayAttivita(attivita *a, uint8_t numeroAttivita) {
-    printf("Sono presenti %d attività\n", numeroAttivita);
+    printf("%d attività\n", numeroAttivita);
     unsigned int durata = 0;
     for (size_t i = 0; i < numeroAttivita; i++) {
         durata += printAttivita(&a[i]);
