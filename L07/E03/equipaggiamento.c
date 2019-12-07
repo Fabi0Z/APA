@@ -3,6 +3,8 @@
 // Crea un equipaggiamento
 equipaggiamento *creaEquipaggiamento() {
     equipaggiamento *e = (equipaggiamento *)malloc(sizeof(equipaggiamento));
+    e->Oggetti         = NULL;
+    e->NumeroOggetti   = 0;
     return e;
 }
 

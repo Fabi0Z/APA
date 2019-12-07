@@ -4,12 +4,14 @@
 void allocaOggetto(oggetto *o, unsigned int nomeSize, unsigned int tipoSize) {
     o->Nome = (char *)calloc(nomeSize, sizeof(char)); // Alloco la memoria
     o->Tipo = (char *)calloc(tipoSize, sizeof(char));
+    o->Statistiche = creaStatistiche();
 }
 
 // Dealloca un elemento di tipo oggetto
 void freeOggetto(oggetto *o) {
     free(o->Nome);
     free(o->Tipo);
+    free(o->Statistiche);
     free(o);
 }
 

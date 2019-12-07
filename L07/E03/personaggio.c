@@ -2,8 +2,10 @@
 
 // Alloca memoria per un oggetto di tipo personaggio
 void allocaPersonaggio(personaggio *p, unsigned int nomeSize, unsigned int classeSize) {
-    p->Nome   = (char *)calloc(nomeSize, sizeof(char)); // Alloco la memoria
-    p->Classe = (char *)calloc(classeSize, sizeof(char));
+    p->Nome            = (char *)calloc(nomeSize, sizeof(char)); // Alloco la memoria
+    p->Classe          = (char *)calloc(classeSize, sizeof(char));
+    p->Equipaggiamento = creaEquipaggiamento();
+    p->Statistiche     = creaStatistiche();
 }
 void freePersonaggio(personaggio *p) {         // Dealloca la memoria di un personaggio
     if (p->Equipaggiamento->Oggetti != NULL) { // Se è presente un equipaggiamento
@@ -129,11 +131,7 @@ personaggioLink *creaLista(personaggio *p) {
 
 // Crea, alloca e restituisce un personaggio senza equipaggiamento
 personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) {
-    personaggio *temp                    = (personaggio *)malloc(sizeof(personaggio));
-    temp->Equipaggiamento                = creaEquipaggiamento();
-    temp->Equipaggiamento->Oggetti       = NULL;
-    temp->Equipaggiamento->NumeroOggetti = 0;
-    temp->Statistiche                    = creaStatistiche();
+    personaggio *temp = (personaggio *)malloc(sizeof(personaggio));
     allocaPersonaggio(temp, nomeSize, classeSize);
     return temp;
 }
