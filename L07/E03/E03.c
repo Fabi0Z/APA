@@ -81,7 +81,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
         printf("\n");
         switch (lettura) {
             case caricaPersonaggi: {
-                FILE *pg = fopen("pg.txt", "r");
+                FILE *pg = fopen("data/pg.txt", "r");
                 // Verifico i filestream
                 if (!checkFilestream(pg)) {
                     return 1;
@@ -92,7 +92,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
             }
 
             case caricaInventario: {
-                FILE *inv = fopen("inventario.txt", "r");
+                FILE *inv = fopen("data/inventario.txt", "r");
                 // Verifico i filestream
                 if (!checkFilestream(inv)) {
                     return 2;
