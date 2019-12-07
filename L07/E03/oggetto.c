@@ -1,5 +1,4 @@
 #include "oggetto.h"
-#include "statistiche.h"
 
 // Alloca memoria per un oggetto di tipo oggetto
 void allocaOggetto(oggetto *o, unsigned int nomeSize, unsigned int tipoSize) {
