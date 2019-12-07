@@ -26,11 +26,11 @@ void printEquipaggiamento(equipaggiamento *e, bool indici) {
 // Copia src in dest
 void copiaEquipaggiamento(equipaggiamento *dest, equipaggiamento *src) {
     // Se vi sono oggetti
-    if (src->NumeroOggetti = 0) {
+    if (src->NumeroOggetti == 0) {
         dest->NumeroOggetti = 0;
         if (dest->Oggetti != NULL) {
             free(dest->Oggetti);
-            dest->Oggetti == NULL;
+            dest->Oggetti = NULL;
         }
         return;
     }
