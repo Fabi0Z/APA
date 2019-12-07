@@ -3,6 +3,7 @@
 // Crea e alloca memoria per una variabile stats
 stats creaStatistiche() {
     stats s = (stats)malloc(sizeof(int16_t));
+    return s;
 }
 
 // Stampa delle statistiche
