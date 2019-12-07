@@ -151,7 +151,7 @@ void copiaPersonaggio(personaggio *dest, personaggio *src) {
     // Copio i dati per puntatore
     strcpy(dest->Nome, src->Nome);
     strcpy(dest->Classe, src->Classe);
-    copiaStatistiche(dest, src);
+    copiaStatistiche(dest->Statistiche, src->Statistiche);
     copiaEquipaggiamento(dest->Equipaggiamento, src->Equipaggiamento);
 }
 
@@ -172,6 +172,7 @@ bool leggiPersonaggio(char *string, personaggio *p) {
     if (!leggiStatistiche(string, s)) { // Se la lettura delle statistiche fallisce
         return false;
     }
+    p->Statistiche = creaStatistiche();
     copiaStatistiche(p->Statistiche, s);
     return conteggio == 6;
 }
