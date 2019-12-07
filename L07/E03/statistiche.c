@@ -1,7 +1,4 @@
 #include "statistiche.h"
-#include <inttypes.h>
-#include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 // Crea e alloca memoria per una variabile stats
