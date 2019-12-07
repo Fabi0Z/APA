@@ -11,6 +11,7 @@ void freePersonaggio(personaggio *p) {         // Dealloca la memoria di un pers
     }
     free(p->Nome);
     free(p->Classe);
+    free(p->Statistiche);
     free(p);
 }
 
@@ -132,6 +133,7 @@ personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) {
     temp->Equipaggiamento                = creaEquipaggiamento();
     temp->Equipaggiamento->Oggetti       = NULL;
     temp->Equipaggiamento->NumeroOggetti = 0;
+    temp->Statistiche                    = creaStatistiche();
     allocaPersonaggio(temp, nomeSize, classeSize);
     return temp;
 }
@@ -168,11 +170,10 @@ bool leggiPersonaggio(char *string, personaggio *p) {
     conteggio += sscanf(string, "%s %[^\n]", p->Nome, string);
     conteggio += sscanf(string, "%s %[^\n]", p->Classe, string);
 
-    stats s;
+    stats s = creaStatistiche();
     if (!leggiStatistiche(string, s)) { // Se la lettura delle statistiche fallisce
         return false;
     }
-    p->Statistiche = creaStatistiche();
     copiaStatistiche(p->Statistiche, s);
     return conteggio == 6;
 }
