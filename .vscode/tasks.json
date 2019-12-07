@@ -39,6 +39,18 @@
                 "fileLocation": "autoDetect"
             },
             "group": "build"
+        },
+        {
+            "type": "shell",
+            "label": "Makeheaders",
+            "command": "makeheaders",
+            "args": [
+                "${file}",
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "group": "none"
         }
     ]
 }
