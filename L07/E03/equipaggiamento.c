@@ -1,5 +1,11 @@
 #include "equipaggiamento.h"
 
+// Crea un equipaggiamento
+equipaggiamento *creaEquipaggiamento() {
+    equipaggiamento *e = (equipaggiamento *)malloc(sizeof(equipaggiamento));
+    return e;
+}
+
 // Stampa un equipaggiamento su file
 void printEquipaggiamentoFile(equipaggiamento *e, FILE *stream, bool indici) {
     for (size_t i = 0; i < e->NumeroOggetti; i++) { // Per ogni oggetto
