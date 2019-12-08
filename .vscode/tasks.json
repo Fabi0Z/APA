@@ -61,26 +61,6 @@
         },
         {
             "type": "shell",
-            "label": "Build with clang",
-            "command": "clang",
-            "args": [
-                "-g",
-                "${fileDirname}/*.c",
-                "-o",
-                "${workspaceFolder}/builds/${fileBasenameNoExtension}",
-                "--debug"
-            ],
-            "options": {
-                "cwd": "${fileDirname}"
-            },
-            "problemMatcher": {
-                "base": "$gcc",
-                "fileLocation": "autoDetect"
-            },
-            "group": "build"
-        },
-        {
-            "type": "shell",
             "label": "Build library",
             "command": "gcc",
             "args": [
@@ -100,7 +80,7 @@
         },
         {
             "type": "shell",
-            "label": "Build libraries",
+            "label": "Build all libraries in folder",
             "command": "${workspaceFolder}/.vscode/compile_libraries.sh",
             "args": [
                 "${fileDirname}",
@@ -120,6 +100,26 @@
                 "cwd": "${fileDirname}"
             },
             "group": "none"
+        },
+        {
+            "type": "shell",
+            "label": "Build folder clang",
+            "command": "clang",
+            "args": [
+                "-g",
+                "${fileDirname}/*.c",
+                "-o",
+                "${workspaceFolder}/builds/${fileBasenameNoExtension}",
+                "--debug"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": "autoDetect"
+            },
+            "group": "build"
         }
     ]
 }

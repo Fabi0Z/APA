@@ -74,7 +74,7 @@
             "preLaunchTask": "Build"
         },
         {
-            "name": "clang build and debug active file (gdb)",
+            "name": "clang build and debug active folder (gdb)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
@@ -94,7 +94,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "Build with clang",
+            "preLaunchTask": "Build folder clang",
             "logging": {
                 "trace": true,
                 "traceResponse": true,
@@ -102,7 +102,7 @@
             }
         },
         {
-            "name": "clang build and debug active file (lldb)",
+            "name": "clang build and debug active folder (lldb)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
@@ -115,7 +115,7 @@
                 "externalConsole": false
             },
             "MIMode": "lldb",
-            "preLaunchTask": "Build with clang",
+            "preLaunchTask": "Build folder clang",
             "logging": {
                 "trace": true,
                 "traceResponse": true,
