@@ -92,7 +92,7 @@ void durataArrayAttivita(arrayAttivita *a) {
 // Copia src in dest
 void copiaArrayAttivita(arrayAttivita *dest, arrayAttivita *src) {
     for (size_t i = 0; i < src->NumeroElementi; i++) {
-        dest->NumeroElementi == src->NumeroElementi;
+        dest->Array[i] = src->Array[i];
     }
     dest->Durata         = src->Durata;
     dest->NumeroElementi = src->NumeroElementi;
