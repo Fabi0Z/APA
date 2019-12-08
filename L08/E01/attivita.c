@@ -87,6 +87,15 @@ void durataArrayAttivita(arrayAttivita *a) {
         a->Durata += durataAttivita(&a->Array[i]);
     }
 }
+
+// Copia src in dest
+void copiaArrayAttivita(arrayAttivita *dest, arrayAttivita *src) {
+    for (size_t i = 0; i < src->NumeroElementi; i++) {
+        dest->NumeroElementi == src->NumeroElementi;
+    }
+    dest->Durata         = src->Durata;
+    dest->NumeroElementi = src->NumeroElementi;
+}
 // * -------------------------------------------------------------
 
 // * STAMPA DATI
@@ -100,7 +109,7 @@ void printArrayAttivita(arrayAttivita *a) {
     printf("%d attività\n", a->NumeroElementi);
     printf("Durata totale %d ore\n", a->NumeroElementi);
     for (size_t i = 0; i < a->NumeroElementi; i++) {
-        printAttivita(&a[i]);
+        printAttivita(&a->Array[i]);
     }
 }
 // * -------------------------------------------------------------

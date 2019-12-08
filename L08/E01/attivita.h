@@ -21,6 +21,7 @@ void printArrayAttivita(arrayAttivita *a);
 void printAttivita(attivita *a);
 uint8_t durataAttivita(attivita *a);
 void durataArrayAttivita(arrayAttivita *a);
+void copiaArrayAttivita(arrayAttivita *dest, arrayAttivita *src);
 void ordina(arrayAttivita *a);
 void ordinaRicorsivo(attivita *a, attivita *b, uint8_t inizio, uint8_t fine);
 void merge(attivita *a, attivita *b, int inzio, int centro, int fine);
