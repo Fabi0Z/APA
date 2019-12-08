@@ -24,7 +24,7 @@ void printArrayTessera(arrayTessera *a, FILE *stream);
 void printTessera(tessera *t, FILE *stream);
 void printTubo(tubo *t, FILE *stream);
 arrayTessera parseArrayTessera(FILE *stream, unsigned int numeroTessere);
-tessera parseTessera(char *string);
-tubo parseTubo(char *string);
+void parseTessera(tessera *t, char *string);
+void parseTubo(tubo *t, char *string);
 
 #endif // TESSERA_H

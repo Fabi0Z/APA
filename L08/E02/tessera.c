@@ -1,18 +1,14 @@
 #include "tessera.h"
 
 // Effettua il parse di un tubo da stringa
-tubo parseTubo(char *string) {
-    tubo t;
-    sscanf(string, "%c %d %[^\n]", &t.Colore, &t.Valore, string);
-    return t;
+void parseTubo(tubo *t, char *string) {
+    sscanf(string, "%c %d %[^\n]", &t->Colore, &t->Valore, string);
 }
 
 // Effettua il parse di una tessera da stringa
-tessera parseTessera(char *string) {
-    tessera t;
-    t.Tubo1 = parseTubo(string);
-    t.Tubo2 = parseTubo(string);
-    return t;
+void parseTessera(tessera *t, char *string) {
+    parseTubo(&t->Tubo1, string);
+    parseTubo(&t->Tubo2, string);
 }
 
 // Effettua il parse di un array di tessere da file
@@ -24,7 +20,7 @@ arrayTessera parseArrayTessera(FILE *stream, unsigned int numeroTessere) {
     char string[11];
     for (size_t i = 0; i < a.NumeroElementi; i++) {
         fgets(string, 10, stream);
-        a.Array[i] = parseTessera(string);
+        parseTessera(&a.Array[i], string);
     }
 
     return a;
@@ -37,16 +33,16 @@ void printTubo(tubo *t, FILE *stream) {
 
 // Stampa un tessera su file
 void printTessera(tessera *t, FILE *stream) {
-    fprintf(stream, "Tubo 1: ");
+    fprintf(stream, "- Tubo 1: ");
     printTubo(&t->Tubo1, stream);
-    fprintf(stream, "\nTubo 2: ");
+    fprintf(stream, "\n- Tubo 2: ");
     printTubo(&t->Tubo2, stream);
 }
 
 // Stampa un array di tessere su file
 void printArrayTessera(arrayTessera *a, FILE *stream) {
     for (unsigned int i = 0; i < a->NumeroElementi; i++) {
-        fprintf(stream, "Tessera N# %d\n", i);
+        fprintf(stream, "Tessera #%d\n", i);
         printTessera(&a->Array[i], stream);
         fprintf(stream, "\n");
     }
