@@ -85,7 +85,7 @@ uint8_t durataAttivita(attivita *a) {
 void durataArrayAttivita(arrayAttivita *a) {
     a->Durata = 0;
     for (uint8_t i = 0; i < a->NumeroElementi; i++) {
-        a->Durata += durataAttivita(&a->Array[i]);
+        a->Durata += a->Array[i].Durata;
     }
 }
 
