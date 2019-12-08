@@ -21,11 +21,13 @@ attivita parseAttivita(char *string) {
     return a;
 }
 // Legge una serie di attività da file
-void leggiAttivita(FILE *stream, attivita *a, uint8_t numeroAttivita) {
+void leggiAttivita(FILE *stream, arrayAttivita *a) {
     char string[10];
-    for (size_t i = 0; i < numeroAttivita; i++) { // Per ogni attività
+    a->NumeroElementi = 0;
+    for (size_t i = 0; i < a->NumeroElementi; i++) { // Per ogni attività
         fgets(string, 9, stream);
-        a[i] = parseAttivita(string);
+        a->Array[i] = parseAttivita(string);
+        a->NumeroElementi += durataAttivita(&a->Array[i]);
     }
 }
 // * -------------------------------------------------------------
@@ -67,33 +69,38 @@ void ordinaRicorsivo(attivita *a, attivita *b, uint8_t inizio, uint8_t fine) {
 }
 
 // Ordina un array di attività tramite il Merge Sort
-void ordina(attivita *a, uint8_t numeroAttivita) {
-    attivita *b    = (attivita *)malloc(numeroAttivita * sizeof(attivita)); // Creo l'array d'appoggio
-    uint8_t inizio = 0, fine = numeroAttivita - 1;
-    ordinaRicorsivo(a, b, inizio, fine);
+void ordina(arrayAttivita *a) {
+    attivita *b    = (attivita *)malloc(a->NumeroElementi * sizeof(attivita)); // Creo l'array d'appoggio
+    uint8_t inizio = 0, fine = a->NumeroElementi - 1;
+    ordinaRicorsivo(a->Array, b, inizio, fine);
 }
 
 // Calcola la durata di un'attività
 uint8_t durataAttivita(attivita *a) {
     return a->Fine - a->Inizio;
 }
+
+// Calcola la durata di un array di attività
+void durataArrayAttivita(arrayAttivita *a) {
+    a->Durata = 0;
+    for (uint8_t i = 0; i < a->NumeroElementi; i++) {
+        a->Durata += durataAttivita(&a->Array[i]);
+    }
+}
 // * -------------------------------------------------------------
 
 // * STAMPA DATI
 
 // Stampa un'attività e restitusice la durata
-uint8_t printAttivita(attivita *a) {
-    uint8_t durata = durataAttivita(a);
-    printf("Inizio %" SCNd8 "; Fine %" SCNd8 "; Durata %" SCNd8 " ore\n", a->Inizio, a->Fine, durata);
-    return durata;
+void printAttivita(attivita *a) {
+    printf("Inizio %" SCNd8 "; Fine %" SCNd8 "; Durata %" SCNd8 " ore\n", a->Inizio, a->Fine, durataAttivita(a));
 }
 // Stampa un array di attivita
-void printArrayAttivita(attivita *a, uint8_t numeroAttivita) {
-    printf("%d attività\n", numeroAttivita);
-    unsigned int durata = 0;
-    for (size_t i = 0; i < numeroAttivita; i++) {
-        durata += printAttivita(&a[i]);
+void printArrayAttivita(arrayAttivita *a) {
+    printf("%d attività\n", a->NumeroElementi);
+    printf("Durata totale %d ore\n", a->NumeroElementi);
+    for (size_t i = 0; i < a->NumeroElementi; i++) {
+        printAttivita(&a[i]);
     }
-    printf("La durata totale è di %d ore\n", durata);
 }
 // * -------------------------------------------------------------

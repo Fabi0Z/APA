@@ -8,15 +8,23 @@
 typedef struct Attivita {
     uint8_t Inizio;
     uint8_t Fine;
+    uint8_t Durata;
 } attivita;
 
-void printArrayAttivita(attivita *a, uint8_t numeroAttivita);
-uint8_t printAttivita(attivita *a);
+typedef struct ArrayAttivita {
+    attivita *Array;
+    uint8_t NumeroElementi;
+    unsigned int Durata;
+} arrayAttivita;
+
+void printArrayAttivita(arrayAttivita *a);
+void printAttivita(attivita *a);
 uint8_t durataAttivita(attivita *a);
-void ordina(attivita *a, uint8_t numeroAttivita);
+void durataArrayAttivita(arrayAttivita *a);
+void ordina(arrayAttivita *a);
 void ordinaRicorsivo(attivita *a, attivita *b, uint8_t inizio, uint8_t fine);
 void merge(attivita *a, attivita *b, int inzio, int centro, int fine);
-void leggiAttivita(FILE *stream, attivita *a, uint8_t numeroAttivita);
+void leggiAttivita(FILE *stream, arrayAttivita *a);
 attivita parseAttivita(char *string);
 bool attivitaSovvrapposta(attivita *a, attivita *b);
 
