@@ -50,15 +50,15 @@ int main() {
     FILE *stream = fopen("att.txt", "r");
     checkFilestream(stream);
 
-    uint8_t numeroAttivita;
-    fscanf(stream, "%" SCNd8 "\n", &numeroAttivita);
-    attivita a[numeroAttivita];
-    leggiAttivita(stream, a, numeroAttivita);
+    arrayAttivita a;
+    fscanf(stream, "%" SCNd8 "\n", &a.NumeroElementi);
+    a.Array = (attivita *)calloc(a.NumeroElementi, sizeof(attivita));
+    leggiAttivita(stream, &a);
     fclose(stream);
-    ordina(a, numeroAttivita);
+    ordina(&a);
     printf("Sul file sono presenti ");
-    printArrayAttivita(a, numeroAttivita);
+    printArrayAttivita(&a);
     printf("\nLe combinazioni ottenute sono:\n\n");
-    attSel(numeroAttivita, a);
+    attSel(a.NumeroElementi, a.Array);
     return 0;
 }
