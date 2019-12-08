@@ -23,11 +23,12 @@ attivita parseAttivita(char *string) {
 // Legge una serie di attività da file
 void leggiAttivita(FILE *stream, arrayAttivita *a) {
     char string[10];
-    a->NumeroElementi = 0;
+    a->Durata = 0;
     for (size_t i = 0; i < a->NumeroElementi; i++) { // Per ogni attività
         fgets(string, 9, stream);
-        a->Array[i] = parseAttivita(string);
-        a->NumeroElementi += durataAttivita(&a->Array[i]);
+        a->Array[i]        = parseAttivita(string);
+        a->Array[i].Durata = durataAttivita(&a->Array[i]);
+        a->Durata += a->Array[i].Durata;
     }
 }
 // * -------------------------------------------------------------
