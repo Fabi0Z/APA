@@ -42,10 +42,59 @@
         },
         {
             "type": "shell",
+            "label": "Build library with gcc",
+            "command": "gcc",
+            "args": [
+                "-o",
+                "${fileBasenameNoExtension}.o",
+                "-c",
+                "${file}"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": "autoDetect"
+            },
+            "group": "build"
+        },
+        {
+            "type": "shell",
+            "label": "Build libraries with gcc",
+            "command": "${workspaceFolder}/.vscode/compile_libraries.sh",
+            "args": [
+                "${fileDirname}",
+                "${file}"
+            ],
+            "group": "build"
+        },
+        {
+            "type": "shell",
+            "label": "Build linking libraries gcc",
+            "command": "gcc",
+            "args": [
+                "-g",
+                "${file}",
+                "${fileDirname}/*.o",
+                "-o",
+                "${workspaceFolder}/builds/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": "autoDetect"
+            },
+            "group": "build"
+        },
+        {
+            "type": "shell",
             "label": "Makeheaders",
             "command": "makeheaders",
             "args": [
-                "${file}",
+                "${file}"
             ],
             "options": {
                 "cwd": "${fileDirname}"
