@@ -9,7 +9,7 @@
 
 // Powerset
 unsigned int powerset(uint8_t posizione, attivita *a, attivita *soluzione,
-                      uint8_t maxLunghezza, uint8_t start) {
+                      uint8_t maxLunghezza, uint8_t start, arrayAttivita *max) {
     unsigned int count = 0;
 
     if (start >= maxLunghezza) { // Se ho raggiunto la lunghezza massima
@@ -18,15 +18,16 @@ unsigned int powerset(uint8_t posizione, attivita *a, attivita *soluzione,
             temp.Array          = soluzione;
             temp.NumeroElementi = posizione;
             durataArrayAttivita(&temp);
-            printArrayAttivita(&temp); // Stampo soluzione
-            printf("\n");
+            if (temp.Durata > max->Durata) {
+                copiaArrayAttivita(max, &temp);
+            }
             return 1;
         }
         return 0;
     }
 
     for (uint8_t i = start; i < maxLunghezza; i++) { // Per ogni posizione rimanente
-        if (posizione > 1) {                         // Se ho almeno un'attività giaà presente nelle soluzioni
+        if (posizione > 0) {                         // Se ho almeno un'attività giaà presente nelle soluzioni
 
             while (attivitaSovvrapposta(&soluzione[posizione - 1], &a[i]) && i < maxLunghezza) { // Sinché l'attività successiva è sovrapposta
                 i++;
@@ -35,18 +36,24 @@ unsigned int powerset(uint8_t posizione, attivita *a, attivita *soluzione,
 
         if (i < maxLunghezza) { // Se la condizione è ancora valida
             soluzione[posizione] = a[i];
-            count += powerset(posizione + 1, a, soluzione, maxLunghezza, i + 1);
+            count += powerset(posizione + 1, a, soluzione, maxLunghezza, i + 1, max);
         }
     }
 
-    count += powerset(posizione, a, soluzione, maxLunghezza, maxLunghezza);
+    count += powerset(posizione, a, soluzione, maxLunghezza, maxLunghezza, max);
     return count;
 }
 // Stampa le attività selezionate
 void attSel(int N, attivita *v) {
     attivita b[N];
-    unsigned int risultati = powerset(0, v, b, N, 0);
-    printf("Sono state generate %d combinazioni di attività\n", risultati);
+    arrayAttivita max;
+    max.Array          = (attivita *)calloc(N, sizeof(attivita));
+    max.Durata         = 0;
+    max.NumeroElementi = 0;
+
+    unsigned int risultati = powerset(0, v, b, N, 0, &max);
+    printf("Sono state generate %d combinazioni di attività, quella di durata massima è\n", risultati);
+    printArrayAttivita(&max);
 }
 // * -------------------------------------------------------------
 
