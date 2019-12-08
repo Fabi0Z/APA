@@ -8,8 +8,19 @@ Spesso non faccio merge sul branch principale sinché non sono sicuro che il mio
 
 ## APA e VS Code
 
-Nella cartella `.vscode` sono presenti delle configurazioni per poter avviare e debuggare programmi in C/C++ su sistemi GNU/Linux e macOS, le attuali configurazioni sono pensate per usare come compilatori `clang` o `gcc` e come debugger `gdb` o `lldb`, sono presenti 4 task già pronte per le varie combinazioni.
-Le task per buildare i programmi sono pensare per compilare tutti i file c presenti nella cartella contenente il file c che si è richiesto di compilare, il vantaggio di ciò è che, se un programma è suddiviso in più files che si trovano nella stessa cartella, essi verranno automaticamente *dati in pasto* al compilatore, lo *svantaggio* è che ogni programma deve stare in una cartella a se stante.
+Nella cartella `.vscode` sono presenti delle configurazioni per poter avviare e debuggare programmi in C/C++ su sistemi GNU/Linux e macOS, le attuali configurazioni sono pensate per usare come compilatori `clang` o `gcc` e come debugger `gdb` o `lldb`.
+
+### tasks.json
+
+- `Build linking libraries` : Compila il file `.c` attivo linkando tutti i file `*.o` presenti nella cartella dello stesso
+- `Build folder` : Compila tutti i file `.c` nella cartella del file attivo in un unico eseguibile
+- `Build` : Compila il file `.c` attivo
+- `Build library` : Compila il file `.c` attivo come libreria
+- `Build all libraries in folder` : Compila tutti i file `.c` presenti nella cartella del file attivo come librerie ad eccezione del file attivo che non viene Compilato
+- `Makeheaders` : Crea il file `.h` rispettivo al file attivo (richiede [makeheaders](https://www.hwaci.com/sw/mkhdr/) installato)
+- `Build folder clang` : Stessa cosa di `Build folder` ma con `clang` invece che `gcc`
+
+Nel file `launch.json` sono presenti varie configurazioni per le rispettive alle task elencate.
 Il tutto è pensato per funzionare mediante l'estensione ufficiale Microsoft per C/C++, più info [qui](https://code.visualstudio.com/docs/languages/cpp)
 
 ### Configurazione per Windows
