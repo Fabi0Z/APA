@@ -67,7 +67,8 @@
                 "${fileDirname}",
                 "${file}"
             ],
-            "group": "build"
+            "group": "build",
+            "problemMatcher": []
         },
         {
             "type": "shell",
@@ -88,6 +89,13 @@
                 "fileLocation": "autoDetect"
             },
             "group": "build"
+        },
+        {
+            "label": "Build everything gcc",
+            "dependsOn": [
+                "Build libraries with gcc",
+                "Build linking libraries gcc"
+            ]
         },
         {
             "type": "shell",
