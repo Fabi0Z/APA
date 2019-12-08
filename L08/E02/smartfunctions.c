@@ -15,3 +15,9 @@ bool checkFilestream(FILE *stream) {
     }
     return true;
 }
+
+// Apre in maniera sicura un file, interrompe il programma se non è possibile aprirlo
+FILE *smartFopen(char *filename, char *mode) {
+    FILE *f = fopen(filename, mode);
+    return checkFilestream(f) ? f : NULL;
+}
