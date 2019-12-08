@@ -3,11 +3,50 @@
     "tasks": [
         {
             "type": "shell",
-            "label": "Build with gcc",
+            "label": "Build linking libraries",
+            "command": "gcc",
+            "args": [
+                "-g",
+                "${file}",
+                "${fileDirname}/*.o",
+                "-o",
+                "${workspaceFolder}/builds/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": "autoDetect"
+            },
+            "group": "build"
+        },
+        {
+            "type": "shell",
+            "label": "Build folder",
             "command": "gcc",
             "args": [
                 "-g",
                 "${fileDirname}/*.c",
+                "-o",
+                "${workspaceFolder}/builds/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": "autoDetect"
+            },
+            "group": "build"
+        },
+        {
+            "type": "shell",
+            "label": "Build",
+            "command": "gcc",
+            "args": [
+                "-g",
+                "${file}",
                 "-o",
                 "${workspaceFolder}/builds/${fileBasenameNoExtension}"
             ],
@@ -42,7 +81,7 @@
         },
         {
             "type": "shell",
-            "label": "Build library with gcc",
+            "label": "Build library",
             "command": "gcc",
             "args": [
                 "-o",
@@ -61,7 +100,7 @@
         },
         {
             "type": "shell",
-            "label": "Build libraries with gcc",
+            "label": "Build libraries",
             "command": "${workspaceFolder}/.vscode/compile_libraries.sh",
             "args": [
                 "${fileDirname}",
@@ -69,33 +108,6 @@
             ],
             "group": "build",
             "problemMatcher": []
-        },
-        {
-            "type": "shell",
-            "label": "Build linking libraries gcc",
-            "command": "gcc",
-            "args": [
-                "-g",
-                "${file}",
-                "${fileDirname}/*.o",
-                "-o",
-                "${workspaceFolder}/builds/${fileBasenameNoExtension}"
-            ],
-            "options": {
-                "cwd": "${fileDirname}"
-            },
-            "problemMatcher": {
-                "base": "$gcc",
-                "fileLocation": "autoDetect"
-            },
-            "group": "build"
-        },
-        {
-            "label": "Build everything gcc",
-            "dependsOn": [
-                "Build libraries with gcc",
-                "Build linking libraries gcc"
-            ]
         },
         {
             "type": "shell",

@@ -5,6 +5,75 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Build and debug active file linking libraries",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": true,
+            "linux": {
+                "externalConsole": false
+            },
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build linking libraries"
+        },
+        {
+            "name": "Build and debug active folder",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": true,
+            "linux": {
+                "externalConsole": false
+            },
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build folder"
+        },
+        {
+            "name": "Build and debug active file",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": true,
+            "linux": {
+                "externalConsole": false
+            },
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build"
+        },
+        {
             "name": "clang build and debug active file (gdb)",
             "type": "cppdbg",
             "request": "launch",
@@ -52,96 +121,6 @@
                 "traceResponse": true,
                 "engineLogging": true
             }
-        },
-        {
-            "name": "gcc build and debug active file (gdb)",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "externalConsole": true,
-            "linux": {
-                "externalConsole": false
-            },
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ],
-            "preLaunchTask": "Build with gcc"
-        },
-        {
-            "name": "gcc build and debug active folder (gdb)",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "externalConsole": true,
-            "linux": {
-                "externalConsole": false
-            },
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ],
-            "preLaunchTask": "Build everything gcc"
-        },
-        {
-            "name": "gcc build and debug active file (lldb)",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "externalConsole": true,
-            "linux": {
-                "externalConsole": false
-            },
-            "MIMode": "lldb",
-            "preLaunchTask": "Build with gcc",
-            "logging": {
-                "trace": true,
-                "traceResponse": true,
-                "engineLogging": true
-            }
-        },
-        {
-            "name": "gcc build and debug active file linking libraries (gdb)",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/builds/${fileBasenameNoExtension}",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "externalConsole": true,
-            "linux": {
-                "externalConsole": false
-            },
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ],
-            "preLaunchTask": "Build linking libraries gcc"
         }
     ]
 }
