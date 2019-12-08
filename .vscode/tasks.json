@@ -92,9 +92,10 @@
         {
             "type": "shell",
             "label": "Makeheaders",
-            "command": "makeheaders",
+            "command": "${workspaceFolder}/.vscode/makeheaders.sh",
             "args": [
-                "${file}"
+                "${fileDirname}",
+                "${fileBasenameNoExtension}"
             ],
             "options": {
                 "cwd": "${fileDirname}"
