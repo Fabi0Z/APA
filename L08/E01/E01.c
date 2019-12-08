@@ -69,10 +69,9 @@ int main() {
     a.Array = (attivita *)calloc(a.NumeroElementi, sizeof(attivita));
     leggiAttivita(stream, &a);
     fclose(stream);
-    ordina(&a);
     printf("Sul file sono presenti ");
     printArrayAttivita(&a);
-    printf("\nLe combinazioni ottenute sono:\n\n");
+    printf("\n");
     attSel(a.NumeroElementi, a.Array);
     return 0;
 }
