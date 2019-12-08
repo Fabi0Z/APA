@@ -99,7 +99,8 @@
             "options": {
                 "cwd": "${fileDirname}"
             },
-            "group": "none"
+            "group": "none",
+            "problemMatcher": []
         },
         {
             "type": "shell",
