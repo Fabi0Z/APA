@@ -12,9 +12,13 @@ unsigned int powerset(uint8_t posizione, attivita *a, attivita *soluzione,
                       uint8_t maxLunghezza, uint8_t start) {
     unsigned int count = 0;
 
-    if (start >= maxLunghezza) {                      // Se ho raggiunto la lunghezza massima
-        if (posizione > 0) {                          // Se ho almeno un elemento
-            printArrayAttivita(soluzione, posizione); // Stampo soluzione
+    if (start >= maxLunghezza) { // Se ho raggiunto la lunghezza massima
+        if (posizione > 0) {     // Se ho almeno un elemento
+            arrayAttivita temp;
+            temp.Array          = soluzione;
+            temp.NumeroElementi = posizione;
+            durataArrayAttivita(&temp);
+            printArrayAttivita(&temp); // Stampo soluzione
             printf("\n");
             return 1;
         }
