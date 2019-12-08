@@ -91,6 +91,19 @@
         },
         {
             "type": "shell",
+            "label": "Delete Libraries",
+            "command": "rm",
+            "args": [
+                "${fileDirname}/*o"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "group": "none",
+            "problemMatcher": []
+        },
+        {
+            "type": "shell",
             "label": "Makeheaders",
             "command": "${workspaceFolder}/.vscode/makeheaders.sh",
             "args": [

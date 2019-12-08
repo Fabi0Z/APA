@@ -17,6 +17,7 @@ Nella cartella `.vscode` sono presenti delle configurazioni per poter avviare e 
 - `Build` : Compila il file `.c` attivo
 - `Build library` : Compila il file `.c` attivo come libreria
 - `Build all libraries in folder` : Compila tutti i file `.c` presenti nella cartella del file attivo come librerie ad eccezione del file attivo che non viene Compilato
+- `Delete Libraries` : Elimina tutte le librerie compilate presenti nella cartella del file attivo
 - `Makeheaders` : Crea il file `.h` rispettivo al file attivo (richiede [makeheaders](https://www.hwaci.com/sw/mkhdr/) installato)
 - `Build folder clang` : Stessa cosa di `Build folder` ma con `clang` invece che `gcc`
 
