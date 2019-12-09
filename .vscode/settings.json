@@ -14,6 +14,8 @@
         "stdio.h": "c",
         "scacchiera.h": "c",
         "smartfunctions.h": "c",
-        "tessera.h": "c"
+        "tessera.h": "c",
+        "stdbool.h": "c",
+        "inttypes.h": "c"
     }
 }

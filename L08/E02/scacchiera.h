@@ -15,6 +15,11 @@ typedef struct Scacchiera {
     cella **Matrice;
 } scacchiera;
 
+typedef struct ArrayCelle {
+    cella **Array;
+    unsigned int NumeroElementi;
+} arrayCelle;
+
 void printScacchiera(scacchiera *s, FILE *stream);
 void stampaRigaScacchiera(scacchiera *s, unsigned int indiceRiga, FILE *stream);
 void stampaSottoriga3(scacchiera *s, unsigned int indiceRiga, FILE *stream);
