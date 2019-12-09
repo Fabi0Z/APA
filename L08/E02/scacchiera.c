@@ -3,11 +3,11 @@
 // Legge e memorizza una cella da striga
 void parseCella(cella *c, char *string, arrayTessera *a) {
     uint8_t rotazione;
-    long int indiceTessera;
-    sscanf(string, "%d/%" SCNd8 " %[^\n]", &indiceTessera, &rotazione, string);
+    int indiceTessera;
+    sscanf(string, "%d/%" SCNd8 "%[^\n]", &indiceTessera, &rotazione, string);
 
-    if (indiceTessera == -1) { // Se la cella è vuota scrivo NULL
-        c = NULL;
+    if (indiceTessera == -1) { // Se la cella è vuota scrivo NULL nella tessera
+        c->Tessera = NULL;
         return;
     }
 
@@ -28,7 +28,7 @@ void parseScacchiera(scacchiera *s, FILE *stream, arrayTessera *a) {
     fscanf(stream, "%d %d\n", &s->Righe, &s->Colonne);
     allocaScacchiera(s);
 
-    unsigned int strMax = 5 * s->Colonne;
+    unsigned int strMax = 6 * s->Colonne;
     char temp[strMax + 1];
     for (size_t i = 0; i < s->Righe; i++) {
         fgets(temp, strMax, stream);
@@ -55,4 +55,98 @@ void printCella(cella *c, arrayTessera *a, FILE *stream) {
     } else {
         printTubi(&t->Tubo1, &t->Tubo2, stream);
     }
+}
+
+// Stampa il bordo superiore di una riga di scacchiera
+void stampaRigaSuperiore(scacchiera *s, FILE *stream) {
+    for (unsigned int i = 0; i < s->Colonne; i++) {
+        fprintf(stream, " _ _ _ ");
+    }
+    fprintf(stream, "\n");
+}
+
+// Stampa il bordo inferiore di una riga di scacchiera
+void stampaRigaInferiore(scacchiera *s, FILE *stream) {
+    for (unsigned int i = 0; i < s->Colonne; i++) {
+        fprintf(stream, " ¯ ¯ ¯ ");
+    }
+    fprintf(stream, "\n");
+}
+
+void stampaSottoriga1(scacchiera *s, unsigned int indiceRiga, arrayTessera *a, FILE *stream) {
+    cella *c;
+    tessera *t;
+    for (unsigned int i = 0; i < s->Colonne; i++) {
+        c = &s->Matrice[indiceRiga][i];
+
+        if (c->Tessera == NULL) { // Controllo che la cella non sia vuota
+            fprintf(stream, "|     |");
+        } else {
+            t = c->Tessera;
+            if (c->Rotazione) {
+                fprintf(stream, "|* %c *|", t->Tubo1.Colore);
+            } else {
+                fprintf(stream, "|* %c *|", t->Tubo2.Colore);
+            }
+        }
+    }
+    fprintf(stream, "\n");
+}
+
+void stampaSottoriga2(scacchiera *s, unsigned int indiceRiga, arrayTessera *a, FILE *stream) {
+    cella *c;
+    tessera *t;
+    for (unsigned int i = 0; i < s->Colonne; i++) {
+        c = &s->Matrice[indiceRiga][i];
+
+        if (c->Tessera == NULL) { // Controllo che la cella non sia vuota
+            fprintf(stream, "|     |");
+        } else {
+            t = c->Tessera;
+            if (c->Rotazione) {
+                fprintf(stream, "|%c * %" SCNd8 "|", t->Tubo2.Colore, t->Tubo2.Valore);
+            } else {
+                fprintf(stream, "|%c * %" SCNd8 "|", t->Tubo1.Colore, t->Tubo1.Valore);
+            }
+        }
+    }
+    fprintf(stream, "\n");
+}
+
+void stampaSottoriga3(scacchiera *s, unsigned int indiceRiga, arrayTessera *a, FILE *stream) {
+    cella *c;
+    tessera *t;
+    for (unsigned int i = 0; i < s->Colonne; i++) {
+        c = &s->Matrice[indiceRiga][i];
+
+        if (c->Tessera == NULL) { // Controllo che la cella non sia vuota
+            fprintf(stream, "|     |");
+        } else {
+            t = c->Tessera;
+            if (c->Rotazione) {
+                fprintf(stream, "|* %" SCNd8 " *|", t->Tubo1.Valore);
+
+            } else {
+                fprintf(stream, "|* %" SCNd8 " *|", t->Tubo2.Valore);
+            }
+        }
+    }
+    fprintf(stream, "\n");
+}
+
+// Stampa una riga di scacchiera
+void stampaRigaScacchiera(scacchiera *s, unsigned int indiceRiga, arrayTessera *a, FILE *stream) {
+    stampaRigaSuperiore(s, stream);
+    stampaSottoriga1(s, indiceRiga, a, stream);
+    stampaSottoriga2(s, indiceRiga, a, stream);
+    stampaSottoriga3(s, indiceRiga, a, stream);
+    stampaRigaInferiore(s, stream);
+}
+
+// Stampa una scacchiera
+void printScacchiera(scacchiera *s, arrayTessera *a, FILE *stream) {
+    for (unsigned int i = 0; i < s->Righe; i++) {
+        stampaRigaScacchiera(s, i, a, stream);
+    }
+    fprintf(stream, "\n");
 }

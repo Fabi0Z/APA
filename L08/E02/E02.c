@@ -12,6 +12,6 @@ int main(int argc, char const *argv[]) {
     FILE *boardStream = smartFopen("data/board.txt", "r");
     scacchiera s;
     parseScacchiera(&s, boardStream, &a);
-    printCella(&s.Matrice[0][0], &a, stdout);
+    printScacchiera(&s, &a, stdout);
     return 0;
 }
