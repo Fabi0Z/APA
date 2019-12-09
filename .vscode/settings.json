@@ -11,6 +11,7 @@
         "valarray": "c",
         "string.h": "c",
         "functional": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "scacchiera.h": "c"
     }
 }
