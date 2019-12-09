@@ -11,16 +11,23 @@ void parseTessera(tessera *t, char *string) {
     parseTubo(&t->Tubo2, string);
 }
 
+// Crea e alloca un oggetto di tipo tessera
+tessera *creaTessera() {
+    tessera *t = (tessera *)malloc(sizeof(tessera));
+    return t;
+}
+
 // Effettua il parse di un array di tessere da file
 arrayTessera parseArrayTessera(FILE *stream, unsigned int numeroTessere) {
     arrayTessera a;
     a.NumeroElementi = numeroTessere;
-    a.Array          = (tessera *)calloc(a.NumeroElementi, sizeof(tessera));
+    a.Array          = (tessera **)calloc(a.NumeroElementi, sizeof(tessera *));
 
     char string[11];
     for (size_t i = 0; i < a.NumeroElementi; i++) {
         fgets(string, 10, stream);
-        parseTessera(&a.Array[i], string);
+        a.Array[i] = creaTessera();
+        parseTessera(a.Array[i], string);
     }
 
     return a;
@@ -43,7 +50,7 @@ void printTessera(tessera *t, FILE *stream) {
 void printArrayTessera(arrayTessera *a, FILE *stream) {
     for (unsigned int i = 0; i < a->NumeroElementi; i++) {
         fprintf(stream, "Tessera #%d\n", i);
-        printTessera(&a->Array[i], stream);
+        printTessera(a->Array[i], stream);
         fprintf(stream, "\n");
     }
 }

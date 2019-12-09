@@ -12,6 +12,8 @@
         "string.h": "c",
         "functional": "c",
         "stdio.h": "c",
-        "scacchiera.h": "c"
+        "scacchiera.h": "c",
+        "smartfunctions.h": "c",
+        "tessera.h": "c"
     }
 }

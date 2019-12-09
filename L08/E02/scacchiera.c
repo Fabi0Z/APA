@@ -12,7 +12,7 @@ void parseCella(cella *c, char *string, arrayTessera *a) {
     }
 
     c->Rotazione = rotazione;
-    c->Tessera   = &a->Array[indiceTessera];
+    c->Tessera   = a->Array[indiceTessera];
 }
 
 // Alloca la memoria della matrice di celle di una scacchiera
@@ -73,7 +73,7 @@ void stampaRigaInferiore(scacchiera *s, FILE *stream) {
     fprintf(stream, "\n");
 }
 
-void stampaSottoriga1(scacchiera *s, unsigned int indiceRiga, arrayTessera *a, FILE *stream) {
+void stampaSottoriga1(scacchiera *s, unsigned int indiceRiga, FILE *stream) {
     cella *c;
     tessera *t;
     for (unsigned int i = 0; i < s->Colonne; i++) {
@@ -93,7 +93,7 @@ void stampaSottoriga1(scacchiera *s, unsigned int indiceRiga, arrayTessera *a, F
     fprintf(stream, "\n");
 }
 
-void stampaSottoriga2(scacchiera *s, unsigned int indiceRiga, arrayTessera *a, FILE *stream) {
+void stampaSottoriga2(scacchiera *s, unsigned int indiceRiga, FILE *stream) {
     cella *c;
     tessera *t;
     for (unsigned int i = 0; i < s->Colonne; i++) {
@@ -113,7 +113,7 @@ void stampaSottoriga2(scacchiera *s, unsigned int indiceRiga, arrayTessera *a, F
     fprintf(stream, "\n");
 }
 
-void stampaSottoriga3(scacchiera *s, unsigned int indiceRiga, arrayTessera *a, FILE *stream) {
+void stampaSottoriga3(scacchiera *s, unsigned int indiceRiga, FILE *stream) {
     cella *c;
     tessera *t;
     for (unsigned int i = 0; i < s->Colonne; i++) {
@@ -135,18 +135,18 @@ void stampaSottoriga3(scacchiera *s, unsigned int indiceRiga, arrayTessera *a, F
 }
 
 // Stampa una riga di scacchiera
-void stampaRigaScacchiera(scacchiera *s, unsigned int indiceRiga, arrayTessera *a, FILE *stream) {
+void stampaRigaScacchiera(scacchiera *s, unsigned int indiceRiga, FILE *stream) {
     stampaRigaSuperiore(s, stream);
-    stampaSottoriga1(s, indiceRiga, a, stream);
-    stampaSottoriga2(s, indiceRiga, a, stream);
-    stampaSottoriga3(s, indiceRiga, a, stream);
+    stampaSottoriga1(s, indiceRiga, stream);
+    stampaSottoriga2(s, indiceRiga, stream);
+    stampaSottoriga3(s, indiceRiga, stream);
     stampaRigaInferiore(s, stream);
 }
 
 // Stampa una scacchiera
-void printScacchiera(scacchiera *s, arrayTessera *a, FILE *stream) {
+void printScacchiera(scacchiera *s, FILE *stream) {
     for (unsigned int i = 0; i < s->Righe; i++) {
-        stampaRigaScacchiera(s, i, a, stream);
+        stampaRigaScacchiera(s, i, stream);
     }
     fprintf(stream, "\n");
 }
