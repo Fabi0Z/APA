@@ -1,4 +1,4 @@
-#if !defined(PERSONAGGIO_H)
+#ifndef PERSONAGGIO_H
 #define PERSONAGGIO_H
 
 #include "equipaggiamento.h"
@@ -27,6 +27,7 @@ typedef struct TabellaPersonaggio {
 void eliminaAndPrint(personaggioLink *previous);
 personaggioLink *estraiNext(personaggioLink *previous);
 personaggioLink *ricercaID(personaggioLink *HEAD, uint16_t *ID);
+personaggioLink *ricercaIDprecedente(personaggioLink *HEAD, uint16_t *ID);
 void addNext(personaggioLink *l, personaggioLink *next);
 bool leggiPersonaggio(char *string, personaggio *p);
 personaggio *getResizedPersonaggio(personaggio *temp);

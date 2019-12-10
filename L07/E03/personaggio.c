@@ -191,7 +191,7 @@ void addNext(personaggioLink *l, personaggioLink *next) {
 }
 
 // Ricerca ricorsiva che restituisce l'elemento precedete a quello trovato
-personaggioLink *ricercaID(personaggioLink *HEAD, uint16_t *ID) {
+personaggioLink *ricercaIDprecedente(personaggioLink *HEAD, uint16_t *ID) {
     personaggioLink *pointer = getNextItem(HEAD);
     if (pointer == NULL) { // Condizione di terminazione (lista vuota)
         return NULL;
@@ -205,7 +205,12 @@ personaggioLink *ricercaID(personaggioLink *HEAD, uint16_t *ID) {
         return HEAD;
     }
 
-    return ricercaID(pointer, ID); // Ricerco sull'elemento successivo
+    return ricercaIDprecedente(pointer, ID); // Ricerco sull'elemento successivo
+}
+
+personaggioLink *ricercaID(personaggioLink *HEAD, uint16_t *ID) {
+    personaggioLink *precedente = ricercaIDprecedente(HEAD, ID);
+    return precedente == NULL ? NULL : precedente->Next;
 }
 
 // Estrae l'elemento successivo in lista

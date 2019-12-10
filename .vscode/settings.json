@@ -16,6 +16,7 @@
         "smartfunctions.h": "c",
         "tessera.h": "c",
         "stdbool.h": "c",
-        "inttypes.h": "c"
+        "inttypes.h": "c",
+        "personaggio.h": "c"
     }
 }

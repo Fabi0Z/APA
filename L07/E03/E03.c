@@ -116,11 +116,11 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 printf("==> ");
                 uint16_t ID;
                 getchar();
-                scanf("%" SCNd16, &ID);                                    // Leggo l'ID
-                personaggioLink *precedente = ricercaID(TABLE->HEAD, &ID); // Trovo l'elemento precedente
-                if (precedente != NULL) {                                  // Se ho trovato l'ID
-                    if (precedente->Next == TABLE->TAIL) {                 // Se è l'ultimo elemento
-                        TABLE->TAIL = precedente;                          // Aggiorno la TAIL
+                scanf("%" SCNd16, &ID);                                              // Leggo l'ID
+                personaggioLink *precedente = ricercaIDprecedente(TABLE->HEAD, &ID); // Trovo l'elemento precedente
+                if (precedente != NULL) {                                            // Se ho trovato l'ID
+                    if (precedente->Next == TABLE->TAIL) {                           // Se è l'ultimo elemento
+                        TABLE->TAIL = precedente;                                    // Aggiorno la TAIL
                     }
 
                     eliminaAndPrint(precedente);
@@ -139,14 +139,14 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 printf("==> ");
                 uint16_t ID;
                 getchar();
-                scanf("%" SCNd16, &ID);                                    // Leggo l'ID
-                personaggioLink *precedente = ricercaID(TABLE->HEAD, &ID); // Trovo l'elemento precedente
-                if (precedente == NULL) {                                  // Se non ho trovato l'ID
+                scanf("%" SCNd16, &ID);                                // Leggo l'ID
+                personaggioLink *pgLink = ricercaID(TABLE->HEAD, &ID); // Trovo l'elemento
+                if (pgLink == NULL) {                                  // Se non ho trovato l'ID
                     puts("ID non trovato");
                     premiPerContinuare();
                     break;
                 }
-                personaggio *pg = precedente->Next->Personaggio;
+                personaggio *pg = pgLink->Personaggio;
                 puts("Questi sono gli oggetti presenti nell'equipaggiamento:");
                 printEquipaggiamento(pg->Equipaggiamento, false); // Stampo l'equipaggiamento
 
@@ -207,12 +207,11 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 printf("==> ");
                 uint16_t ID;
                 getchar();
-                scanf("%" SCNd16, &ID);                                    // Leggo l'ID
-                personaggioLink *precedente = ricercaID(TABLE->HEAD, &ID); // Trovo il pg
-                if (precedente != NULL) {                                  // Se ho trovato l'ID
-                    personaggio *pg = getNextItem(precedente)->Personaggio;
+                scanf("%" SCNd16, &ID);                            // Leggo l'ID
+                personaggioLink *pg = ricercaID(TABLE->HEAD, &ID); // Trovo il pg
+                if (pg != NULL) {                                  // Se ho trovato l'ID
                     int16_t s[N_STATISTICHE];
-                    calcolaStatistiche(pg, s);
+                    calcolaStatistiche(pg->Personaggio, s);
                     puts("Le statistiche sono");
                     printf("==> ");
                     printStatistiche(s, stdout);
@@ -243,10 +242,10 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 printf("==> ");
                 uint16_t ID;
                 getchar();
-                scanf("%" SCNd16, &ID);                                    // Leggo l'ID
-                personaggioLink *precedente = ricercaID(TABLE->HEAD, &ID); // Trovo il pg
-                if (precedente != NULL) {                                  // Se ho trovato l'ID
-                    equipaggiamento *e = precedente->Next->Personaggio->Equipaggiamento;
+                scanf("%" SCNd16, &ID);                            // Leggo l'ID
+                personaggioLink *pg = ricercaID(TABLE->HEAD, &ID); // Trovo il pg
+                if (pg != NULL) {                                  // Se ho trovato l'ID
+                    equipaggiamento *e = pg->Personaggio->Equipaggiamento;
                     printEquipaggiamento(e, false);
 
                 } else {
