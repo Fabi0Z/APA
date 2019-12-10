@@ -32,8 +32,8 @@ inventario parseInventario(FILE *stream) {
     char string[(INVENTARIO_MAX_STRING * 3) + 1];
     oggetto *temp = creaOggetto(INVENTARIO_MAX_STRING, INVENTARIO_MAX_STRING);
 
-    for (size_t i = 0; i < inv.NumeroOggetti; i++) { // Per ogni oggetto nel file
-        fgets(string, INVENTARIO_MAX_STRING * 2, stream);       // Leggo la riga successiva
+    for (size_t i = 0; i < inv.NumeroOggetti; i++) {      // Per ogni oggetto nel file
+        fgets(string, INVENTARIO_MAX_STRING * 2, stream); // Leggo la riga successiva
         leggiOggetto(string, temp);
         allocaOggetto(&inv.Oggetti[i], strlen(temp->Nome), strlen(temp->Tipo)); // Alloco la memoria necessaria
         copiaOggetto(&inv.Oggetti[i], temp);
@@ -41,4 +41,14 @@ inventario parseInventario(FILE *stream) {
     freeOggetto(temp);
 
     return inv;
+}
+
+// Cerca un oggetto per nome nell'inventario, se non lo trova restituisce NULL
+oggetto *trovaOggetto(inventario *inv, char *nome) {
+    for (unsigned int i = 0; i < inv->NumeroOggetti; i++) { // Per ogni oggetto
+        if (strcmp(nome, inv->Oggetti[i].Nome) == 0) {      // Se il nome corrisponde
+            return &inv->Oggetti[i];
+        }
+    }
+    return NULL;
 }

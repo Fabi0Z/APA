@@ -9,6 +9,7 @@ typedef struct Inventario {
     uint8_t OggettiTrasportabili;
 } inventario;
 
+oggetto *trovaOggetto(inventario *inv, char *nome);
 inventario parseInventario(FILE *stream);
 void printInventario(inventario *i, bool indici);
 void printInventarioFile(inventario *inv, FILE *stream, bool indici);
