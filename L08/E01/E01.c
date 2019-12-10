@@ -61,8 +61,7 @@ void attSel(int N, attivita *v) {
 // * -------------------------------------------------------------
 
 int main() {
-    FILE *stream = fopen("att.txt", "r");
-    checkFilestream(stream);
+    FILE *stream = smartFopen("att.txt", "r");
 
     arrayAttivita a;
     fscanf(stream, "%" SCNd8 "\n", &a.NumeroElementi);
