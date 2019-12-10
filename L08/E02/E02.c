@@ -47,6 +47,66 @@ arrayTessera tessereDisponibili(arrayTessera *a, scacchiera *s, arrayCelle *cell
     return tessereDisponibili;
 }
 
+// Restituisce il tubo orizzontale all'interno della cella
+tubo getTuboOrizzontale(cella *c) {
+    if (c->Rotazione) { // Se la tessera è ruotata
+        return c->Tessera->Tubo2;
+    } else { // Se non lo è
+        return c->Tessera->Tubo1;
+    }
+}
+
+// Restituisce il tubo verticale all'interno della cella
+tubo getTuboVerticale(cella *c) {
+    if (c->Rotazione) { // Se la tessera è ruotata
+        return c->Tessera->Tubo1;
+    } else { // Se non lo è
+        return c->Tessera->Tubo2;
+    }
+}
+
+// Calcola il punteggio di una scacchiera completa
+unsigned int calcolaPunteggio(scacchiera *s) {
+    unsigned int punteggioCelle = 0, punteggio = 0;
+    char colorePrecedente;
+
+    // Controllo tutte le righe
+    for (unsigned int i = 0; i < s->Righe; i++) { // Per ogni riga
+        colorePrecedente = getTuboOrizzontale(&s->Matrice[i][0]).Colore;
+        punteggioCelle   = 0;
+        for (unsigned int j = 0; j < s->Colonne; j++) { // Per ogni colonna
+            tubo t = getTuboOrizzontale(&s->Matrice[i][j]);
+
+            if (t.Colore == colorePrecedente) { // Se ha lo stesso colore del precedente
+                punteggioCelle += t.Valore;
+            } else {
+                punteggioCelle = 0;
+                break;
+            }
+        }
+        punteggio += punteggioCelle;
+    }
+
+    // Controllo tutte le colonne
+    for (unsigned int j = 0; j < s->Colonne; j++) { // Per ogni colonna
+        colorePrecedente = getTuboVerticale(&s->Matrice[0][j]).Colore;
+        punteggioCelle   = 0;
+        for (unsigned int i = 0; i < s->Righe; i++) { // Per ogni riga
+            tubo t = getTuboVerticale(&s->Matrice[i][j]);
+
+            if (t.Colore == colorePrecedente) { // Se ha lo stesso colore del precedente
+                punteggioCelle += t.Valore;
+            } else {
+                punteggioCelle = 0;
+                break;
+            }
+        }
+        punteggio += punteggioCelle;
+    }
+
+    return punteggio;
+}
+
 int main(int argc, char const *argv[]) {
     FILE *tilesStream = smartFopen("data/tiles.txt", "r");
     unsigned int numeroTessere;
