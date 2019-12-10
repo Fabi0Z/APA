@@ -107,13 +107,11 @@ unsigned int calcolaPunteggio(scacchiera *s) {
     return punteggio;
 }
 
-void disp(unsigned int pos, arrayTessera *tessere, arrayCella *celle, bool *mark, scacchiera *s, arrayCella *max, unsigned int punteggio) {
+void disp(unsigned int pos, arrayTessera *tessere, arrayCella *celle, bool *mark, scacchiera *s, arrayCella *max, unsigned int *punteggio) {
     if (pos >= celle->NumeroElementi) { // Terminazione
-        puts("----------------------------------------------");
-        printScacchiera(s, stdout);
         unsigned int punteggioTemp = calcolaPunteggio(s);
-        if (punteggioTemp >= punteggio) {
-            punteggio = punteggioTemp;
+        if (punteggioTemp > *punteggio) {
+            *punteggio = punteggioTemp;
             copiaArrayCella(max, celle); // Copio la combinazione di punteggio massimo
         }
         return;
@@ -122,8 +120,11 @@ void disp(unsigned int pos, arrayTessera *tessere, arrayCella *celle, bool *mark
         if (!mark[i]) {                                             // Controllo ripetizione
             mark[i]                    = true;                      // Marcamento
             celle->Array[pos]->Tessera = tessere->Array[i];         // Scelta
-            disp(pos + 1, tessere, celle, mark, s, max, punteggio); // Ricorsione
-            mark[i] = false;                                        // Smarcamento
+            celle->Array[pos]->Rotazione = false;
+            disp(pos + 1, tessere, celle, mark, s, max, punteggio); // Ricorsione senza rotazione
+            celle->Array[pos]->Rotazione = true;
+            disp(pos + 1, tessere, celle, mark, s, max, punteggio); // Ricorsione con rotazione
+            mark[i]                      = false; // Smarcamento
         }
     }
 }
@@ -133,8 +134,12 @@ void generaScacchiere(scacchiera *s, arrayCella *celleLibere, arrayTessera *tess
     bool mark[tessereLibere->NumeroElementi];
     memset(mark, 0, sizeof(bool) * tessereLibere->NumeroElementi);
     arrayCella max;
+    unsigned int punteggio = 0;
     allocaNuovoArrayCella(&max, celleLibere->NumeroElementi);
-    disp(0, tessereLibere, celleLibere, mark, s, &max, 0);
+    disp(0, tessereLibere, celleLibere, mark, s, &max, &punteggio);
+    copiaArrayCella(celleLibere, &max);
+    printf("La soluzione di punteggio maggiore vale %d ed è la seguente:\n", punteggio);
+    printScacchiera(s, stdout);
 }
 
 int main(int argc, char const *argv[]) {
