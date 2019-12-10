@@ -17,6 +17,9 @@
         "tessera.h": "c",
         "stdbool.h": "c",
         "inttypes.h": "c",
-        "personaggio.h": "c"
+        "personaggio.h": "c",
+        "equipaggiamento.h": "c",
+        "inventario.h": "c",
+        "oggetto.h": "c"
     }
 }

@@ -29,6 +29,7 @@ personaggioLink *estraiNext(personaggioLink *previous);
 personaggioLink *ricercaID(personaggioLink *HEAD, uint16_t *ID);
 personaggioLink *ricercaIDprecedente(personaggioLink *HEAD, uint16_t *ID);
 void addNext(personaggioLink *l, personaggioLink *next);
+void parsePersonaggi(tabellaPersonaggio *TABLE, FILE *stream);
 bool leggiPersonaggio(char *string, personaggio *p);
 personaggio *getResizedPersonaggio(personaggio *temp);
 void copiaPersonaggio(personaggio *dest, personaggio *src);

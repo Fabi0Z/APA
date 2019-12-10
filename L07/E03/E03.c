@@ -2,53 +2,11 @@
 #include "personaggio.h"
 #include "smartfunctions.h"
 
-const uint8_t MAX_STRING        = 50;
 const uint8_t MAX_TRASPORTABILI = 8;
 
 // Controlla se un personaggio ha raggiunto il limite di oggetti equipaggiabili
 bool checkLimiteEquipaggiamento(personaggio *p, inventario *i) {
     return p->Equipaggiamento->NumeroOggetti >= i->OggettiTrasportabili;
-}
-
-// Legge i personaggi da file e li salva in una lista
-void parsePersonaggi(tabellaPersonaggio *TABLE, FILE *stream) {
-    personaggio *temp = creaPersonaggio(MAX_STRING, MAX_STRING);
-    personaggioLink *tempList;
-
-    // Creo stringa di appoggio
-    char string[(MAX_STRING * 3) + 1];
-    fgets(string, MAX_STRING * 3, stream); // Leggo la prima riga del file
-
-    while (leggiPersonaggio(string, temp)) { // Sinché leggo correttamente i personaggi
-        personaggio *p = getResizedPersonaggio(temp);
-        copiaPersonaggio(p, temp);
-        tempList = creaPersonaggioLink(p);
-        addNext(TABLE->TAIL, tempList);
-        TABLE->NumeroPersonaggi++;
-        TABLE->TAIL = tempList;
-        fgets(string, MAX_STRING * 3, stream); // Leggo la riga successiva
-    }
-
-    freePersonaggio(temp);
-}
-
-// Effettua il parse dell'inventario
-inventario parseInventario(FILE *stream) {
-    inventario inv;
-    fscanf(stream, "%" SCNd8 "\n", &inv.NumeroOggetti);
-    inv.Oggetti = (oggetto *)calloc(inv.NumeroOggetti, sizeof(oggetto));
-    char string[(MAX_STRING * 3) + 1];
-    oggetto *temp = creaOggetto(MAX_STRING, MAX_STRING);
-
-    for (size_t i = 0; i < inv.NumeroOggetti; i++) { // Per ogni oggetto nel file
-        fgets(string, MAX_STRING * 2, stream);       // Leggo la riga successiva
-        leggiOggetto(string, temp);
-        allocaOggetto(&inv.Oggetti[i], strlen(temp->Nome), strlen(temp->Tipo)); // Alloco la memoria necessaria
-        copiaOggetto(&inv.Oggetti[i], temp);
-    }
-    freeOggetto(temp);
-
-    return inv;
 }
 
 // Mostra il menu interattivo

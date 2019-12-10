@@ -1,5 +1,7 @@
 #include "personaggio.h"
 
+const uint8_t PERSONAGGIO_MAX_STRING = 50;
+
 // Alloca memoria per un oggetto di tipo personaggio
 void allocaPersonaggio(personaggio *p, unsigned int nomeSize, unsigned int classeSize) {
     p->Nome            = (char *)calloc(nomeSize, sizeof(char)); // Alloco la memoria
@@ -174,6 +176,28 @@ bool leggiPersonaggio(char *string, personaggio *p) {
     }
     copiaStatistiche(p->Statistiche, s);
     return conteggio == 6;
+}
+
+// Legge i personaggi da file e li salva in una lista
+void parsePersonaggi(tabellaPersonaggio *TABLE, FILE *stream) {
+    personaggio *temp                  = creaPersonaggio(PERSONAGGIO_MAX_STRING, PERSONAGGIO_MAX_STRING);
+    personaggioLink *tempList;
+
+    // Creo stringa di appoggio
+    char string[(PERSONAGGIO_MAX_STRING * 3) + 1];
+    fgets(string, PERSONAGGIO_MAX_STRING * 3, stream); // Leggo la prima riga del file
+
+    while (leggiPersonaggio(string, temp)) { // Sinché leggo correttamente i personaggi
+        personaggio *p = getResizedPersonaggio(temp);
+        copiaPersonaggio(p, temp);
+        tempList = creaPersonaggioLink(p);
+        addNext(TABLE->TAIL, tempList);
+        TABLE->NumeroPersonaggi++;
+        TABLE->TAIL = tempList;
+        fgets(string, PERSONAGGIO_MAX_STRING * 3, stream); // Leggo la riga successiva
+    }
+
+    freePersonaggio(temp);
 }
 
 // Aggiunge un elemento next subito dopo un elemento l in una lista
