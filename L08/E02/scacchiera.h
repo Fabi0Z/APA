@@ -33,5 +33,6 @@ void parseScacchiera(scacchiera *s, FILE *stream, arrayTessera *a);
 void allocaScacchiera(scacchiera *s);
 void parseCella(cella *c, char *string, arrayTessera *a);
 void copiaArrayCella(arrayCella *dest, arrayCella *src);
+void allocaNuovoArrayCella(arrayCella *c, unsigned int NumeroElementi);
 
 #endif // SCACCHIERA_H
