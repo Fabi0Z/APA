@@ -150,3 +150,15 @@ void printScacchiera(scacchiera *s, FILE *stream) {
     }
     fprintf(stream, "\n");
 }
+
+// Copia src in dest
+void copiaArrayCella(arrayCella *dest, arrayCella *src) {
+    dest->NumeroElementi = src->NumeroElementi;
+    dest->Array          = (cella **)calloc(src->NumeroElementi, sizeof(cella *));
+
+    for (unsigned int i = 0; i < src->NumeroElementi; i++) {
+        cella *c     = (cella *)malloc(sizeof(cella));
+        c->Rotazione = src->Array[i]->Rotazione;
+        c->Tessera   = src->Array[i]->Tessera;
+    }
+}
