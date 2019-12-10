@@ -60,7 +60,7 @@ void printCella(cella *c, arrayTessera *a, FILE *stream) {
 // Stampa il bordo superiore di una riga di scacchiera
 void stampaRigaSuperiore(scacchiera *s, FILE *stream) {
     for (unsigned int i = 0; i < s->Colonne; i++) {
-        fprintf(stream, " _ _ _ ");
+        fprintf(stream, " __ __ __ ");
     }
     fprintf(stream, "\n");
 }
@@ -68,7 +68,7 @@ void stampaRigaSuperiore(scacchiera *s, FILE *stream) {
 // Stampa il bordo inferiore di una riga di scacchiera
 void stampaRigaInferiore(scacchiera *s, FILE *stream) {
     for (unsigned int i = 0; i < s->Colonne; i++) {
-        fprintf(stream, " ¯ ¯ ¯ ");
+        fprintf(stream, " ¯¯ ¯¯ ¯¯ ");
     }
     fprintf(stream, "\n");
 }
@@ -80,13 +80,13 @@ void stampaSottoriga1(scacchiera *s, unsigned int indiceRiga, FILE *stream) {
         c = &s->Matrice[indiceRiga][i];
 
         if (c->Tessera == NULL) { // Controllo che la cella non sia vuota
-            fprintf(stream, "|     |");
+            fprintf(stream, "|        |");
         } else {
             t = c->Tessera;
             if (c->Rotazione) {
-                fprintf(stream, "|* %c *|", t->Tubo1.Colore);
+                fprintf(stream, "| * %2c * |", t->Tubo1.Colore);
             } else {
-                fprintf(stream, "|* %c *|", t->Tubo2.Colore);
+                fprintf(stream, "| * %2c * |", t->Tubo2.Colore);
             }
         }
     }
@@ -100,13 +100,13 @@ void stampaSottoriga2(scacchiera *s, unsigned int indiceRiga, FILE *stream) {
         c = &s->Matrice[indiceRiga][i];
 
         if (c->Tessera == NULL) { // Controllo che la cella non sia vuota
-            fprintf(stream, "|     |");
+            fprintf(stream, "|        |");
         } else {
             t = c->Tessera;
             if (c->Rotazione) {
-                fprintf(stream, "|%c * %" SCNd8 "|", t->Tubo2.Colore, t->Tubo2.Valore);
+                fprintf(stream, "|%2c  * %2" SCNd8 "|", t->Tubo2.Colore, t->Tubo2.Valore);
             } else {
-                fprintf(stream, "|%c * %" SCNd8 "|", t->Tubo1.Colore, t->Tubo1.Valore);
+                fprintf(stream, "|%2c  * %2" SCNd8 "|", t->Tubo1.Colore, t->Tubo1.Valore);
             }
         }
     }
@@ -120,14 +120,14 @@ void stampaSottoriga3(scacchiera *s, unsigned int indiceRiga, FILE *stream) {
         c = &s->Matrice[indiceRiga][i];
 
         if (c->Tessera == NULL) { // Controllo che la cella non sia vuota
-            fprintf(stream, "|     |");
+            fprintf(stream, "|        |");
         } else {
             t = c->Tessera;
             if (c->Rotazione) {
-                fprintf(stream, "|* %" SCNd8 " *|", t->Tubo1.Valore);
+                fprintf(stream, "| * %2" SCNd8 " * |", t->Tubo1.Valore);
 
             } else {
-                fprintf(stream, "|* %" SCNd8 " *|", t->Tubo2.Valore);
+                fprintf(stream, "| * %2" SCNd8 " * |", t->Tubo2.Valore);
             }
         }
     }
