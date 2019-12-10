@@ -126,5 +126,7 @@ int main(int argc, char const *argv[]) {
     arrayCelle celleDisponibili;
     arrayTessera disponibili = tessereDisponibili(&a, &s, &celleDisponibili);
     printArrayTessera(&disponibili, stdout);
+
+    printf("E sono presenti %d celle libere nella scacchiera\n", celleDisponibili.NumeroElementi);
     return 0;
 }
