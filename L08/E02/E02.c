@@ -3,7 +3,7 @@
 #include <string.h>
 
 // Trova tutte le tessere non ancora utilizzate e le inserisce in un array di puntatori a tessere
-arrayTessera tessereDisponibili(arrayTessera *a, scacchiera *s, arrayCelle *celleDisponibili) {
+arrayTessera tessereDisponibili(arrayTessera *a, scacchiera *s, arrayCella *celleDisponibili) {
     tessera *inUso[a->NumeroElementi];
     celleDisponibili->NumeroElementi = 0;
     celleDisponibili->Array          = (cella **)calloc(s->Righe * s->Colonne, sizeof(cella *));
@@ -107,6 +107,35 @@ unsigned int calcolaPunteggio(scacchiera *s) {
     return punteggio;
 }
 
+void disp(unsigned int pos, arrayTessera *tessere, arrayCella *celle, bool *mark, scacchiera *s, arrayCella *max, unsigned int punteggio) {
+    if (pos >= celle->NumeroElementi) { // Terminazione
+        printScacchiera(s, stdout);
+        unsigned int punteggioTemp = calcolaPunteggio(s);
+        if (punteggioTemp >= punteggio) {
+            punteggio = punteggioTemp;
+            copiaArrayCella(max, celle); // Copio la combinazione di punteggio massimo
+        }
+        return;
+    }
+    for (unsigned int i = 0; i < tessere->NumeroElementi; i++) {    // Per ogni tessera
+        if (!mark[i]) {                                             // Controllo ripetizione
+            mark[i]                    = true;                      // Marcamento
+            celle->Array[pos]->Tessera = tessere->Array[i];         // Scelta
+            disp(pos + 1, tessere, celle, mark, s, max, punteggio); // Ricorsione
+            mark[i] = false;                                        // Smarcamento
+        }
+    }
+}
+
+// Genera, attraverso le disposizioni semplici, tutte le combinazioni di scacchiere valide possibile e calcola quella di valore massimo
+void generaScacchiere(scacchiera *s, arrayCella *celleLibere, arrayTessera *tessereLibere) {
+    bool mark[tessereLibere->NumeroElementi];
+    memset(mark, 0, sizeof(bool) * tessereLibere->NumeroElementi);
+    arrayCella max;
+    allocaNuovoArrayCella(&max, celleLibere->NumeroElementi);
+    disp(0, tessereLibere, celleLibere, mark, s, &max, 0);
+}
+
 int main(int argc, char const *argv[]) {
     FILE *tilesStream = smartFopen("data/tiles.txt", "r");
     unsigned int numeroTessere;
@@ -123,10 +152,11 @@ int main(int argc, char const *argv[]) {
     printScacchiera(&s, stdout);
 
     puts("\nLe tessere libere sono:");
-    arrayCelle celleDisponibili;
+    arrayCella celleDisponibili;
     arrayTessera disponibili = tessereDisponibili(&a, &s, &celleDisponibili);
     printArrayTessera(&disponibili, stdout);
 
     printf("E sono presenti %d celle libere nella scacchiera\n", celleDisponibili.NumeroElementi);
+    generaScacchiere(&s, &celleDisponibili, &disponibili);
     return 0;
 }
