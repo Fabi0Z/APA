@@ -109,6 +109,7 @@ unsigned int calcolaPunteggio(scacchiera *s) {
 
 void disp(unsigned int pos, arrayTessera *tessere, arrayCella *celle, bool *mark, scacchiera *s, arrayCella *max, unsigned int punteggio) {
     if (pos >= celle->NumeroElementi) { // Terminazione
+        puts("----------------------------------------------");
         printScacchiera(s, stdout);
         unsigned int punteggioTemp = calcolaPunteggio(s);
         if (punteggioTemp >= punteggio) {
