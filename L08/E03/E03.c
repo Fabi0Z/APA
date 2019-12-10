@@ -39,22 +39,14 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
         printf("\n");
         switch (lettura) {
             case caricaPersonaggi: {
-                FILE *pg = fopen("data/pg.txt", "r");
-                // Verifico i filestream
-                if (!checkFilestream(pg)) {
-                    return 1;
-                }
+                FILE *pg = smartFopen("data/pg.txt", "r");
                 parsePersonaggi(TABLE, pg);
                 fclose(pg);
                 break;
             }
 
             case caricaInventario: {
-                FILE *inv = fopen("data/inventario.txt", "r");
-                // Verifico i filestream
-                if (!checkFilestream(inv)) {
-                    return 2;
-                }
+                FILE *inv  = smartFopen("data/inventario.txt", "r");
                 *INVENTORY = parseInventario(inv);
                 fclose(inv);
                 INVENTORY->OggettiTrasportabili = MAX_TRASPORTABILI;
