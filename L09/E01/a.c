@@ -1,38 +1,58 @@
+#include <limits.h>
+#include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-int max(int a, int b) {
-    return a > b ? a : b;
-}
+typedef struct Array {
+    int *array;
+    int elementi;
+} array;
 
-int LISR(int *val, int i) {
-    int j, ris;
-    ris = 1;
-    for (j = 0; j < i; j++)
-        if (val[j] < val[i])
-            ris = max(ris, 1 + LISR(val, j));
-    return ris;
-}
-
-int LIS(int *val, int N) {
-    int i, res = 0, tmp;
-    for (i = 0; i < N; i++) {
-        tmp = LISR(val, i);
-        if (tmp > res)
-            res = tmp;
+void printLIS(array *valori, array *posizioni, int index) {
+    if (index == -1) {
+        printf("\n");
+        return;
     }
-    return res;
+
+    printf("%d ", valori->array[index]);
+    index = posizioni->array[index];
+    printLIS(valori, posizioni, index);
 }
 
-void printLIS(int *array, int lenght, int *lisOUT, int lisOUTL) {
+int LISS(array *valori, array *posizioni, array *LIS) {
+    int precedente      = INT_MIN;
+    int precedenteIndex = -1;
+    int LISAttuale      = 1;
+    for (int i = 0; i < valori->elementi; i++) { // Per ogni elemento
+        if (valori->array[i] <= precedente) {    // Se il valore interrompe la sequenza
+            // Inserisco i valori di interruzione
+            posizioni->array[i] = -1;
+            LIS->array[i]       = 1;
+        } else {
+            // Proseguo l'incremento della LIS
+            posizioni->array[i] = precedenteIndex;
+            precedenteIndex     = i;
+            LIS->array[i]       = LISAttuale++;
+        }
+        precedente = valori->array[i];
+    }
 
+    return precedenteIndex; // Restituisco l'ultimo valore della LIS
 }
 
-void LISS()
+int main() {
+    array valori;
+    valori.elementi = 7;
+    int temp[]      = {6, 3, 5, 2, 7, 8, 1};
+    valori.array    = temp;
 
-int main(int argc, char const *argv[]) {
-    int array[6] = {11, 14, 13, 7, 8, 15};
+    array LIS, posizioni;
+    LIS.elementi       = valori.elementi;
+    posizioni.elementi = valori.elementi;
+    LIS.array          = (int *)calloc(valori.elementi, sizeof(int));
+    posizioni.array    = (int *)calloc(valori.elementi, sizeof(int));
 
-    int a = LIS(array, 6);
-    printf("%d\n", a);
+    int indice = LISS(&valori, &posizioni, &LIS);
+    printLIS(&valori, &posizioni, indice);
     return 0;
 }
