@@ -56,6 +56,48 @@ void copiaArrayAttivita(arrayAttivita *dest, arrayAttivita *src) {
     dest->Durata         = src->Durata;
     dest->NumeroElementi = src->NumeroElementi;
 }
+
+// Unisce i due sottovettori ordinandoli
+void merge(attivita *a, attivita *b, int inzio, int centro, int fine) {
+    uint8_t i, j;
+    i = inzio;      // Contatore per l'esporazione dell'array sinistro
+    j = centro + 1; // Contatore per l'esporazione dell'array destro
+
+    int k;
+    for (k = inzio; i <= centro && j <= fine; k++) { // Confronto gli array sinistro e destro
+        if (a[i].Inizio <= a[j].Inizio)              // Se l'elemento nel sinistro è minore o uguale (oppure quello destro maggiore o uguale) all'altro copio di conseguenza
+            b[k] = a[i++];
+        else
+            b[k] = a[j++];
+    }
+
+    while (i <= centro)
+        b[k++] = a[i++]; // Copio il resto degli elementi a sinistra nell'array d'appoggio
+    while (j <= fine)
+        b[k++] = a[j++]; // Copio il resto degli elementi a destra nell'array d'appoggio
+    for (k = inzio; k <= fine; k++)
+        a[k] = b[k]; // Ricopio tutto nell'array originale
+}
+
+// Componente ricorsiva del Merge Sort
+void ordinaRicorsivo(attivita *a, attivita *b, uint8_t inizio, uint8_t fine) {
+    int centro = (inizio + fine) / 2; // Calcolo l'indice di metà vettore
+    if (inizio >= fine) {             // Se ho un vettore unitario mi interrompo
+        return;
+    }
+
+    ordinaRicorsivo(a, b, inizio, centro);   // Ordina a sinistra
+    ordinaRicorsivo(a, b, centro + 1, fine); // Ordina a destra
+    merge(a, b, inizio, centro, fine);       // Unisco i due array
+}
+
+// Ordina un array di attività tramite il Merge Sort
+void ordina(arrayAttivita *a) {
+    attivita *b    = (attivita *)malloc(a->NumeroElementi * sizeof(attivita)); // Creo l'array d'appoggio
+    uint8_t inizio = 0, fine = a->NumeroElementi - 1;
+    ordinaRicorsivo(a->Array, b, inizio, fine);
+}
+
 // * -------------------------------------------------------------
 
 // * STAMPA DATI

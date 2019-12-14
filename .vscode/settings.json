@@ -20,6 +20,7 @@
         "personaggio.h": "c",
         "equipaggiamento.h": "c",
         "inventario.h": "c",
-        "oggetto.h": "c"
+        "oggetto.h": "c",
+        "attivita.h": "c"
     }
 }

@@ -19,11 +19,12 @@ typedef struct ArrayAttivita {
 
 void printArrayAttivita(arrayAttivita *a);
 void printAttivita(attivita *a);
-uint8_t durataAttivita(attivita *a);
-void durataArrayAttivita(arrayAttivita *a);
+void ordina(arrayAttivita *a);
 void copiaArrayAttivita(arrayAttivita *dest, arrayAttivita *src);
+void durataArrayAttivita(arrayAttivita *a);
+uint8_t durataAttivita(attivita *a);
 void leggiAttivita(FILE *stream, arrayAttivita *a);
 attivita parseAttivita(char *string);
 bool attivitaSovvrapposta(attivita *a, attivita *b);
 
-#endif
+#endif // ATTIVITA_H
