@@ -65,7 +65,7 @@ void merge(attivita *a, attivita *b, int inzio, int centro, int fine) {
 
     int k;
     for (k = inzio; i <= centro && j <= fine; k++) { // Confronto gli array sinistro e destro
-        if (a[i].Inizio <= a[j].Inizio)              // Se l'elemento nel sinistro è minore o uguale (oppure quello destro maggiore o uguale) all'altro copio di conseguenza
+        if (a[i].Fine <= a[j].Fine)              // Se l'elemento nel sinistro è minore o uguale (oppure quello destro maggiore o uguale) all'altro copio di conseguenza
             b[k] = a[i++];
         else
             b[k] = a[j++];
