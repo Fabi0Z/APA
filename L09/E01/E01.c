@@ -60,6 +60,51 @@ void attSel(int N, attivita *v) {
 }
 // * -------------------------------------------------------------
 
+void scriviLIS(arrayAttivita *valori, unsigned int *posizioni, unsigned int index, arrayAttivita *LIS) {
+    if (index == 0) {
+        return;
+    }
+
+    LIS->Array[LIS->NumeroElementi++] = valori->Array[index - 1];
+    index                             = posizioni[index - 1];
+    scriviLIS(valori, posizioni, index, LIS);
+}
+
+unsigned int LISS(arrayAttivita *valori, unsigned int *posizioni, unsigned int *LIS) {
+    unsigned int precedente      = 0;
+    unsigned int precedenteIndex = 0;
+    unsigned int LISAttuale      = 1;
+    for (unsigned int i = 0; i < valori->NumeroElementi; i++) { // Per ogni elemento
+        if (valori->Array[i].Inizio < precedente) {             // Se il valore interrompe la sequenza
+            // Inserisco i valori di interruzione
+            posizioni[i] = 0;
+            LIS[i]       = 1;
+        } else {
+            // Proseguo l'incremento della LIS
+            posizioni[i]    = precedenteIndex;
+            precedenteIndex = i + 1;
+            LIS[i]          = LISAttuale++;
+        }
+        precedente = valori->Array[i].Fine;
+    }
+
+    return precedenteIndex; // Restituisco l'ultimo valore della LIS
+}
+
+void selezioneDinamica(arrayAttivita *a) {
+    unsigned int posizioni[a->NumeroElementi];
+    unsigned int LIS[a->NumeroElementi];
+    arrayAttivita risultati;
+    risultati.NumeroElementi = 0;
+    attivita temp[a->NumeroElementi];
+    risultati.Array = temp;
+
+    unsigned int index = LISS(a, posizioni, LIS);
+    scriviLIS(a, posizioni, index, &risultati);
+    durataArrayAttivita(&risultati);
+    printArrayAttivita(&risultati);
+}
+
 int main() {
     FILE *stream = smartFopen("att.txt", "r");
 
@@ -71,6 +116,8 @@ int main() {
     printf("Sul file sono presenti ");
     printArrayAttivita(&a);
     printf("\n");
+    selezioneDinamica(&a);
+    puts("OLD");
     attSel(a.NumeroElementi, a.Array);
     return 0;
 }
