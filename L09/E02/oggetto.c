@@ -30,7 +30,7 @@ void printOggetto(oggetto o, FILE *stream) {
 
 // Crea, alloca e restituisce un oggetto
 oggetto creaOggetto(unsigned int nomeSize, unsigned int tipoSize) {
-    oggetto *temp = (oggetto *)malloc(sizeof(oggetto));
+    oggetto temp = (oggetto)malloc(sizeof(struct Oggetto));
     allocaOggetto(temp, nomeSize, tipoSize);
     return temp;
 }
