@@ -48,7 +48,9 @@ void freeArrayPuntatoriOggetti(arrayPuntatoriOggetti a, bool elementi) {
             freeOggetto(*a->Array[i]);
         }
     }
-
+    for (unsigned int i = 0; i < a->NumeroOggetti; i++) { // Per ogni oggetto
+        free(a->Array[i]);
+    }
     free(a);
 }
 
@@ -188,6 +190,16 @@ void aggiungiOggettoArrayPuntatori(arrayPuntatoriOggetti a, oggetto *o) {
 // Restituisce il nome di un oggetto
 char *getNomeOggetto(oggetto o) {
     return o->Nome;
+}
+
+// Restituisce il numero di oggetti
+unsigned int getNumeroOggetti(arrayOggetti a) {
+    return a->NumeroOggetti;
+}
+
+// Restituisce il numero di puntatori
+unsigned int getNumeroPuntatori(arrayPuntatoriOggetti a) {
+    return a->NumeroOggetti;
 }
 
 // Restituisce il tipo di un oggetto

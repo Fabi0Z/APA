@@ -12,6 +12,8 @@ oggetto *getOggettoPointerByIndex(arrayPuntatoriOggetti a, unsigned int index);
 oggetto getOggettoByIndex(arrayOggetti a, unsigned int index);
 stats getStatisticheOggetto(oggetto o);
 char *getTipoOggetto(oggetto o);
+unsigned int getNumeroOggetti(arrayOggetti a);
+unsigned int getNumeroPuntatori(arrayPuntatoriOggetti a);
 char *getNomeOggetto(oggetto o);
 void aggiungiOggettoArrayPuntatori(arrayPuntatoriOggetti a, oggetto *o);
 void aggiungiOggettoArray(arrayOggetti a, oggetto o);
