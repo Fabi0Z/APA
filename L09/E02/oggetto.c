@@ -60,16 +60,24 @@ void printOggetto(oggetto o, FILE *stream) {
 }
 
 // Stampa un oggetto su file
-void printArrayOggetti(arrayOggetti a, FILE *stream) {
+void printArrayOggetti(arrayOggetti a, FILE *stream, bool indici) {
     for (unsigned int i = 0; i < a->NumeroOggetti; i++) {
+        if (indici) {
+            fprintf(stream, "%zu - ", i);
+        }
         printOggetto(a->Array[i], stream);
+        printf("\n");
     }
 }
 
 // Stampa un oggetto su file
-void printArrayPuntatoriOggetti(arrayPuntatoriOggetti a, FILE *stream) {
+void printArrayPuntatoriOggetti(arrayPuntatoriOggetti a, FILE *stream, bool indici) {
     for (unsigned int i = 0; i < a->NumeroOggetti; i++) {
+        if (indici) {
+            fprintf(stream, "%zu - ", i);
+        }
         printOggetto(*a->Array[i], stream);
+        printf("\n");
     }
 }
 
@@ -166,7 +174,7 @@ void aggiungiOggettoArrayPuntatori(arrayPuntatoriOggetti a, oggetto *o) {
     }
 
     // Creo nuovo array oggetti
-    arrayOggetti new = creaArrayPuntatoriOggetti(a->NumeroOggetti + 1);
+    arrayPuntatoriOggetti new = creaArrayPuntatoriOggetti(a->NumeroOggetti + 1);
     memcpy(new->Array, a->Array, sizeof(oggetto **) * a->NumeroOggetti);
 
     // Inserisco il nuovo oggetto
@@ -190,4 +198,35 @@ char *getTipoOggetto(oggetto o) {
 // Restituisce le statistiche di un oggetto
 stats getStatisticheOggetto(oggetto o) {
     return o->Statistiche;
+}
+
+// Restituisce l'oggetto nella posizione index dell'array
+oggetto getOggettoByIndex(arrayOggetti a, unsigned int index) {
+    return a->Array[index];
+}
+
+// Restituisce il puntatore a oggetto nella posizione index dell'array
+oggetto *getOggettoPointerByIndex(arrayPuntatoriOggetti a, unsigned int index) {
+    return a->Array[index];
+}
+
+// Cerca un oggetto per nome nell'array di oggetti, se non lo trova restituisce NULL
+oggetto getOggettoByName(arrayOggetti a, char *nome) {
+    for (unsigned int i = 0; i < a->NumeroOggetti; i++) { // Per ogni oggetto
+        if (strcmp(nome, a->Array[i]->Nome) == 0) {       // Se il nome corrisponde
+            return a->Array[i];
+        }
+    }
+    return NULL;
+}
+
+// Cerca un puntatore a oggetto per nome nell'array di oggetti, se non lo trova restituisce NULL
+oggetto *getPuntatoreOggettoByName(arrayPuntatoriOggetti a, char *nome) {
+    for (unsigned int i = 0; i < a->NumeroOggetti; i++) { // Per ogni oggetto
+        oggetto temp = *a->Array[i];
+        if (strcmp(nome, temp->Nome) == 0) { // Se il nome corrisponde
+            return a->Array[i];
+        }
+    }
+    return NULL;
 }
