@@ -42,7 +42,7 @@ inventario parseInventario(FILE *stream) {
     char string[(INVENTARIO_MAX_STRING * 3) + 1];
     oggetto temp = creaOggetto(INVENTARIO_MAX_STRING, INVENTARIO_MAX_STRING);
 
-    for (size_t i = 0; i < inv->NumeroOggetti; i++) {      // Per ogni oggetto nel file
+    for (size_t i = 0; i < inv->NumeroOggetti; i++) {     // Per ogni oggetto nel file
         fgets(string, INVENTARIO_MAX_STRING * 2, stream); // Leggo la riga successiva
         leggiOggetto(string, temp);
         allocaOggetto(inv->Oggetti[i], strlen(getNomeOggetto(temp)), strlen(getTipoOggetto(temp))); // Alloco la memoria necessaria
@@ -54,11 +54,31 @@ inventario parseInventario(FILE *stream) {
 }
 
 // Cerca un oggetto per nome nell'inventario, se non lo trova restituisce NULL
-oggetto trovaOggetto(inventario inv, char *nome) {
+oggetto getOggettoByName(inventario inv, char *nome) {
     for (unsigned int i = 0; i < inv->NumeroOggetti; i++) {       // Per ogni oggetto
         if (strcmp(nome, getNomeOggetto(inv->Oggetti[i])) == 0) { // Se il nome corrisponde
             return inv->Oggetti[i];
         }
     }
     return NULL;
+}
+
+// Restituisce l'oggetto di indice "index" nell'inventario
+oggetto getOggettoByIndex(inventario inv, uint8_t index) {
+    return inv->Oggetti[index];
+}
+
+// Restituisce il numero di oggetti trasportabili di un inventario
+uint8_t getOggettiTrasportabiliInventario(inventario i) {
+    return i->OggettiTrasportabili;
+}
+
+// Restituisce il numero di oggetti presenti in un inventario
+uint8_t getNumeroOggettiInventario(inventario i) {
+    return i->NumeroOggetti;
+}
+
+// Aggiorna il numero di oggetti trasportabili di un inventario
+void updateOggettiTrasportabiliInventario(inventario i, uint8_t OggettiTrasportabili) {
+    i->OggettiTrasportabili = OggettiTrasportabili;
 }
