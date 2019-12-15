@@ -3,14 +3,12 @@
 struct Equipaggiamento {
     bool InUso;
     arrayPuntatoriOggetti Oggetti;
-    uint8_t NumeroOggetti;
 };
 
 // Crea un equipaggiamento
 equipaggiamento creaEquipaggiamento() {
     equipaggiamento e = (equipaggiamento)malloc(sizeof(struct Equipaggiamento));
     e->Oggetti        = NULL;
-    e->NumeroOggetti  = 0;
     return e;
 }
 
@@ -36,8 +34,8 @@ void freeEquipaggiamento(equipaggiamento e) {
 }
 
 // Restituisce l'oggetto di indice "index" nell'equipaggiamento
-oggetto getOggettoEquipaggiamentoByIndex(equipaggiamento e, uint8_t index) {
-    return getOggettoByIndex(e->Oggetti, index);
+oggetto *getOggettoEquipaggiamentoByIndex(equipaggiamento e, uint8_t index) {
+    return getPuntatoreOggettoByIndex(e->Oggetti, index);
 }
 
 oggetto *getOggettoEquipaggiamentoByName(equipaggiamento e, char *name) {
