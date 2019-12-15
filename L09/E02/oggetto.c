@@ -1,14 +1,20 @@
 #include "oggetto.h"
 
+struct Oggetto {
+    char *Nome;
+    char *Tipo;
+    stats Statistiche;
+};
+
 // Alloca memoria per un oggetto di tipo oggetto
-void allocaOggetto(oggetto *o, unsigned int nomeSize, unsigned int tipoSize) {
-    o->Nome = (char *)calloc(nomeSize, sizeof(char)); // Alloco la memoria
-    o->Tipo = (char *)calloc(tipoSize, sizeof(char));
+void allocaOggetto(oggetto o, unsigned int nomeSize, unsigned int tipoSize) {
+    o->Nome        = (char *)calloc(nomeSize, sizeof(char)); // Alloco la memoria
+    o->Tipo        = (char *)calloc(tipoSize, sizeof(char));
     o->Statistiche = creaStatistiche();
 }
 
 // Dealloca un elemento di tipo oggetto
-void freeOggetto(oggetto *o) {
+void freeOggetto(oggetto o) {
     free(o->Nome);
     free(o->Tipo);
     free(o->Statistiche);
@@ -16,28 +22,28 @@ void freeOggetto(oggetto *o) {
 }
 
 // Stampa un oggetto su file
-void printOggetto(oggetto *o, FILE *stream) {
+void printOggetto(oggetto o, FILE *stream) {
     fprintf(stream, "%s %s ", o->Nome, o->Tipo);
     printStatistiche(o->Statistiche, stream);
     fprintf(stream, "\n");
 }
 
 // Crea, alloca e restituisce un oggetto
-oggetto *creaOggetto(unsigned int nomeSize, unsigned int tipoSize) {
+oggetto creaOggetto(unsigned int nomeSize, unsigned int tipoSize) {
     oggetto *temp = (oggetto *)malloc(sizeof(oggetto));
     allocaOggetto(temp, nomeSize, tipoSize);
     return temp;
 }
 
 // Copia src in dest
-void copiaOggetto(oggetto *dest, oggetto *src) {
+void copiaOggetto(oggetto dest, oggetto src) {
     memcpy(dest->Statistiche, src->Statistiche, sizeof(int16_t) * N_STATISTICHE);
     strcpy(dest->Nome, src->Nome);
     strcpy(dest->Tipo, src->Tipo);
 }
 
 // Effettua il parse di un personaggio da stringa, restituisce se la lettura è andata a buon fine o meno
-bool leggiOggetto(char *string, oggetto *o) {
+bool leggiOggetto(char *string, oggetto o) {
     uint8_t conteggio = 0;
     conteggio += sscanf(string, "%s %[^\n]", o->Nome, string);
     conteggio += sscanf(string, "%s %[^\n]", o->Tipo, string);
