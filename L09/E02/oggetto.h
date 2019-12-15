@@ -8,7 +8,7 @@ typedef struct ArrayPuntatoriOggetti *arrayPuntatoriOggetti;
 
 oggetto *getPuntatoreOggettoByName(arrayPuntatoriOggetti a, char *nome);
 oggetto getOggettoByName(arrayOggetti a, char *nome);
-oggetto *getOggettoPointerByIndex(arrayPuntatoriOggetti a, unsigned int index);
+oggetto *getPuntatoreOggettoByIndex(arrayPuntatoriOggetti a, unsigned int index);
 oggetto getOggettoByIndex(arrayOggetti a, unsigned int index);
 stats getStatisticheOggetto(oggetto o);
 char *getTipoOggetto(oggetto o);

@@ -218,7 +218,7 @@ oggetto getOggettoByIndex(arrayOggetti a, unsigned int index) {
 }
 
 // Restituisce il puntatore a oggetto nella posizione index dell'array
-oggetto *getOggettoPointerByIndex(arrayPuntatoriOggetti a, unsigned int index) {
+oggetto *getPuntatoreOggettoByIndex(arrayPuntatoriOggetti a, unsigned int index) {
     return a->Array[index];
 }
 
