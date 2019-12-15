@@ -57,3 +57,11 @@ bool leggiOggetto(char *string, oggetto o) {
     free(s);
     return conteggio == 4;
 }
+
+char *getNomeOggetto(oggetto o) {
+    return o->Nome;
+}
+
+char *getTipoOggetto(oggetto o) {
+    return o->Tipo;
+}

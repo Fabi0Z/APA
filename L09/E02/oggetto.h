@@ -1,10 +1,12 @@
 #ifndef OGGETTO_H
 #define OGGETTO_H
 
-typedef struct Oggetto *oggetto;
-
 #include "statistiche.h"
 
+typedef struct Oggetto *oggetto;
+
+char *getTipoOggetto(oggetto o);
+char *getNomeOggetto(oggetto o);
 bool leggiOggetto(char *string, oggetto o);
 void copiaOggetto(oggetto dest, oggetto src);
 oggetto creaOggetto(unsigned int nomeSize, unsigned int tipoSize);
