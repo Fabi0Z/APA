@@ -45,3 +45,8 @@ void copiaEquipaggiamento(equipaggiamento dest, equipaggiamento src) {
     dest->NumeroOggetti = src->NumeroOggetti;
     memcpy(dest->Oggetti, src->Oggetti, sizeof(oggetto **) * src->NumeroOggetti);
 }
+
+// Restituisce il numero di oggetti di un equipaggiamento
+uint8_t getNumeroOggettiEquipaggiamento(equipaggiamento e) {
+    return e->NumeroOggetti;
+}
