@@ -11,6 +11,11 @@ struct ArrayOggetti {
     unsigned int NumeroOggetti;
 };
 
+struct ArrayPuntatoriOggetti {
+    oggetto **Array;
+    unsigned int NumeroOggetti;
+};
+
 // Alloca memoria per un oggetto di tipo oggetto
 void allocaOggetto(oggetto o, unsigned int nomeSize, unsigned int tipoSize) {
     o->Nome        = (char *)calloc(nomeSize, sizeof(char)); // Alloco la memoria
@@ -26,7 +31,7 @@ void freeOggetto(oggetto o) {
     free(o);
 }
 
-// Dealloca un elemento di tipo arrayOggetto, se il parametro elementi è true libera anche gli oggetti dentro l'array
+// Dealloca un elemento di tipo arrayOggetti, se il parametro elementi è true libera anche gli oggetti dentro l'array
 void freeArrayOggetti(arrayOggetti a, bool elementi) {
     if (elementi) {
         for (unsigned int i = 0; i < a->NumeroOggetti; i++) { // Per ogni oggetto
@@ -36,11 +41,36 @@ void freeArrayOggetti(arrayOggetti a, bool elementi) {
     free(a);
 }
 
+// Dealloca un elemento di tipo arrayPuntatoriOggetti, se il parametro elementi è true libera anche gli oggetti dentro l'array
+void freeArrayPuntatoriOggetti(arrayPuntatoriOggetti a, bool elementi) {
+    if (elementi) {
+        for (unsigned int i = 0; i < a->NumeroOggetti; i++) { // Per ogni oggetto
+            freeOggetto(*a->Array[i]);
+        }
+    }
+
+    free(a);
+}
+
 // Stampa un oggetto su file
 void printOggetto(oggetto o, FILE *stream) {
     fprintf(stream, "%s %s ", o->Nome, o->Tipo);
     printStatistiche(o->Statistiche, stream);
     fprintf(stream, "\n");
+}
+
+// Stampa un oggetto su file
+void printArrayOggetti(arrayOggetti a, FILE *stream) {
+    for (unsigned int i = 0; i < a->NumeroOggetti; i++) {
+        printOggetto(a->Array[i], stream);
+    }
+}
+
+// Stampa un oggetto su file
+void printArrayPuntatoriOggetti(arrayPuntatoriOggetti a, FILE *stream) {
+    for (unsigned int i = 0; i < a->NumeroOggetti; i++) {
+        printOggetto(*a->Array[i], stream);
+    }
 }
 
 // Crea, alloca e restituisce un oggetto
@@ -58,6 +88,14 @@ arrayOggetti creaArrayOggetti(unsigned int NumeroOggetti) {
     return a;
 }
 
+// Crea e restituisce un array di oggetti non allocati
+arrayPuntatoriOggetti creaArrayPuntatoriOggetti(unsigned int NumeroOggetti) {
+    arrayPuntatoriOggetti a;
+    a->NumeroOggetti = NumeroOggetti;
+    a->Array         = (oggetto **)calloc(NumeroOggetti, sizeof(oggetto *));
+    return a;
+}
+
 // Copia src in dest
 void copiaOggetto(oggetto dest, oggetto src) {
     memcpy(dest->Statistiche, src->Statistiche, sizeof(int16_t) * N_STATISTICHE);
@@ -70,6 +108,14 @@ void copiaArrayOggetti(arrayOggetti dest, arrayOggetti src) {
     unsigned int min = dest->NumeroOggetti < src->NumeroOggetti ? dest->NumeroOggetti : src->NumeroOggetti;
     for (unsigned int i = 0; i < min; i++) { // Per il numero minimo di oggetti
         copiaOggetto(dest->Array[i], src->Array[i]);
+    }
+}
+
+// Copia gli oggetti di src in dest
+void copiaArrayPuntatoriOggetti(arrayPuntatoriOggetti dest, arrayPuntatoriOggetti src) {
+    unsigned int min = dest->NumeroOggetti < src->NumeroOggetti ? dest->NumeroOggetti : src->NumeroOggetti;
+    for (unsigned int i = 0; i < min; i++) { // Per il numero minimo di oggetti
+        copiaOggetto(*dest->Array[i], *src->Array[i]);
     }
 }
 
@@ -90,7 +136,7 @@ bool leggiOggetto(char *string, oggetto o) {
 }
 
 // Aggiunge un oggetto ad un array di oggetti
-void aggiungiOggetto(arrayOggetti a, oggetto o) {
+void aggiungiOggettoArray(arrayOggetti a, oggetto o) {
     if (a->NumeroOggetti == 0) { // Se non ho oggetti
         freeArrayOggetti(a, false);
         a           = creaArrayOggetti(1);
@@ -108,6 +154,27 @@ void aggiungiOggetto(arrayOggetti a, oggetto o) {
     // Sostituisco l'array di oggetti
     a->Array = new->Array;
     freeArrayOggetti(new, false);
+}
+
+// Aggiunge un oggetto ad un array di oggetti
+void aggiungiOggettoArrayPuntatori(arrayPuntatoriOggetti a, oggetto *o) {
+    if (a->NumeroOggetti == 0) { // Se non ho oggetti
+        freeArrayPuntatoriOggetti(a, false);
+        a           = creaArrayPuntatoriOggetti(1);
+        a->Array[0] = o;
+        return;
+    }
+
+    // Creo nuovo array oggetti
+    arrayOggetti new = creaArrayPuntatoriOggetti(a->NumeroOggetti + 1);
+    memcpy(new->Array, a->Array, sizeof(oggetto **) * a->NumeroOggetti);
+
+    // Inserisco il nuovo oggetto
+    new->Array[a->NumeroOggetti] = o;
+
+    // Sostituisco l'array di oggetti
+    a->Array = new->Array;
+    freeArrayPuntatoriOggetti(new, false);
 }
 
 // Restituisce il nome di un oggetto
