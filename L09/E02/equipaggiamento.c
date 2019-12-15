@@ -2,7 +2,7 @@
 
 struct Equipaggiamento {
     bool InUso;
-    oggetto **Oggetti;
+    arrayPuntatoriOggetti Oggetti;
     uint8_t NumeroOggetti;
 };
 
@@ -16,13 +16,7 @@ equipaggiamento creaEquipaggiamento() {
 
 // Stampa un equipaggiamento su file
 void printEquipaggiamentoFile(equipaggiamento e, FILE *stream, bool indici) {
-    for (size_t i = 0; i < e->NumeroOggetti; i++) { // Per ogni oggetto
-        if (indici) {
-            fprintf(stream, "%zu - ", i);
-        }
-        printOggetto(*e->Oggetti[i], stream);
-    }
-    printf("\n");
+    printArrayPuntatoriOggetti(e->Oggetti, stream, indici);
 }
 
 // Stampa un equipaggiamento a video
@@ -31,22 +25,25 @@ void printEquipaggiamento(equipaggiamento e, bool indici) {
     printEquipaggiamentoFile(e, stdout, indici);
 }
 
-// Copia src in dest
-void copiaEquipaggiamento(equipaggiamento dest, equipaggiamento src) {
-    // Se vi sono oggetti
-    if (src->NumeroOggetti == 0) {
-        dest->NumeroOggetti = 0;
-        if (dest->Oggetti != NULL) {
-            free(dest->Oggetti);
-            dest->Oggetti = NULL;
-        }
-        return;
-    }
-    dest->NumeroOggetti = src->NumeroOggetti;
-    memcpy(dest->Oggetti, src->Oggetti, sizeof(oggetto **) * src->NumeroOggetti);
+// Restituisce il numero di oggetti di un equipaggiamento
+unsigned int getNumeroOggettiEquipaggiamento(equipaggiamento e) {
+    return getNumeroPuntatori(e->Oggetti);
 }
 
-// Restituisce il numero di oggetti di un equipaggiamento
-uint8_t getNumeroOggettiEquipaggiamento(equipaggiamento e) {
-    return e->NumeroOggetti;
+// Dealloca un equipaggiamento
+void freeEquipaggiamento(equipaggiamento e) {
+    freeArrayPuntatoriOggetti(e->Oggetti, false);
+}
+
+// Restituisce l'oggetto di indice "index" nell'equipaggiamento
+oggetto getOggettoEquipaggiamentoByIndex(equipaggiamento e, uint8_t index) {
+    return getOggettoByIndex(e->Oggetti, index);
+}
+
+oggetto *getOggettoEquipaggiamentoByName(equipaggiamento e, char *name) {
+    return getPuntatoreOggettoByName(e->Oggetti, name);
+}
+
+bool aggiungiOggettoEquipaggiamento(equipaggiamento e, oggetto o) {
+    aggiungiOggettoArrayPuntatori(e->Oggetti, o);
 }
