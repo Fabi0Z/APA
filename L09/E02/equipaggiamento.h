@@ -3,15 +3,11 @@
 
 #include "oggetto.h"
 
-typedef struct Equipaggiamento {
-    bool InUso;
-    oggetto **Oggetti;
-    uint8_t NumeroOggetti;
-} equipaggiamento;
+typedef struct Equipaggiamento *equipaggiamento;
 
-void copiaEquipaggiamento(equipaggiamento *dest, equipaggiamento *src);
-void printEquipaggiamento(equipaggiamento *e, bool indici);
-void printEquipaggiamentoFile(equipaggiamento *e, FILE *stream, bool indici);
-equipaggiamento *creaEquipaggiamento();
+void copiaEquipaggiamento(equipaggiamento dest, equipaggiamento src);
+void printEquipaggiamento(equipaggiamento e, bool indici);
+void printEquipaggiamentoFile(equipaggiamento e, FILE *stream, bool indici);
+equipaggiamento creaEquipaggiamento();
 
 #endif // EQUIPAGGIAMENTO_H
