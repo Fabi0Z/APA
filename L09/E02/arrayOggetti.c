@@ -9,13 +9,13 @@ struct ArrayOggetti {
 void aggiungiOggettoArray(arrayOggetti a, oggetto o) {
     if (a->NumeroOggetti == 0) { // Se non ho oggetti
         freeArrayOggetti(a, false);
-        a           = creaArrayOggetti(1);
+        a           = allocaArrayOggetti(1);
         a->Array[0] = o;
         return;
     }
 
     // Creo nuovo array oggetti
-    arrayOggetti new = creaArrayOggetti(a->NumeroOggetti + 1);
+    arrayOggetti new = allocaArrayOggetti(a->NumeroOggetti + 1);
     memcpy(new->Array, a->Array, sizeof(oggetto *) * a->NumeroOggetti);
 
     // Inserisco il nuovo oggetto
@@ -79,7 +79,7 @@ oggetto getOggettoByName(arrayOggetti a, char *nome) {
 void printArrayOggetti(arrayOggetti a, FILE *stream, bool indici) {
     for (unsigned int i = 0; i < a->NumeroOggetti; i++) {
         if (indici) {
-            fprintf(stream, "%zu - ", i);
+            fprintf(stream, "%d - ", i);
         }
         printOggetto(a->Array[i], stream);
         printf("\n");
