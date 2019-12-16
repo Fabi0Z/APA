@@ -4,13 +4,14 @@
 #include "oggetto.h"
 typedef struct ArrayPuntatoriOggetto *arrayPuntatoriOggetto;
 
-void printarrayPuntatoriOggetto(arrayPuntatoriOggetto a, FILE *stream, bool indici);
+void printArrayPuntatoriOggetto(arrayPuntatoriOggetto a, FILE *stream, bool indici);
 oggetto *getPuntatoreOggettoByName(arrayPuntatoriOggetto a, char *nome);
 oggetto *getPuntatoreOggettoByIndex(arrayPuntatoriOggetto a, unsigned int index);
+unsigned int getNumeroPuntatori(arrayPuntatoriOggetto a);
 arrayPuntatoriOggetto creaArrayPuntatoriOggetto();
 void copiaArrayPuntatoriOggetto(arrayPuntatoriOggetto dest, arrayPuntatoriOggetto src);
-arrayPuntatoriOggetto allocaarrayPuntatoriOggetto(unsigned int items);
-void freearrayPuntatoriOggetto(arrayPuntatoriOggetto a, bool elementi);
+arrayPuntatoriOggetto allocaArrayPuntatoriOggetto(unsigned int items);
+void freeArrayPuntatoriOggetto(arrayPuntatoriOggetto a, bool elementi);
 void aggiungiOggettoArrayPuntatori(arrayPuntatoriOggetto a, oggetto *o);
 
 #endif // ARRAYPUNTATORIOGGETTO_H

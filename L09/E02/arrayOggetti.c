@@ -60,6 +60,11 @@ void freeArrayOggetti(arrayOggetti a, bool elementi) {
     free(a);
 }
 
+// Restituisce il numero di oggetti
+unsigned int getNumeroOggetti(arrayOggetti a) {
+    return a->NumeroOggetti;
+}
+
 // Restituisce l'oggetto nella posizione index dell'array
 oggetto getOggettoByIndex(arrayOggetti a, unsigned int index) {
     return a->Array[index];
