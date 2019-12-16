@@ -1,11 +1,5 @@
 #include "oggetto.h"
 
-struct Oggetto {
-    char *Nome;
-    char *Tipo;
-    stats Statistiche;
-};
-
 // Alloca memoria per un oggetto di tipo oggetto
 void allocaOggetto(oggetto o, unsigned int nomeSize, unsigned int tipoSize) {
     o->Nome        = (char *)calloc(nomeSize, sizeof(char)); // Alloco la memoria

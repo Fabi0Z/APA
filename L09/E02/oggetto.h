@@ -2,7 +2,12 @@
 #define OGGETTO_H
 
 #include "statistiche.h"
-typedef struct Oggetto *oggetto;
+
+typedef struct Oggetto {
+    char *Nome;
+    char *Tipo;
+    stats Statistiche;
+} * oggetto;
 
 void printOggetto(oggetto o, FILE *stream);
 bool leggiOggetto(char *string, oggetto o);
