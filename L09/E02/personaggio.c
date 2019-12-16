@@ -43,20 +43,26 @@ void copiaPersonaggio(personaggio dest, personaggio src) {
     // Copio i dati per puntatore
     strcpy(dest->Nome, src->Nome);
     strcpy(dest->Classe, src->Classe);
-    copiaStatistiche(dest->Statistiche, src->Statistiche);
-    copiaEquipaggiamento(dest->Equipaggiamento, src->Equipaggiamento);
+
+    if (src->Statistiche != NULL) {
+        copiaStatistiche(dest->Statistiche, src->Statistiche);
+    }
+
+    if (src->Equipaggiamento != NULL) {
+        copiaEquipaggiamento(dest->Equipaggiamento, src->Equipaggiamento);
+    }
 }
 
 // Crea, alloca e restituisce un personaggio senza equipaggiamento
 personaggio creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) {
-    personaggio temp = (personaggio )malloc(sizeof(struct Personaggio));
+    personaggio temp = (personaggio)malloc(sizeof(struct Personaggio));
     allocaPersonaggio(temp, nomeSize, classeSize);
     return temp;
 }
 
 // Dealloca un personaggio
 void freePersonaggio(personaggio p) { // Dealloca la memoria di un personaggio
-    if (p->Equipaggiamento != NULL) {  // Se è presente un equipaggiamento
+    if (p->Equipaggiamento != NULL) { // Se è presente un equipaggiamento
         freeEquipaggiamento(p->Equipaggiamento);
     }
     free(p->Nome);

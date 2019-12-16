@@ -12,7 +12,9 @@ void aggiungiOggettoEquipaggiamento(equipaggiamento e, oggetto o) {
 // Copia SRC in DEST
 void copiaEquipaggiamento(equipaggiamento dest, equipaggiamento src) {
     dest->InUso = src->InUso;
-    copiaArrayPuntatoriOggetto(dest->Oggetti, src->Oggetti);
+    if (src->Oggetti != NULL) {
+        copiaArrayPuntatoriOggetto(dest->Oggetti, src->Oggetti);
+    }
 }
 
 // Crea un equipaggiamento
