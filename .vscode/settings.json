@@ -21,6 +21,7 @@
         "equipaggiamento.h": "c",
         "inventario.h": "c",
         "oggetto.h": "c",
-        "attivita.h": "c"
+        "attivita.h": "c",
+        "arrayoggetti.h": "c"
     }
 }

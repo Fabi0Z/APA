@@ -8,8 +8,8 @@ void printArrayPuntatoriOggetto(arrayPuntatoriOggetto a, FILE *stream, bool indi
 oggetto *getPuntatoreOggettoByName(arrayPuntatoriOggetto a, char *nome);
 oggetto *getPuntatoreOggettoByIndex(arrayPuntatoriOggetto a, unsigned int index);
 unsigned int getNumeroPuntatori(arrayPuntatoriOggetto a);
-arrayPuntatoriOggetto creaArrayPuntatoriOggetto();
 void copiaArrayPuntatoriOggetto(arrayPuntatoriOggetto dest, arrayPuntatoriOggetto src);
+arrayPuntatoriOggetto creaArrayPuntatoriOggetto();
 arrayPuntatoriOggetto allocaArrayPuntatoriOggetto(unsigned int items);
 void freeArrayPuntatoriOggetto(arrayPuntatoriOggetto a, bool elementi);
 void aggiungiOggettoArrayPuntatori(arrayPuntatoriOggetto a, oggetto *o);
