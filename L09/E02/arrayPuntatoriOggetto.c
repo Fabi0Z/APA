@@ -42,12 +42,10 @@ arrayPuntatoriOggetto allocaArrayPuntatoriOggetto(unsigned int items) {
     return a;
 }
 
-// Copia gli oggetti di src in dest
+// Copia SRC in DEST
 void copiaArrayPuntatoriOggetto(arrayPuntatoriOggetto dest, arrayPuntatoriOggetto src) {
-    unsigned int min = dest->NumeroOggetti < src->NumeroOggetti ? dest->NumeroOggetti : src->NumeroOggetti;
-    for (unsigned int i = 0; i < min; i++) { // Per il numero minimo di oggetti
-        copiaOggetto(*dest->Array[i], *src->Array[i]);
-    }
+    dest->NumeroOggetti = src->NumeroOggetti;
+    memcpy(dest->Array, src->Array, sizeof(oggetto **) * src->NumeroOggetti);
 }
 
 // Crea un array di di puntatori a oggetto
