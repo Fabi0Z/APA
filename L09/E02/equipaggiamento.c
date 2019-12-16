@@ -26,7 +26,10 @@ equipaggiamento creaEquipaggiamento() {
 
 // Dealloca un equipaggiamento
 void freeEquipaggiamento(equipaggiamento e) {
-    freeArrayPuntatoriOggetto(e->Oggetti, false);
+    if (e->Oggetti != NULL) {
+        freeArrayPuntatoriOggetto(e->Oggetti, false);
+    }
+    free(e);
 }
 
 // Restituisce il numero di oggetti di un equipaggiamento
