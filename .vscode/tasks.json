@@ -83,8 +83,7 @@
             "label": "Build all libraries in folder",
             "command": "${workspaceFolder}/.vscode/compile_libraries.sh",
             "args": [
-                "${fileDirname}",
-                "${file}"
+                "${fileDirname}"
             ],
             "group": "build",
             "problemMatcher": []
