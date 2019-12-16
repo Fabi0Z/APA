@@ -4,6 +4,7 @@
 #include "arrayPuntatoriOggetto.h"
 typedef struct Equipaggiamento *equipaggiamento;
 
+bool rimuoviOggettoEquipaggiamento(equipaggiamento e, oggetto o);
 void printEquipaggiamentoFile(equipaggiamento e, FILE *stream, bool indici);
 void printEquipaggiamento(equipaggiamento e, bool indici);
 oggetto *getOggettoEquipaggiamentoByName(equipaggiamento e, char *name);

@@ -46,3 +46,8 @@ void printEquipaggiamento(equipaggiamento e, bool indici) {
 void printEquipaggiamentoFile(equipaggiamento e, FILE *stream, bool indici) {
     printArrayPuntatoriOggetto(e->Oggetti, stream, indici);
 }
+
+// Rimuove un oggetto da un equipaggiamento
+bool rimuoviOggettoEquipaggiamento(equipaggiamento e, oggetto o) {
+    return rimuoviPuntatoreOggetto(e->Oggetti, o);
+}
