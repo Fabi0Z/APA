@@ -38,6 +38,9 @@ void freeEquipaggiamento(equipaggiamento e) {
 
 // Restituisce il numero di oggetti di un equipaggiamento
 unsigned int getNumeroOggettiEquipaggiamento(equipaggiamento e) {
+    if (e->Oggetti == NULL) {
+        return 0;
+    }
     return getNumeroPuntatori(e->Oggetti);
 }
 
@@ -59,6 +62,11 @@ void printEquipaggiamento(equipaggiamento e, bool indici) {
 
 // Stampa un equipaggiamento su file
 void printEquipaggiamentoFile(equipaggiamento e, FILE *stream, bool indici) {
+    if (e->Oggetti == NULL) {
+        puts("Equipaggiamento vuoto\n");
+        return;
+    }
+
     printArrayPuntatoriOggetto(e->Oggetti, stream, indici);
 }
 
