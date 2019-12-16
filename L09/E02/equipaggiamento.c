@@ -6,6 +6,10 @@ struct Equipaggiamento {
 };
 
 void aggiungiOggettoEquipaggiamento(equipaggiamento e, oggetto o) {
+    if (e->Oggetti == NULL) {
+        e->Oggetti = creaArrayPuntatoriOggetto();
+    }
+
     aggiungiOggettoArrayPuntatori(e->Oggetti, &o);
 }
 
@@ -58,7 +62,11 @@ void printEquipaggiamentoFile(equipaggiamento e, FILE *stream, bool indici) {
     printArrayPuntatoriOggetto(e->Oggetti, stream, indici);
 }
 
-// Rimuove un oggetto da un equipaggiamento
+// Rimuove un oggetto da un equipaggiamento, restituisce false se non rimangono oggetti nell'equipaggiamento
 bool rimuoviOggettoEquipaggiamento(equipaggiamento e, oggetto o) {
-    return rimuoviPuntatoreOggetto(e->Oggetti, o);
+    if (!rimuoviPuntatoreOggetto(e->Oggetti, o)) { // Se viene eliminato l'array
+        e->Oggetti = NULL;
+        return false;
+    }
+    return true;
 }

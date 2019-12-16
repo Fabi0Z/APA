@@ -111,13 +111,19 @@ void printArrayPuntatoriOggetto(arrayPuntatoriOggetto a, FILE *stream, bool indi
     }
 }
 
+// Rimuove un puntatore a oggetto, restituisce false se non rimangono puntatori nell'array
 bool rimuoviPuntatoreOggetto(arrayPuntatoriOggetto a, oggetto o) {
     unsigned int index = getIndexPuntatoreOggetto(a, o);
     if (index == 0) { // Se non ho trovato l'oggetto
-        return false;
+        return true;
     } else if (index = a->NumeroOggetti) { // Se si tratta dell'ultimo oggetto
         arrayPuntatoriOggettoRealloc(a, a->NumeroOggetti - 1);
         return true;
+    }
+
+    if (a->NumeroOggetti == 1) { // Se ho un solo oggetto
+        freeArrayPuntatoriOggetto(a, false);
+        return false;
     }
 
     index--;
