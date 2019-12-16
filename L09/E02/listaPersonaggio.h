@@ -15,6 +15,7 @@ personaggioLink ricercaID(personaggioLink HEAD, uint16_t *ID);
 void printPersonaggioLinkFile(personaggioLink l, FILE *stream);
 void printPersonaggioLink(personaggioLink l);
 void parsePersonaggi(tabellaPersonaggio *TABLE, FILE *stream);
+personaggio getPersonaggio(personaggioLink l);
 personaggioLink getNextItem(personaggioLink item);
 void freePersonaggioLink(personaggioLink l);
 personaggioLink estraiNext(personaggioLink previous);

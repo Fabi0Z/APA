@@ -63,6 +63,11 @@ personaggioLink getNextItem(personaggioLink item) {
     return item->Next == NULL ? NULL : item->Next;
 }
 
+// Restituisce il personaggio relativo ad un elemento di tipo lista
+personaggio getPersonaggio(personaggioLink l) {
+    return l->Personaggio;
+}
+
 // Legge i personaggi da file e li salva in una lista
 void parsePersonaggi(tabellaPersonaggio *TABLE, FILE *stream) {
     personaggio temp = creaPersonaggio(PERSONAGGIO_MAX_STRING, PERSONAGGIO_MAX_STRING);
