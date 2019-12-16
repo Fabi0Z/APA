@@ -5,25 +5,33 @@ struct ArrayPuntatoriOggetto {
     unsigned int NumeroOggetti;
 };
 
+// * Funzioni "private"
+
+// Rialloca in maniera sicura un array di puntatori a oggetto
+void arrayPuntatoriOggettoRealloc(arrayPuntatoriOggetto a, unsigned int newSize) {
+    arrayPuntatoriOggetto new = allocaArrayPuntatoriOggetto(newSize);
+    memcpy(new->Array, a->Array, sizeof(oggetto **) * newSize);
+
+    // Scambio gli array
+    oggetto **temp = a->Array;
+    a->Array       = new->Array;
+    new->Array     = temp;
+
+    freeArrayPuntatoriOggetto(new, false);
+}
+
+// * Funzioni per il file header
+
 // Aggiunge un puntatore a oggetto ad un array di puntatori a oggetti
 void aggiungiOggettoArrayPuntatori(arrayPuntatoriOggetto a, oggetto *o) {
     if (a->NumeroOggetti == 0) { // Se non ho oggetti
-        freeArrayPuntatoriOggetto(a, false);
         a           = allocaArrayPuntatoriOggetto(1);
         a->Array[0] = o;
         return;
     }
 
-    // Creo nuovo array oggetti
-    arrayPuntatoriOggetto new = allocaArrayPuntatoriOggetto(a->NumeroOggetti + 1);
-    memcpy(new->Array, a->Array, sizeof(oggetto *) * a->NumeroOggetti);
-
-    // Inserisco il nuovo oggetto
-    new->Array[a->NumeroOggetti] = o;
-
-    // Sostituisco l'array di oggetti
-    a->Array = new->Array;
-    freeArrayPuntatoriOggetto(new, false);
+    arrayPuntatoriOggettoRealloc(a, a->NumeroOggetti + 1); // Rialloco l'array
+    a->Array[a->NumeroOggetti] = o;                        // Inserisco il nuovo oggetto
 }
 
 // Alloca un array di puntatori a oggetto di lunghezza "items"
@@ -68,6 +76,16 @@ unsigned int getNumeroPuntatori(arrayPuntatoriOggetto a) {
     return a->NumeroOggetti;
 }
 
+// Ricerca e restituisce l'indice incrementato di 1 del puntatore a oggetto di un dato oggetto
+unsigned int getIndexPuntatoreOggetto(arrayPuntatoriOggetto a, oggetto o) {
+    for (unsigned int i = 0; i < a->NumeroOggetti; i++) { // Per ogni oggetto
+        if (*a->Array[i] = o) {                           // Se l'ho trovato
+            return i + 1;
+        }
+    }
+    return 0; // Altrimenti restituisco 0
+}
+
 // Restituisce il puntatore a oggetto nella posizione index dell'array
 oggetto *getPuntatoreOggettoByIndex(arrayPuntatoriOggetto a, unsigned int index) {
     return a->Array[index];
@@ -93,4 +111,30 @@ void printArrayPuntatoriOggetto(arrayPuntatoriOggetto a, FILE *stream, bool indi
         printOggetto(*a->Array[i], stream);
         printf("\n");
     }
+}
+
+bool rimuoviPuntatoreOggetto(arrayPuntatoriOggetto a, oggetto o) {
+    unsigned int index = getIndexPuntatoreOggetto(a, o);
+    if (index == 0) { // Se non ho trovato l'oggetto
+        return false;
+    } else if (index = a->NumeroOggetti) { // Se si tratta dell'ultimo oggetto
+        arrayPuntatoriOggettoRealloc(a, a->NumeroOggetti - 1);
+        return true;
+    }
+
+    index--;
+
+    arrayPuntatoriOggetto new = allocaArrayPuntatoriOggetto(a->NumeroOggetti - 1);
+    memcpy(new->Array, a->Array, sizeof(oggetto **) * index); // Copio i dati precedenti
+
+    free(a->Array[index]);                                                                                   // Libero la memoria per il dato da eliminare
+    memcpy(&new->Array[index], &a->Array[index + 1], sizeof(oggetto **) * (a->NumeroOggetti - (index + 1))); // Copio il resto dell'array
+
+    // Scambio gli array
+    oggetto **temp = a->Array;
+    a->Array       = new->Array;
+    new->Array     = temp;
+
+    freeArrayPuntatoriOggetto(new, false); // Libero la memoria temporanea
+    return true;
 }

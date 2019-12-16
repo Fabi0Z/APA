@@ -4,7 +4,9 @@
 #include "oggetto.h"
 typedef struct ArrayPuntatoriOggetto *arrayPuntatoriOggetto;
 
+bool rimuoviPuntatoreOggetto(arrayPuntatoriOggetto a, oggetto o);
 void printArrayPuntatoriOggetto(arrayPuntatoriOggetto a, FILE *stream, bool indici);
+unsigned int getIndexPuntatoreOggetto(arrayPuntatoriOggetto a, oggetto o);
 oggetto *getPuntatoreOggettoByName(arrayPuntatoriOggetto a, char *nome);
 oggetto *getPuntatoreOggettoByIndex(arrayPuntatoriOggetto a, unsigned int index);
 unsigned int getNumeroPuntatori(arrayPuntatoriOggetto a);

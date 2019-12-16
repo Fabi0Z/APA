@@ -22,6 +22,7 @@
         "inventario.h": "c",
         "oggetto.h": "c",
         "attivita.h": "c",
-        "arrayoggetti.h": "c"
+        "arrayoggetti.h": "c",
+        "arraypuntatorioggetto.h": "c"
     }
 }
