@@ -5,7 +5,7 @@
 const uint8_t MAX_TRASPORTABILI = 8;
 
 // Controlla se un personaggio ha raggiunto il limite di oggetti equipaggiabili
-bool checkLimiteEquipaggiamento(personaggio *p, inventario i) {
+bool checkLimiteEquipaggiamento(personaggio p, inventario i) {
     return getNumeroOggettiEquipaggiamento(p->Equipaggiamento) >= getOggettiTrasportabiliInventario(i);
 }
 
@@ -47,9 +47,8 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
 
             case caricaInventario: {
                 FILE *inv  = smartFopen("data/inventario.txt", "r");
-                *INVENTORY = parseInventario(inv);
+                *INVENTORY = parseInventario(inv, MAX_TRASPORTABILI);
                 fclose(inv);
-                updateOggettiTrasportabiliInventario(*INVENTORY, MAX_TRASPORTABILI);
                 break;
             }
 
@@ -66,15 +65,13 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 printf("==> ");
                 uint16_t ID;
                 getchar();
-                scanf("%" SCNd16, &ID);                                              // Leggo l'ID
-                personaggioLink *precedente = ricercaIDprecedente(TABLE->HEAD, &ID); // Trovo l'elemento precedente
-                if (precedente != NULL) {                                            // Se ho trovato l'ID
-                    if (precedente->Next == TABLE->TAIL) {                           // Se è l'ultimo elemento
-                        TABLE->TAIL = precedente;                                    // Aggiorno la TAIL
+                scanf("%" SCNd16, &ID);                                             // Leggo l'ID
+                personaggioLink precedente = ricercaIDprecedente(TABLE->HEAD, &ID); // Trovo l'elemento precedente
+                if (precedente != NULL) {                                           // Se ho trovato l'ID
+                    if (getNextItem(precedente) == TABLE->TAIL) {                   // Se è l'ultimo elemento
+                        TABLE->TAIL = precedente;                                   // Aggiorno la TAIL
                     }
-
                     eliminaAndPrint(precedente);
-
                 } else {
                     puts("ID non trovato");
                 }
@@ -89,14 +86,14 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 printf("==> ");
                 uint16_t ID;
                 getchar();
-                scanf("%" SCNd16, &ID);                                // Leggo l'ID
-                personaggioLink *pgLink = ricercaID(TABLE->HEAD, &ID); // Trovo l'elemento
-                if (pgLink == NULL) {                                  // Se non ho trovato l'ID
+                scanf("%" SCNd16, &ID);                               // Leggo l'ID
+                personaggioLink pgLink = ricercaID(TABLE->HEAD, &ID); // Trovo l'elemento
+                if (pgLink == NULL) {                                 // Se non ho trovato l'ID
                     puts("ID non trovato");
                     premiPerContinuare();
                     break;
                 }
-                personaggio *pg = pgLink->Personaggio;
+                personaggio pg = getPersonaggio(pgLink);
                 puts("Questi sono gli oggetti presenti nell'equipaggiamento:");
                 printEquipaggiamento(pg->Equipaggiamento, false); // Stampo l'equipaggiamento
 
@@ -122,17 +119,17 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                         premiPerContinuare();
                         break;
                     }
-
-                    rimuoviEquipaggiamento(pg, scelta);
+                    oggetto daRimuovere = *getOggettoEquipaggiamentoByIndex(pg->Equipaggiamento, scelta);
+                    rimuoviEquipaggiamento(pg, daRimuovere);
                     puts("Oggetto rimosso!");
                 } else if (scelta == 1) {                            // Se l'utente desidera aggiungere
-                    if (checkLimiteEquipaggiamento(pg, INVENTORY)) { // Se l'equipaggiamento è pieno
+                    if (checkLimiteEquipaggiamento(pg, *INVENTORY)) { // Se l'equipaggiamento è pieno
                         puts("Non è possibile aggiungere oggetti a questo personaggio");
                         premiPerContinuare();
                         break;
                     }
 
-                    printInventario(INVENTORY, true); // Stampo l'inventario con gli indici
+                    printInventario(*INVENTORY, true); // Stampo l'inventario con gli indici
                     puts("Inserisci il numero dell'oggetto");
                     printf("==> ");
                     scanf("%" SCNd8, &scelta);
@@ -142,7 +139,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                         break;
                     }
 
-                    aggiungiEquipaggiamento(pg, getOggettoByIndex(*INVENTORY, scelta));
+                    aggiungiEquipaggiamento(pg, getOggettoInventarioByIndex(*INVENTORY, scelta));
                     puts("Oggetto aggiunto!");
                 } else { // Se la scelta non è valida
                     puts("Scelta non valida!");
@@ -157,11 +154,11 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 printf("==> ");
                 uint16_t ID;
                 getchar();
-                scanf("%" SCNd16, &ID);                            // Leggo l'ID
-                personaggioLink *pg = ricercaID(TABLE->HEAD, &ID); // Trovo il pg
-                if (pg != NULL) {                                  // Se ho trovato l'ID
+                scanf("%" SCNd16, &ID);                           // Leggo l'ID
+                personaggioLink pg = ricercaID(TABLE->HEAD, &ID); // Trovo il pg
+                if (pg != NULL) {                                 // Se ho trovato l'ID
                     int16_t s[N_STATISTICHE];
-                    calcolaStatistiche(pg->Personaggio, s);
+                    calcolaStatistiche(getPersonaggio(pg), s);
                     puts("Le statistiche sono");
                     printf("==> ");
                     printStatistiche(s, stdout);
@@ -181,7 +178,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
             }
 
             case stampaInventario: {
-                printInventario(INVENTORY, false);
+                printInventario(*INVENTORY, false);
                 premiPerContinuare();
                 break;
             }
@@ -192,10 +189,10 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 printf("==> ");
                 uint16_t ID;
                 getchar();
-                scanf("%" SCNd16, &ID);                            // Leggo l'ID
-                personaggioLink *pg = ricercaID(TABLE->HEAD, &ID); // Trovo il pg
-                if (pg != NULL) {                                  // Se ho trovato l'ID
-                    equipaggiamento *e = pg->Personaggio->Equipaggiamento;
+                scanf("%" SCNd16, &ID);                           // Leggo l'ID
+                personaggioLink pg = ricercaID(TABLE->HEAD, &ID); // Trovo il pg
+                if (pg != NULL) {                                 // Se ho trovato l'ID
+                    equipaggiamento e = getPersonaggio(pg)->Equipaggiamento;
                     printEquipaggiamento(e, false);
 
                 } else {
@@ -222,8 +219,8 @@ int main() {
     table.NumeroPersonaggi = 0;
 
     // Creo e inizializzo l'array per l'inventario
-    inventario inventory = creaInventario(MAX_TRASPORTABILI);
+    inventario inventory;
 
     // Apro il menu
-    return promptMenu(&table, inventory);
+    return promptMenu(&table, &inventory);
 }
