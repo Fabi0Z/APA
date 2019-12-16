@@ -1,5 +1,5 @@
 #include "inventario.h"
-#include "personaggio.h"
+#include "listaPersonaggio.h"
 #include "smartfunctions.h"
 
 const uint8_t MAX_TRASPORTABILI = 8;
@@ -222,8 +222,8 @@ int main() {
     table.NumeroPersonaggi = 0;
 
     // Creo e inizializzo l'array per l'inventario
-    inventario inventory;
+    inventario inventory = creaInventario(MAX_TRASPORTABILI);
 
     // Apro il menu
-    return promptMenu(&table, &inventory);
+    return promptMenu(&table, inventory);
 }
