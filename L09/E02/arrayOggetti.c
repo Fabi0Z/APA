@@ -13,9 +13,9 @@ void arrayOggettiRealloc(arrayOggetti a, unsigned int newSize) {
     memcpy(new->Array, a->Array, sizeof(oggetto *) * newSize);
 
     // Scambio gli array
-    oggetto *temp = a->Array;
-    a->Array      = new->Array;
-    new->Array    = temp;
+    struct ArrayOggetti temp = *a;
+    *a                       = *new;
+    *new                     = temp;
 
     freeArrayOggetti(new, false);
 }
@@ -32,8 +32,7 @@ void aggiungiOggettoArray(arrayOggetti a, oggetto o) {
     }
 
     arrayOggettiRealloc(a, a->NumeroOggetti + 1); // Rialloco l'array
-    a->Array[a->NumeroOggetti] = o;               // Inserisco il nuovo oggetto
-    a->NumeroOggetti++;
+    a->Array[a->NumeroOggetti - 1] = o;           // Inserisco il nuovo oggetto
 }
 
 // Alloca un array di oggetti di lunghezza "items"

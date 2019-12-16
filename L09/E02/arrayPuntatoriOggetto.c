@@ -13,9 +13,9 @@ void arrayPuntatoriOggettoRealloc(arrayPuntatoriOggetto a, unsigned int newSize)
     memcpy(new->Array, a->Array, sizeof(oggetto **) * newSize);
 
     // Scambio gli array
-    oggetto **temp = a->Array;
-    a->Array       = new->Array;
-    new->Array     = temp;
+    struct ArrayPuntatoriOggetto temp = *a;
+    *a                                = *new;
+    *new                              = temp;
 
     freeArrayPuntatoriOggetto(new, false);
 }
@@ -32,8 +32,7 @@ void aggiungiOggettoArrayPuntatori(arrayPuntatoriOggetto a, oggetto *o) {
     }
 
     arrayPuntatoriOggettoRealloc(a, a->NumeroOggetti + 1); // Rialloco l'array
-    a->Array[a->NumeroOggetti] = o;                        // Inserisco il nuovo oggetto
-    a->NumeroOggetti++;
+    a->Array[a->NumeroOggetti - 1] = o;                    // Inserisco il nuovo oggetto
 }
 
 // Alloca un array di puntatori a oggetto di lunghezza "items"
