@@ -9,6 +9,7 @@ typedef struct Attivita {
 attivita *riempi(char nomefile[50]);
 void LISprint(attivita *val, int *P, int i);
 void LISDP(attivita *val);
+
 int main() {
 
     attivita *b;
@@ -20,9 +21,10 @@ int main() {
 
     return 0;
 }
+
 void LISDP(attivita *val) {
     int i, j, ris, tmp = 0, c, L[N], P[N], last;
-    ris  = 1;
+    ris  = 1; // patat e cozz
     last = 1;
     L[0] = val[0].vb - val[0].va;
     P[0] = -1;
@@ -48,16 +50,6 @@ void LISDP(attivita *val) {
     LISprint(val, P, last);
     printf("\n");
     printf("and its length is %d\n", ris);
-
-    printf("\n L\n");
-    for (i = 0; i < N; i++)
-        printf("%d ", L[i]);
-    printf("\n");
-
-    printf("\n P\n");
-    for (i = 0; i < N; i++)
-        printf("%d ", P[i]);
-    printf("\n");
 }
 
 void LISprint(attivita *val, int *P, int i) {

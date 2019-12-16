@@ -71,19 +71,20 @@ void scriviLIS(arrayAttivita *valori, unsigned int *posizioni, unsigned int inde
 }
 
 unsigned int LISS(arrayAttivita *valori, unsigned int *posizioni, unsigned int *LIS) {
-    unsigned int precedente      = 0;
-    unsigned int precedenteIndex = 0;
-    unsigned int LISAttuale      = 1;
+    unsigned int precedente       = 0;
+    unsigned int precedenteIndex  = 0;
+    unsigned int lunghezzaMassima = 1;
     for (unsigned int i = 0; i < valori->NumeroElementi; i++) { // Per ogni elemento
         if (valori->Array[i].Inizio < precedente) {             // Se il valore interrompe la sequenza
             // Inserisco i valori di interruzione
             posizioni[i] = 0;
-            LIS[i]       = 1;
+            LIS[i]       = valori->Array[i].Durata;
         } else {
             // Proseguo l'incremento della LIS
             posizioni[i]    = precedenteIndex;
             precedenteIndex = i + 1;
-            LIS[i]          = LISAttuale++;
+            LIS[i] += valori->Array[i].Durata;
+            lunghezzaMassima += LIS[i] >
         }
         precedente = valori->Array[i].Fine;
     }
