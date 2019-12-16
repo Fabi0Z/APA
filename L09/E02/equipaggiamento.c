@@ -2,8 +2,12 @@
 
 struct Equipaggiamento {
     bool InUso;
-    arrayPuntatoriOggetti Oggetti;
+    arrayPuntatoriOggetto Oggetti;
 };
+
+void aggiungiOggettoEquipaggiamento(equipaggiamento e, oggetto o) {
+    aggiungiOggettoArrayPuntatori(e->Oggetti, &o);
+}
 
 // Crea un equipaggiamento
 equipaggiamento creaEquipaggiamento() {
@@ -12,9 +16,24 @@ equipaggiamento creaEquipaggiamento() {
     return e;
 }
 
-// Stampa un equipaggiamento su file
-void printEquipaggiamentoFile(equipaggiamento e, FILE *stream, bool indici) {
-    printArrayPuntatoriOggetti(e->Oggetti, stream, indici);
+// Dealloca un equipaggiamento
+void freeEquipaggiamento(equipaggiamento e) {
+    freeArrayPuntatoriOggetto(e->Oggetti, false);
+}
+
+// Restituisce il numero di oggetti di un equipaggiamento
+unsigned int getNumeroOggettiEquipaggiamento(equipaggiamento e) {
+    return getNumeroPuntatori(e->Oggetti);
+}
+
+// Restituisce l'oggetto di indice "index" nell'equipaggiamento
+oggetto *getOggettoEquipaggiamentoByIndex(equipaggiamento e, uint8_t index) {
+    return getPuntatoreOggettoByIndex(e->Oggetti, index);
+}
+
+// Cerca un oggetto per nome nell'array di oggetti, se non lo trova restituisce NULL
+oggetto *getOggettoEquipaggiamentoByName(equipaggiamento e, char *name) {
+    return getPuntatoreOggettoByName(e->Oggetti, name);
 }
 
 // Stampa un equipaggiamento a video
@@ -23,25 +42,7 @@ void printEquipaggiamento(equipaggiamento e, bool indici) {
     printEquipaggiamentoFile(e, stdout, indici);
 }
 
-// Restituisce il numero di oggetti di un equipaggiamento
-unsigned int getNumeroOggettiEquipaggiamento(equipaggiamento e) {
-    return getNumeroPuntatori(e->Oggetti);
-}
-
-// Dealloca un equipaggiamento
-void freeEquipaggiamento(equipaggiamento e) {
-    freeArrayPuntatoriOggetti(e->Oggetti, false);
-}
-
-// Restituisce l'oggetto di indice "index" nell'equipaggiamento
-oggetto *getOggettoEquipaggiamentoByIndex(equipaggiamento e, uint8_t index) {
-    return getPuntatoreOggettoByIndex(e->Oggetti, index);
-}
-
-oggetto *getOggettoEquipaggiamentoByName(equipaggiamento e, char *name) {
-    return getPuntatoreOggettoByName(e->Oggetti, name);
-}
-
-bool aggiungiOggettoEquipaggiamento(equipaggiamento e, oggetto o) {
-    aggiungiOggettoArrayPuntatori(e->Oggetti, o);
+// Stampa un equipaggiamento su file
+void printEquipaggiamentoFile(equipaggiamento e, FILE *stream, bool indici) {
+    printArrayPuntatoriOggetto(e->Oggetti, stream, indici);
 }

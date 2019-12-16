@@ -1,16 +1,17 @@
 #ifndef EQUIPAGGIAMENTO_H
 #define EQUIPAGGIAMENTO_H
 
+#include "arrayPuntatoriOggetto.h"
 #include "oggetto.h"
 typedef struct Equipaggiamento *equipaggiamento;
 
-bool aggiungiOggettoEquipaggiamento(equipaggiamento e, oggetto o);
-oggetto *getOggettoEquipaggiamentoByName(equipaggiamento e, char *name);
-oggetto getOggettoEquipaggiamentoByIndex(equipaggiamento e, uint8_t index);
-void freeEquipaggiamento(equipaggiamento e);
-unsigned int getNumeroOggettiEquipaggiamento(equipaggiamento e);
-void printEquipaggiamento(equipaggiamento e, bool indici);
 void printEquipaggiamentoFile(equipaggiamento e, FILE *stream, bool indici);
+void printEquipaggiamento(equipaggiamento e, bool indici);
+oggetto *getOggettoEquipaggiamentoByName(equipaggiamento e, char *name);
+oggetto *getOggettoEquipaggiamentoByIndex(equipaggiamento e, uint8_t index);
+unsigned int getNumeroOggettiEquipaggiamento(equipaggiamento e);
+void freeEquipaggiamento(equipaggiamento e);
 equipaggiamento creaEquipaggiamento();
+void aggiungiOggettoEquipaggiamento(equipaggiamento e, oggetto o);
 
 #endif // EQUIPAGGIAMENTO_H
