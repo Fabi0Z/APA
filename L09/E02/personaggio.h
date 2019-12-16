@@ -10,17 +10,17 @@ typedef struct Personaggio {
     char *Classe;
     equipaggiamento Equipaggiamento;
     stats Statistiche;
-} personaggio;
+} * personaggio;
 
-bool rimuoviEquipaggiamento(personaggio *p, oggetto o);
-void printPersonaggio(personaggio *p, FILE *stream);
-bool leggiPersonaggio(char *string, personaggio *p);
-personaggio *getResizedPersonaggio(personaggio *temp);
-void freePersonaggio(personaggio *p);
-personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize);
-void copiaPersonaggio(personaggio *dest, personaggio *src);
-void calcolaStatistiche(personaggio *p, stats s);
-bool aggiungiEquipaggiamento(personaggio *p, oggetto o, inventario i);
-void allocaPersonaggio(personaggio *p, unsigned int nomeSize, unsigned int classeSize);
+bool rimuoviEquipaggiamento(personaggio p, oggetto o);
+void printPersonaggio(personaggio p, FILE *stream);
+bool leggiPersonaggio(char *string, personaggio p);
+personaggio getResizedPersonaggio(personaggio temp);
+void freePersonaggio(personaggio p);
+personaggio creaPersonaggio(unsigned int nomeSize, unsigned int classeSize);
+void copiaPersonaggio(personaggio dest, personaggio src);
+void calcolaStatistiche(personaggio p, stats s);
+bool aggiungiEquipaggiamento(personaggio p, oggetto o, inventario i);
+void allocaPersonaggio(personaggio p, unsigned int nomeSize, unsigned int classeSize);
 
 #endif // PERSONAGGIO_H

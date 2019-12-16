@@ -1,7 +1,7 @@
 #include "personaggio.h"
 
 // Alloca memoria per un oggetto di tipo personaggio
-void allocaPersonaggio(personaggio *p, unsigned int nomeSize, unsigned int classeSize) {
+void allocaPersonaggio(personaggio p, unsigned int nomeSize, unsigned int classeSize) {
     p->Nome            = (char *)calloc(nomeSize, sizeof(char)); // Alloco la memoria
     p->Classe          = (char *)calloc(classeSize, sizeof(char));
     p->Equipaggiamento = creaEquipaggiamento();
@@ -9,7 +9,7 @@ void allocaPersonaggio(personaggio *p, unsigned int nomeSize, unsigned int class
 }
 
 // Aggiunge un oggetto all'equipaggiamento di un personaggio
-bool aggiungiEquipaggiamento(personaggio *p, oggetto o, inventario i) {
+bool aggiungiEquipaggiamento(personaggio p, oggetto o, inventario i) {
     if (getNumeroOggettiEquipaggiamento(p->Equipaggiamento) >= getOggettiTrasportabiliInventario(i)) { // Se supero il limite
         return false;
     }
@@ -18,7 +18,7 @@ bool aggiungiEquipaggiamento(personaggio *p, oggetto o, inventario i) {
 }
 
 // Calcola e restituisce le statistiche di un personaggio
-void calcolaStatistiche(personaggio *p, stats s) {
+void calcolaStatistiche(personaggio p, stats s) {
     copiaStatistiche(s, p->Statistiche); // Scrivo i valori del personaggio
 
     if (getNumeroOggettiEquipaggiamento(p->Equipaggiamento) == 0) { // Se non ci sono oggetti nell'equipaggiamento mi interrompo
@@ -40,7 +40,7 @@ void calcolaStatistiche(personaggio *p, stats s) {
 }
 
 // Copia src in dest
-void copiaPersonaggio(personaggio *dest, personaggio *src) {
+void copiaPersonaggio(personaggio dest, personaggio src) {
     // Copio i dati diretti
     dest->ID = src->ID;
 
@@ -52,14 +52,14 @@ void copiaPersonaggio(personaggio *dest, personaggio *src) {
 }
 
 // Crea, alloca e restituisce un personaggio senza equipaggiamento
-personaggio *creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) {
-    personaggio *temp = (personaggio *)malloc(sizeof(personaggio));
+personaggio creaPersonaggio(unsigned int nomeSize, unsigned int classeSize) {
+    personaggio temp = (personaggio )malloc(sizeof(struct Personaggio));
     allocaPersonaggio(temp, nomeSize, classeSize);
     return temp;
 }
 
 // Dealloca un personaggio
-void freePersonaggio(personaggio *p) { // Dealloca la memoria di un personaggio
+void freePersonaggio(personaggio p) { // Dealloca la memoria di un personaggio
     if (p->Equipaggiamento != NULL) {  // Se è presente un equipaggiamento
         freeEquipaggiamento(p->Equipaggiamento);
     }
@@ -70,13 +70,13 @@ void freePersonaggio(personaggio *p) { // Dealloca la memoria di un personaggio
 }
 
 // Alloca memoria per realizzare una copia ridimensionata del personaggio
-personaggio *getResizedPersonaggio(personaggio *temp) {
-    personaggio *p = creaPersonaggio(strlen(temp->Nome), strlen(temp->Classe));
+personaggio getResizedPersonaggio(personaggio temp) {
+    personaggio p = creaPersonaggio(strlen(temp->Nome), strlen(temp->Classe));
     return p;
 }
 
 // Effettua il parse di un personaggio da stringa, restituisce se la lettura è andata a buon fine o meno
-bool leggiPersonaggio(char *string, personaggio *p) {
+bool leggiPersonaggio(char *string, personaggio p) {
     uint8_t conteggio = 0;
     conteggio += sscanf(string, "PG%" SCNd16 "%[^\n]", &p->ID, string);
     conteggio += sscanf(string, "%s %[^\n]", p->Nome, string);
@@ -91,7 +91,7 @@ bool leggiPersonaggio(char *string, personaggio *p) {
 }
 
 // Stampa un personaggio
-void printPersonaggio(personaggio *p, FILE *stream) {
+void printPersonaggio(personaggio p, FILE *stream) {
     fprintf(stream, "PG%04" SCNd16, p->ID);
     fprintf(stream, " %s %s ", p->Nome, p->Classe);
     printStatistiche(p->Statistiche, stream);
@@ -99,6 +99,6 @@ void printPersonaggio(personaggio *p, FILE *stream) {
 }
 
 // Rimuove un oggetto dall'equipaggiamento di un personaggio
-bool rimuoviEquipaggiamento(personaggio *p, oggetto o) {
+bool rimuoviEquipaggiamento(personaggio p, oggetto o) {
     return rimuoviOggettoEquipaggiamento(p->Equipaggiamento, o);
 }
