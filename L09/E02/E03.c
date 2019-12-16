@@ -5,8 +5,8 @@
 const uint8_t MAX_TRASPORTABILI = 8;
 
 // Controlla se un personaggio ha raggiunto il limite di oggetti equipaggiabili
-bool checkLimiteEquipaggiamento(personaggio *p, inventario *i) {
-    return p->Equipaggiamento->NumeroOggetti >= i->OggettiTrasportabili;
+bool checkLimiteEquipaggiamento(personaggio *p, inventario i) {
+    return getNumeroOggettiEquipaggiamento(p->Equipaggiamento) >= getOggettiTrasportabiliInventario(i);
 }
 
 // Mostra il menu interattivo
@@ -49,7 +49,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 FILE *inv  = smartFopen("data/inventario.txt", "r");
                 *INVENTORY = parseInventario(inv);
                 fclose(inv);
-                INVENTORY->OggettiTrasportabili = MAX_TRASPORTABILI;
+                updateOggettiTrasportabiliInventario(*INVENTORY, MAX_TRASPORTABILI);
                 break;
             }
 
@@ -106,8 +106,8 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                 uint8_t scelta;
                 scanf("%" SCNd8, &scelta);
 
-                if (scelta == 0) {                                 // Se l'utente desidera rimuovere
-                    if (pg->Equipaggiamento->NumeroOggetti == 0) { // Se l'equipaggiamento è vuoto
+                if (scelta == 0) {                                                   // Se l'utente desidera rimuovere
+                    if (getNumeroOggettiEquipaggiamento(pg->Equipaggiamento) == 0) { // Se l'equipaggiamento è vuoto
                         puts("Non è possibile rimuovere oggetti a questo personaggio");
                         premiPerContinuare();
                         break;
@@ -117,7 +117,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                     puts("Inserisci il numero dell'oggetto");
                     printf("==> ");
                     scanf("%" SCNd8, &scelta);
-                    if (scelta >= pg->Equipaggiamento->NumeroOggetti) { // Controllo la validità della scelta
+                    if (scelta >= getNumeroOggettiEquipaggiamento(pg->Equipaggiamento)) { // Controllo la validità della scelta
                         puts("Scelta non valida");
                         premiPerContinuare();
                         break;
@@ -136,13 +136,13 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                     puts("Inserisci il numero dell'oggetto");
                     printf("==> ");
                     scanf("%" SCNd8, &scelta);
-                    if (scelta >= INVENTORY->NumeroOggetti) { // Controllo la validità della scelta
+                    if (scelta >= getNumeroOggettiInventario(*INVENTORY)) { // Controllo la validità della scelta
                         puts("Scelta non valida");
                         premiPerContinuare();
                         break;
                     }
 
-                    aggiungiEquipaggiamento(pg, &INVENTORY->Oggetti[scelta]);
+                    aggiungiEquipaggiamento(pg, getOggettoByIndex(*INVENTORY, scelta));
                     puts("Oggetto aggiunto!");
                 } else { // Se la scelta non è valida
                     puts("Scelta non valida!");

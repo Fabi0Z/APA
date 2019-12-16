@@ -1,15 +1,18 @@
 #include "inventario.h"
 
 struct Inventario {
-    oggetto *Oggetti;
-    uint8_t NumeroOggetti;
+    arrayOggetti Oggetti;
     uint8_t OggettiTrasportabili;
 };
 
 const uint8_t INVENTARIO_MAX_STRING = 50;
 
+// Crea e restituisce un inventario
 inventario creaInventario() {
-    return (inventario)malloc(sizeof(struct Inventario));
+    inventario i            = (inventario)malloc(sizeof(struct Inventario));
+    i->OggettiTrasportabili = 0;
+    i->Oggetti              = NULL;
+    return i;
 }
 
 // Stampa un inventario su file
@@ -17,15 +20,7 @@ void printInventarioFile(inventario inv, FILE *stream, bool indici) {
     if (stream != stdout) { // Se non sono sullo stdout
         fprintf(stream, "%" SCNd8 "\n", inv->NumeroOggetti);
     }
-
-    for (size_t i = 0; i < inv->NumeroOggetti; i++) { // Per ogni oggetto
-        if (indici) {
-            fprintf(stream, "%zu - ", i);
-        }
-        printOggetto(inv->Oggetti[i], stream);
-    }
-
-    printf("\n");
+    printArrayOggetti(inv->Oggetti, stream, indici);
 }
 
 // Stampa un inventario a video
@@ -37,12 +32,12 @@ void printInventario(inventario i, bool indici) {
 // Effettua il parse dell'inventario
 inventario parseInventario(FILE *stream) {
     inventario inv = creaInventario();
-    fscanf(stream, "%" SCNd8 "\n", &inv->NumeroOggetti);
-    inv->Oggetti = (oggetto *)calloc(inv->NumeroOggetti, sizeof(oggetto));
+    unsigned int oggetti;
+    fscanf(stream, "%d\n", &oggetti);
     char string[(INVENTARIO_MAX_STRING * 3) + 1];
     oggetto temp = creaOggetto(INVENTARIO_MAX_STRING, INVENTARIO_MAX_STRING);
 
-    for (size_t i = 0; i < inv->NumeroOggetti; i++) {     // Per ogni oggetto nel file
+    for (size_t i = 0; i < oggetti; i++) {                // Per ogni oggetto nel file
         fgets(string, INVENTARIO_MAX_STRING * 2, stream); // Leggo la riga successiva
         leggiOggetto(string, temp);
         allocaOggetto(inv->Oggetti[i], strlen(getNomeOggetto(temp)), strlen(getTipoOggetto(temp))); // Alloco la memoria necessaria
@@ -54,7 +49,7 @@ inventario parseInventario(FILE *stream) {
 }
 
 // Cerca un oggetto per nome nell'inventario, se non lo trova restituisce NULL
-oggetto getOggettoByName(inventario inv, char *nome) {
+oggetto getOggettoInventarioByName(inventario inv, char *nome) {
     for (unsigned int i = 0; i < inv->NumeroOggetti; i++) {       // Per ogni oggetto
         if (strcmp(nome, getNomeOggetto(inv->Oggetti[i])) == 0) { // Se il nome corrisponde
             return inv->Oggetti[i];
@@ -64,7 +59,7 @@ oggetto getOggettoByName(inventario inv, char *nome) {
 }
 
 // Restituisce l'oggetto di indice "index" nell'inventario
-oggetto getOggettoByIndex(inventario inv, uint8_t index) {
+oggetto getOggettoInventarioByIndex(inventario inv, uint8_t index) {
     return inv->Oggetti[index];
 }
 

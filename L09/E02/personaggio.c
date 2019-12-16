@@ -9,9 +9,11 @@ void allocaPersonaggio(personaggio *p, unsigned int nomeSize, unsigned int class
     p->Equipaggiamento = creaEquipaggiamento();
     p->Statistiche     = creaStatistiche();
 }
-void freePersonaggio(personaggio *p) {         // Dealloca la memoria di un personaggio
-    if (p->Equipaggiamento->Oggetti != NULL) { // Se è presente un equipaggiamento
-        free(p->Equipaggiamento->Oggetti);
+
+// Dealloca un personaggio
+void freePersonaggio(personaggio *p) { // Dealloca la memoria di un personaggio
+    if (p->Equipaggiamento != NULL) {  // Se è presente un equipaggiamento
+        freeEquipaggiamento(p->Equipaggiamento);
     }
     free(p->Nome);
     free(p->Classe);
@@ -31,15 +33,15 @@ void freePersonaggioLink(personaggioLink *l) {
 void calcolaStatistiche(personaggio *p, stats s) {
     copiaStatistiche(s, p->Statistiche); // Scrivo i valori del personaggio
 
-    if (p->Equipaggiamento->NumeroOggetti == 0) { // Se non ci sono oggetti nell'equipaggiamento mi interrompo
+    if (getNumeroOggettiEquipaggiamento(p->Equipaggiamento) == 0) { // Se non ci sono oggetti nell'equipaggiamento mi interrompo
         return;
     }
 
-    oggetto *o;
-    for (size_t i = 0; i < N_STATISTICHE; i++) {                         // Per ogni statistica
-        for (size_t j = 0; j < p->Equipaggiamento->NumeroOggetti; j++) { // Per ogni oggetto dell'equipaggiamento
-            o = p->Equipaggiamento->Oggetti[j];
-            s[i] += o->Statistiche[i];
+    oggetto o;
+    for (size_t i = 0; i < N_STATISTICHE; i++) {                                           // Per ogni statistica
+        for (size_t j = 0; j < getNumeroOggettiEquipaggiamento(p->Equipaggiamento); j++) { // Per ogni oggetto dell'equipaggiamento
+            o = getOggettoEquipaggiamentoByIndex(p->Equipaggiamento, j);
+            s[i] += getStatisticheOggetto(o)[i];
         }
 
         if (s[i] < 1) {
@@ -50,8 +52,8 @@ void calcolaStatistiche(personaggio *p, stats s) {
 }
 
 // Aggiunge un oggetto all'equipaggiamento di un personaggio
-bool aggiungiEquipaggiamento(personaggio *p, oggetto *o) {
-    if (p->Equipaggiamento->NumeroOggetti == 0) { // Se non ho oggetti
+bool aggiungiEquipaggiamento(personaggio *p, oggetto o) {
+    if (getNumeroOggettiEquipaggiamento(p->Equipaggiamento) == 0) { // Se non ho oggetti
         p->Equipaggiamento->NumeroOggetti++;
         p->Equipaggiamento->Oggetti    = (oggetto **)calloc(p->Equipaggiamento->NumeroOggetti, sizeof(oggetto *));
         p->Equipaggiamento->Oggetti[0] = o;
@@ -180,7 +182,7 @@ bool leggiPersonaggio(char *string, personaggio *p) {
 
 // Legge i personaggi da file e li salva in una lista
 void parsePersonaggi(tabellaPersonaggio *TABLE, FILE *stream) {
-    personaggio *temp                  = creaPersonaggio(PERSONAGGIO_MAX_STRING, PERSONAGGIO_MAX_STRING);
+    personaggio *temp = creaPersonaggio(PERSONAGGIO_MAX_STRING, PERSONAGGIO_MAX_STRING);
     personaggioLink *tempList;
 
     // Creo stringa di appoggio

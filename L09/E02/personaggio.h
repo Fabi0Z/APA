@@ -8,7 +8,7 @@ typedef struct Personaggio {
     uint16_t ID;
     char *Nome;
     char *Classe;
-    equipaggiamento *Equipaggiamento;
+    equipaggiamento Equipaggiamento;
     stats Statistiche;
 } personaggio;
 
