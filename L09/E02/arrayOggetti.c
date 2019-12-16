@@ -5,6 +5,23 @@ struct ArrayOggetti {
     unsigned int NumeroOggetti;
 };
 
+// * Funzioni "private"
+
+// Rialloca in maniera sicura un array di puntatori a oggetto
+void arrayOggettiRealloc(arrayOggetti a, unsigned int newSize) {
+    arrayOggetti new = allocaArrayOggetti(newSize);
+    memcpy(new->Array, a->Array, sizeof(oggetto *) * newSize);
+
+    // Scambio gli array
+    oggetto *temp = a->Array;
+    a->Array      = new->Array;
+    new->Array    = temp;
+
+    freeArrayOggetti(new, false);
+}
+
+// * Funzioni per il file header
+
 // Aggiunge un oggetto ad un array di oggetti
 void aggiungiOggettoArray(arrayOggetti a, oggetto o) {
     if (a->NumeroOggetti == 0) { // Se non ho oggetti
@@ -14,16 +31,9 @@ void aggiungiOggettoArray(arrayOggetti a, oggetto o) {
         return;
     }
 
-    // Creo nuovo array oggetti
-    arrayOggetti new = allocaArrayOggetti(a->NumeroOggetti + 1);
-    memcpy(new->Array, a->Array, sizeof(oggetto *) * a->NumeroOggetti);
-
-    // Inserisco il nuovo oggetto
-    new->Array[a->NumeroOggetti] = o;
-
-    // Sostituisco l'array di oggetti
-    a->Array = new->Array;
-    freeArrayOggetti(new, false);
+    arrayOggettiRealloc(a, a->NumeroOggetti + 1); // Rialloco l'array
+    a->Array[a->NumeroOggetti] = o;               // Inserisco il nuovo oggetto
+    a->NumeroOggetti++;
 }
 
 // Alloca un array di oggetti di lunghezza "items"
@@ -87,6 +97,6 @@ void printArrayOggetti(arrayOggetti a, FILE *stream, bool indici) {
             fprintf(stream, "%d - ", i);
         }
         printOggetto(a->Array[i], stream);
-        printf("\n");
     }
+    printf("\n");
 }

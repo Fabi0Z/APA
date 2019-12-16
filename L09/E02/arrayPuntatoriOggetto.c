@@ -25,6 +25,7 @@ void arrayPuntatoriOggettoRealloc(arrayPuntatoriOggetto a, unsigned int newSize)
 // Aggiunge un puntatore a oggetto ad un array di puntatori a oggetti
 void aggiungiOggettoArrayPuntatori(arrayPuntatoriOggetto a, oggetto *o) {
     if (a->NumeroOggetti == 0) { // Se non ho oggetti
+        freeArrayPuntatoriOggetto(a, false);
         a           = allocaArrayPuntatoriOggetto(1);
         a->Array[0] = o;
         return;
@@ -32,6 +33,7 @@ void aggiungiOggettoArrayPuntatori(arrayPuntatoriOggetto a, oggetto *o) {
 
     arrayPuntatoriOggettoRealloc(a, a->NumeroOggetti + 1); // Rialloco l'array
     a->Array[a->NumeroOggetti] = o;                        // Inserisco il nuovo oggetto
+    a->NumeroOggetti++;
 }
 
 // Alloca un array di puntatori a oggetto di lunghezza "items"
@@ -107,8 +109,8 @@ void printArrayPuntatoriOggetto(arrayPuntatoriOggetto a, FILE *stream, bool indi
             fprintf(stream, "%d - ", i);
         }
         printOggetto(*a->Array[i], stream);
-        printf("\n");
     }
+    printf("\n");
 }
 
 // Rimuove un puntatore a oggetto, restituisce false se non rimangono puntatori nell'array

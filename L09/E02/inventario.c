@@ -11,7 +11,7 @@ const uint8_t INVENTARIO_MAX_STRING = 50;
 inventario creaInventario(uint8_t oggettiTrasportabili) {
     inventario i            = (inventario)malloc(sizeof(struct Inventario));
     i->OggettiTrasportabili = oggettiTrasportabili;
-    i->Oggetti              = NULL;
+    i->Oggetti              = creaArrayOggetti();
     return i;
 }
 
