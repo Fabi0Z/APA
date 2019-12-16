@@ -1,18 +1,18 @@
 #ifndef INVENTARIO_H
 #define INVENTARIO_H
 
-#include "oggetto.h"
+#include "arrayOggetti.h"
 typedef struct Inventario *inventario;
 
-uint8_t getNumeroOggettiInventario(inventario i);
 void updateOggettiTrasportabiliInventario(inventario i, uint8_t OggettiTrasportabili);
-uint8_t getOggettiTrasportabiliInventario(inventario i);
-oggetto getOggettoInventarioByName(inventario inv, char *nome);
-oggetto getOggettoInventarioByIndex(inventario inv, uint8_t index);
-inventario parseInventario(FILE *stream);
 void printInventario(inventario i, bool indici);
 void printInventarioFile(inventario inv, FILE *stream, bool indici);
-inventario creaInventario();
+inventario parseInventario(FILE *stream, uint8_t oggettiTrasportabili);
+uint8_t getNumeroOggettiInventario(inventario i);
+uint8_t getOggettiTrasportabiliInventario(inventario i);
+oggetto getOggettoInventarioByIndex(inventario inv, uint8_t index);
+oggetto getOggettoInventarioByName(inventario inv, char *nome);
+inventario creaInventario(uint8_t oggettiTrasportabili);
 extern const uint8_t INVENTARIO_MAX_STRING;
 
 #endif // INVENTARIO_H

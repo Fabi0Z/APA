@@ -2,7 +2,6 @@
 #define EQUIPAGGIAMENTO_H
 
 #include "arrayPuntatoriOggetto.h"
-#include "oggetto.h"
 typedef struct Equipaggiamento *equipaggiamento;
 
 void printEquipaggiamentoFile(equipaggiamento e, FILE *stream, bool indici);
