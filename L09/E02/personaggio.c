@@ -9,12 +9,8 @@ void allocaPersonaggio(personaggio p, unsigned int nomeSize, unsigned int classe
 }
 
 // Aggiunge un oggetto all'equipaggiamento di un personaggio
-bool aggiungiEquipaggiamento(personaggio p, oggetto o, inventario i) {
-    if (getNumeroOggettiEquipaggiamento(p->Equipaggiamento) >= getOggettiTrasportabiliInventario(i)) { // Se supero il limite
-        return false;
-    }
+void aggiungiEquipaggiamento(personaggio p, oggetto o) {
     aggiungiOggettoEquipaggiamento(p->Equipaggiamento, o);
-    return true;
 }
 
 // Calcola e restituisce le statistiche di un personaggio

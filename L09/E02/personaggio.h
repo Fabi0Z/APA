@@ -20,7 +20,7 @@ void freePersonaggio(personaggio p);
 personaggio creaPersonaggio(unsigned int nomeSize, unsigned int classeSize);
 void copiaPersonaggio(personaggio dest, personaggio src);
 void calcolaStatistiche(personaggio p, stats s);
-bool aggiungiEquipaggiamento(personaggio p, oggetto o, inventario i);
+void aggiungiEquipaggiamento(personaggio p, oggetto o);
 void allocaPersonaggio(personaggio p, unsigned int nomeSize, unsigned int classeSize);
 
 #endif // PERSONAGGIO_H
