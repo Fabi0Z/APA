@@ -5,13 +5,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void displayLA(arrayAttivita *att, int *P, int i) {
-    if (P[i] == -1) {
-        printf("(%d,%d) ", att->Array[i].Inizio, att->Array[i].Fine);
+// Copia le attività della LA in un array di attività
+void copiaLA(arrayAttivita *a, arrayAttivita *risultato, int *posizioni, unsigned int ultimo) {
+    if (posizioni[ultimo] == -1) {
+        risultato->Array[risultato->NumeroElementi++] = a->Array[ultimo];
         return;
     }
-    displayLA(att, P, P[i]);
-    printf("(%d,%d) ", att->Array[i].Inizio, att->Array[i].Fine);
+    copiaLA(a, risultato, posizioni, posizioni[ultimo]);
+    risultato->Array[risultato->NumeroElementi++] = a->Array[ultimo];
 }
 
 unsigned int calcolaLA(arrayAttivita *att, int *P) {
@@ -41,7 +42,12 @@ void selezioneDinamica(arrayAttivita *a) {
     ordina(a);
     int P[a->NumeroElementi];
     unsigned int ultimo = calcolaLA(a, P);
-    displayLA(a, P, ultimo);
+    arrayAttivita risultato;
+    risultato.Array          = (attivita *)calloc(a->NumeroElementi, sizeof(attivita));
+    risultato.NumeroElementi = 0;
+    copiaLA(a, &risultato, P, ultimo);
+    durataArrayAttivita(&risultato);
+    printArrayAttivita(&risultato);
     printf("\n");
 }
 
