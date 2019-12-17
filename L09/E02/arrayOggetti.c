@@ -75,15 +75,15 @@ unsigned int getNumeroOggetti(arrayOggetti a) {
 }
 
 // Restituisce l'oggetto nella posizione index dell'array
-oggetto getOggettoByIndex(arrayOggetti a, unsigned int index) {
-    return a->Array[index];
+void *getOggettoByIndex(arrayOggetti a, unsigned int index, bool pointer) {
+    return pointer ? (void *)&a->Array[index] : (void *)a->Array[index];
 }
 
 // Cerca un oggetto per nome nell'array di oggetti, se non lo trova restituisce NULL
-oggetto getOggettoByName(arrayOggetti a, char *nome) {
+void *getOggettoByName(arrayOggetti a, char *nome, bool pointer) {
     for (unsigned int i = 0; i < a->NumeroOggetti; i++) {     // Per ogni oggetto
         if (strcmp(nome, getNomeOggetto(a->Array[i])) == 0) { // Se il nome corrisponde
-            return a->Array[i];
+            return pointer ? (void *)&a->Array[i] : (void *)a->Array[i];
         }
     }
     return NULL;

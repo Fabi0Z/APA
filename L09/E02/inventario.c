@@ -16,13 +16,13 @@ inventario creaInventario(uint8_t oggettiTrasportabili) {
 }
 
 // Cerca un oggetto per nome nell'inventario, se non lo trova restituisce NULL
-oggetto getOggettoInventarioByName(inventario inv, char *nome) {
-    return getOggettoByName(inv->Oggetti, nome);
+void *getOggettoInventarioByName(inventario inv, char *nome, bool pointer) {
+    return getOggettoByName(inv->Oggetti, nome, pointer);
 }
 
 // Restituisce l'oggetto di indice "index" nell'inventario
-oggetto getOggettoInventarioByIndex(inventario inv, uint8_t index) {
-    return getOggettoByIndex(inv->Oggetti, index);
+void *getOggettoInventarioByIndex(inventario inv, uint8_t index, bool pointer) {
+    return getOggettoByIndex(inv->Oggetti, index, pointer);
 }
 
 // Restituisce il numero di oggetti trasportabili di un inventario

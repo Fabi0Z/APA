@@ -5,13 +5,13 @@
 typedef struct ArrayOggetti *arrayOggetti;
 
 void printArrayOggetti(arrayOggetti a, FILE *stream, bool indici);
-oggetto getOggettoByName(arrayOggetti a, char *nome);
-oggetto getOggettoByIndex(arrayOggetti a, unsigned int index);
+void *getOggettoByName(arrayOggetti a, char *nome, bool pointer);
+void *getOggettoByIndex(arrayOggetti a, unsigned int index, bool pointer);
 unsigned int getNumeroOggetti(arrayOggetti a);
 void copiaArrayOggetti(arrayOggetti dest, arrayOggetti src);
 arrayOggetti creaArrayOggetti();
-arrayOggetti allocaArrayOggetti(unsigned int items);
-void freeArrayOggetti(arrayOggetti a, bool elementi);
 void aggiungiOggettoArray(arrayOggetti a, oggetto o);
+void freeArrayOggetti(arrayOggetti a, bool elementi);
+arrayOggetti allocaArrayOggetti(unsigned int items);
 
 #endif // ARRAYOGGETTI_H
