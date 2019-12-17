@@ -122,7 +122,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                     oggetto daRimuovere = *getOggettoEquipaggiamentoByIndex(pg->Equipaggiamento, scelta);
                     rimuoviEquipaggiamento(pg, daRimuovere);
                     puts("Oggetto rimosso!");
-                } else if (scelta == 1) {                            // Se l'utente desidera aggiungere
+                } else if (scelta == 1) {                             // Se l'utente desidera aggiungere
                     if (checkLimiteEquipaggiamento(pg, *INVENTORY)) { // Se l'equipaggiamento è pieno
                         puts("Non è possibile aggiungere oggetti a questo personaggio");
                         premiPerContinuare();
@@ -138,8 +138,7 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
                         premiPerContinuare();
                         break;
                     }
-
-                    aggiungiEquipaggiamento(pg, getOggettoInventarioByIndex(*INVENTORY, scelta));
+                    aggiungiEquipaggiamento(pg, (oggetto *)getOggettoInventarioByIndex(*INVENTORY, scelta, true));
                     puts("Oggetto aggiunto!");
                 } else { // Se la scelta non è valida
                     puts("Scelta non valida!");
