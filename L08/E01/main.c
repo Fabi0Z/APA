@@ -64,7 +64,7 @@ int main() {
     FILE *stream = smartFopen("att.txt", "r");
 
     arrayAttivita a;
-    fscanf(stream, "%" SCNd8 "\n", &a.NumeroElementi);
+    fscanf(stream, "%u\n", &a.NumeroElementi);
     a.Array = (attivita *)calloc(a.NumeroElementi, sizeof(attivita));
     leggiAttivita(stream, &a);
     fclose(stream);
