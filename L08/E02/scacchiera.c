@@ -25,7 +25,7 @@ void allocaScacchiera(scacchiera *s) {
 
 // Legge e memorizza una scacchiera da file
 void parseScacchiera(scacchiera *s, FILE *stream, arrayTessera *a) {
-    fscanf(stream, "%d %d\n", &s->Righe, &s->Colonne);
+    fscanf(stream, "%u %u\n", &s->Righe, &s->Colonne);
     allocaScacchiera(s);
 
     unsigned int strMax = 6 * s->Colonne;

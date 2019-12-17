@@ -2,7 +2,7 @@
 
 // Effettua il parse di un tubo da stringa
 void parseTubo(tubo *t, char *string) {
-    sscanf(string, "%c %d %[^\n]", &t->Colore, &t->Valore, string);
+    sscanf(string, "%c %" SCNd8 " %[^\n]", &t->Colore, &t->Valore, string);
 }
 
 // Effettua il parse di una tessera da stringa
@@ -49,7 +49,7 @@ void printTessera(tessera *t, FILE *stream) {
 // Stampa un array di tessere su file
 void printArrayTessera(arrayTessera *a, FILE *stream) {
     for (unsigned int i = 0; i < a->NumeroElementi; i++) {
-        fprintf(stream, "Tessera #%d\n", i);
+        fprintf(stream, "Tessera #%u\n", i);
         printTessera(a->Array[i], stream);
         fprintf(stream, "\n");
     }

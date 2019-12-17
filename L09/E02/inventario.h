@@ -8,7 +8,7 @@ void updateOggettiTrasportabiliInventario(inventario i, uint8_t OggettiTrasporta
 void printInventario(inventario i, bool indici);
 void printInventarioFile(inventario inv, FILE *stream, bool indici);
 inventario parseInventario(FILE *stream, uint8_t oggettiTrasportabili);
-uint8_t getNumeroOggettiInventario(inventario i);
+unsigned int getNumeroOggettiInventario(inventario i);
 uint8_t getOggettiTrasportabiliInventario(inventario i);
 void *getOggettoInventarioByIndex(inventario inv, uint8_t index, bool pointer);
 void *getOggettoInventarioByName(inventario inv, char *nome, bool pointer);

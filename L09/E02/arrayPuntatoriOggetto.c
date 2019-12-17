@@ -102,7 +102,7 @@ oggetto *getPuntatoreOggettoByName(arrayPuntatoriOggetto a, char *nome) {
 void printArrayPuntatoriOggetto(arrayPuntatoriOggetto a, FILE *stream, bool indici) {
     for (unsigned int i = 0; i < a->NumeroOggetti; i++) {
         if (indici) {
-            fprintf(stream, "%d - ", i);
+            fprintf(stream, "%u - ", i);
         }
         printOggetto(*a->Array[i], stream);
     }

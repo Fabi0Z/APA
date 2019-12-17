@@ -31,7 +31,7 @@ uint8_t getOggettiTrasportabiliInventario(inventario i) {
 }
 
 // Restituisce il numero di oggetti presenti in un inventario
-uint8_t getNumeroOggettiInventario(inventario i) {
+unsigned int getNumeroOggettiInventario(inventario i) {
     return getNumeroOggetti(i->Oggetti);
 }
 
@@ -39,7 +39,7 @@ uint8_t getNumeroOggettiInventario(inventario i) {
 inventario parseInventario(FILE *stream, uint8_t oggettiTrasportabili) {
     inventario inv = creaInventario(oggettiTrasportabili);
     unsigned int oggetti;
-    fscanf(stream, "%d\n", &oggetti);
+    fscanf(stream, "%u\n", &oggetti);
     char string[(INVENTARIO_MAX_STRING * 3) + 1];
     oggetto temp = creaOggetto(INVENTARIO_MAX_STRING, INVENTARIO_MAX_STRING);
 
@@ -57,7 +57,7 @@ inventario parseInventario(FILE *stream, uint8_t oggettiTrasportabili) {
 // Stampa un inventario su file
 void printInventarioFile(inventario inv, FILE *stream, bool indici) {
     if (stream != stdout) { // Se non sono sullo stdout
-        fprintf(stream, "%d\n", getNumeroOggettiInventario(inv));
+        fprintf(stream, "%u\n", getNumeroOggettiInventario(inv));
     }
     printArrayOggetti(inv->Oggetti, stream, indici);
 }

@@ -55,7 +55,7 @@ void attSel(int N, attivita *v) {
     durataArrayAttivita(&a);
 
     unsigned int risultati = powerset(0, &a, b, 0, &max);
-    printf("Sono state generate %d combinazioni di attività, quella di durata massima è\n", risultati);
+    printf("Sono state generate %u combinazioni di attività, quella di durata massima è\n", risultati);
     printArrayAttivita(&max);
 }
 // * -------------------------------------------------------------

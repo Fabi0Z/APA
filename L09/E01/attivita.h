@@ -13,7 +13,7 @@ typedef struct Attivita {
 
 typedef struct ArrayAttivita {
     attivita *Array;
-    uint8_t NumeroElementi;
+    unsigned int NumeroElementi;
     unsigned int Durata;
 } arrayAttivita;
 

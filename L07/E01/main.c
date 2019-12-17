@@ -57,10 +57,10 @@ bool verificaOrdine(pietra *array) { // Verifica che l'ordine della pietra succe
 
 collana parseCollana(char *string) { // Effettua il parse di una collana da stringa e svuota la stringa
     collana c;
-    sscanf(string, "%d %[^\n]", &c.Pietre[zaffiro], string);
-    sscanf(string, "%d %[^\n]", &c.Pietre[rubino], string);
-    sscanf(string, "%d %[^\n]", &c.Pietre[topazio], string);
-    sscanf(string, "%d", &c.Pietre[smeraldo]);
+    sscanf(string, "%u %[^\n]", &c.Pietre[zaffiro], string);
+    sscanf(string, "%u %[^\n]", &c.Pietre[rubino], string);
+    sscanf(string, "%u %[^\n]", &c.Pietre[topazio], string);
+    sscanf(string, "%u", &c.Pietre[smeraldo]);
 
     c.Pietre[totale] = c.Pietre[zaffiro] + c.Pietre[smeraldo] + c.Pietre[rubino] + c.Pietre[topazio];
 
@@ -131,11 +131,11 @@ void contaPietre(collana *c) { // Conta il numero di pietre in una collana
 }
 
 void printCollana(collana *c) { // Stampa una collana
-    printf("Sono presenti: %d Zaffiri; ", c->Pietre[zaffiro]);
-    printf("%d Rubini; ", c->Pietre[rubino]);
-    printf("%d Topazi; ", c->Pietre[topazio]);
-    printf("%d Smerladi; ", c->Pietre[smeraldo]);
-    printf("Totale %d pietre\n", c->Pietre[totale]);
+    printf("Sono presenti: %u Zaffiri; ", c->Pietre[zaffiro]);
+    printf("%u Rubini; ", c->Pietre[rubino]);
+    printf("%u Topazi; ", c->Pietre[topazio]);
+    printf("%u Smerladi; ", c->Pietre[smeraldo]);
+    printf("Totale %u pietre\n", c->Pietre[totale]);
     printPietra(c->Array[0]);
     for (size_t i = 1; i < c->Pietre[totale]; i++) { // Per ogni pietra
         printf("-");
@@ -213,8 +213,8 @@ void parseFromFile(char *filename) { // Esegue i vari test presenti in un file
     checkFilestream(stream);
     unsigned int nTest, massima;
     collana max;
-    fscanf(stream, "%d\n", &nTest);
-    for (size_t i = 0; i < nTest; i++) { // Per ogni test
+    fscanf(stream, "%u\n", &nTest);
+    for (unsigned int i = 0; i < nTest; i++) { // Per ogni test
         char riga[MAX_FILENAME];
         fgets(riga, MAX_FILENAME - 1, stream);
         collana c = parseCollana(riga);

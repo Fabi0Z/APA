@@ -69,16 +69,16 @@ collana parseCollana(char *string) { // Effettua il parse di una collana da stri
     collana c;
     c.Pietre[totale] = 0;
 
-    for (size_t i = 0; i < totale; i++) {                  // Per ogni pietra
-        sscanf(string, "%d %[^\n]", &c.Pietre[i], string); // Scrivo la disponibilità
+    for (unsigned int i = 0; i < totale; i++) {                  // Per ogni pietra
+        sscanf(string, "%u %[^\n]", &c.Pietre[i], string); // Scrivo la disponibilità
         c.Pietre[totale] += c.Pietre[i];
     }
 
-    for (size_t i = 0; i < totale; i++) {                        // Per ogni pietra
-        sscanf(string, "%d %[^\n]", &c.ValorePietre[i], string); // Scrivo il valore
+    for (unsigned int i = 0; i < totale; i++) {                        // Per ogni pietra
+        sscanf(string, "%u %[^\n]", &c.ValorePietre[i], string); // Scrivo il valore
     }
 
-    sscanf(string, "%d", &c.RipetizioniMassime);
+    sscanf(string, "%u", &c.RipetizioniMassime);
 
     return c;
 }
@@ -147,11 +147,11 @@ void contaPietre(collana *c) { // Conta il numero di pietre in una collana
 }
 
 void printCollana(collana *c) { // Stampa una collana
-    printf("%d Zaffiri di valore %d; ", c->Pietre[zaffiro], c->ValorePietre[zaffiro]);
-    printf("%d Rubini di valore %d; ", c->Pietre[rubino], c->ValorePietre[rubino]);
-    printf("%d Topazi di valore %d; ", c->Pietre[topazio], c->ValorePietre[topazio]);
-    printf("%d Smerladi di valore %d;\n", c->Pietre[smeraldo], c->ValorePietre[smeraldo]);
-    printf("Totale %d pietre con ripetizione massima di %d\n", c->Pietre[totale], c->RipetizioniMassime);
+    printf("%u Zaffiri di valore %u; ", c->Pietre[zaffiro], c->ValorePietre[zaffiro]);
+    printf("%u Rubini di valore %u; ", c->Pietre[rubino], c->ValorePietre[rubino]);
+    printf("%u Topazi di valore %u; ", c->Pietre[topazio], c->ValorePietre[topazio]);
+    printf("%u Smerladi di valore %u;\n", c->Pietre[smeraldo], c->ValorePietre[smeraldo]);
+    printf("Totale %u pietre con ripetizione massima di %u\n", c->Pietre[totale], c->RipetizioniMassime);
     printPietra(c->Array[0]);
     for (size_t i = 1; i < c->Pietre[totale]; i++) { // Per ogni pietra
         printf("-");
@@ -252,14 +252,14 @@ void parseFromFile(char *filename) { // Esegue i vari test presenti in un file
     checkFilestream(stream);
     unsigned int nTest, massima;
     collana max;
-    fscanf(stream, "%d\n", &nTest);
-    for (size_t i = 0; i < nTest; i++) { // Per ogni test
+    fscanf(stream, "%u\n", &nTest);
+    for (unsigned int i = 0; i < nTest; i++) { // Per ogni test
         char riga[MAX_FILENAME];
         fgets(riga, MAX_FILENAME - 1, stream);
         collana c = parseCollana(riga);
-        printf("TEST #%d\n", i + 1);
+        printf("TEST #%u\n", i + 1);
         massima = collaneVarieLunghezze(&c, &max);
-        printf("Valore collana %d; ", massima);
+        printf("Valore collana %u; ", massima);
         printCollana(&max);
     }
 }

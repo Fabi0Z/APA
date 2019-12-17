@@ -138,14 +138,14 @@ void generaScacchiere(scacchiera *s, arrayCella *celleLibere, arrayTessera *tess
     allocaNuovoArrayCella(&max, celleLibere->NumeroElementi);
     disp(0, tessereLibere, celleLibere, mark, s, &max, &punteggio);
     copiaArrayCella(celleLibere, &max);
-    printf("La soluzione di punteggio maggiore vale %d ed è la seguente:\n", punteggio);
+    printf("La soluzione di punteggio maggiore vale %u ed è la seguente:\n", punteggio);
     printScacchiera(s, stdout);
 }
 
 int main(int argc, char const *argv[]) {
     FILE *tilesStream = smartFopen("data/tiles.txt", "r");
     unsigned int numeroTessere;
-    fscanf(tilesStream, "%d\n", &numeroTessere);
+    fscanf(tilesStream, "%u\n", &numeroTessere);
 
     puts("Le tessere presenti sono:");
     arrayTessera a = parseArrayTessera(tilesStream, numeroTessere);
@@ -162,7 +162,7 @@ int main(int argc, char const *argv[]) {
     arrayTessera disponibili = tessereDisponibili(&a, &s, &celleDisponibili);
     printArrayTessera(&disponibili, stdout);
 
-    printf("E sono presenti %d celle libere nella scacchiera\n", celleDisponibili.NumeroElementi);
+    printf("E sono presenti %u celle libere nella scacchiera\n", celleDisponibili.NumeroElementi);
     generaScacchiere(&s, &celleDisponibili, &disponibili);
     return 0;
 }

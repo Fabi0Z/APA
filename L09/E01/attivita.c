@@ -108,8 +108,8 @@ void printAttivita(attivita *a) {
 }
 // Stampa un array di attivita
 void printArrayAttivita(arrayAttivita *a) {
-    printf("%d attività\n", a->NumeroElementi);
-    printf("Durata totale %d ore\n", a->Durata);
+    printf("%u attività\n", a->NumeroElementi);
+    printf("Durata totale %u ore\n", a->Durata);
     for (size_t i = 0; i < a->NumeroElementi; i++) {
         printAttivita(&a->Array[i]);
     }
