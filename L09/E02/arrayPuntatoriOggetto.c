@@ -64,9 +64,6 @@ void freeArrayPuntatoriOggetto(arrayPuntatoriOggetto a, bool elementi) {
             freeOggetto(*a->Array[i]);
         }
     }
-    for (unsigned int i = 0; i < a->NumeroOggetti; i++) { // Per ogni oggetto
-        free(a->Array[i]);
-    }
     free(a);
 }
 
