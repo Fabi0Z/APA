@@ -13,6 +13,6 @@ unsigned int getNumeroOggettiEquipaggiamento(equipaggiamento e);
 void freeEquipaggiamento(equipaggiamento e);
 equipaggiamento creaEquipaggiamento();
 void copiaEquipaggiamento(equipaggiamento dest, equipaggiamento src);
-void aggiungiOggettoEquipaggiamento(equipaggiamento e, oggetto o);
+void aggiungiOggettoEquipaggiamento(equipaggiamento e, oggetto *o);
 
 #endif // EQUIPAGGIAMENTO_H

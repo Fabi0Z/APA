@@ -5,12 +5,12 @@ struct Equipaggiamento {
     arrayPuntatoriOggetto Oggetti;
 };
 
-void aggiungiOggettoEquipaggiamento(equipaggiamento e, oggetto o) {
+void aggiungiOggettoEquipaggiamento(equipaggiamento e, oggetto *o) {
     if (e->Oggetti == NULL) {
         e->Oggetti = creaArrayPuntatoriOggetto();
     }
 
-    aggiungiOggettoArrayPuntatori(e->Oggetti, &o);
+    aggiungiOggettoArrayPuntatori(e->Oggetti, o);
 }
 
 // Copia SRC in DEST
