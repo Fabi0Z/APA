@@ -9,7 +9,7 @@ void allocaPersonaggio(personaggio p, unsigned int nomeSize, unsigned int classe
 }
 
 // Aggiunge un oggetto all'equipaggiamento di un personaggio
-void aggiungiEquipaggiamento(personaggio p, oggetto o) {
+void aggiungiEquipaggiamento(personaggio p, oggetto *o) {
     aggiungiOggettoEquipaggiamento(p->Equipaggiamento, o);
 }
 
