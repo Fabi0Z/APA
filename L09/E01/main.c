@@ -5,27 +5,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void LIA_display(arrayAttivita *att, int *P, int i) {
+void displayLA(arrayAttivita *att, int *P, int i) {
     if (P[i] == -1) {
         printf("(%d,%d) ", att->Array[i].Inizio, att->Array[i].Fine);
         return;
     }
-    LIA_display(att, P, P[i]);
+    displayLA(att, P, P[i]);
     printf("(%d,%d) ", att->Array[i].Inizio, att->Array[i].Fine);
 }
 
-void LIA_calc(arrayAttivita *att) {
-    int i, j, ris = 1, V[att->NumeroElementi], P[att->NumeroElementi], last = 1, TMP[att->NumeroElementi];
+unsigned int calcolaLA(arrayAttivita *att, int *P) {
+    unsigned int i, j, ris = 1, V[att->NumeroElementi], last = 1, TMP[att->NumeroElementi];
     V[0] = att->Array[0].Durata;
     P[0] = -1;
-    TMP[0];
 
     for (i = 1; i < (att->NumeroElementi); i++) {
         TMP[i] = att->Array[i].Durata;
         V[i]   = att->Array[i].Durata;
         P[i]   = -1;
         for (j = 0; j < i; j++)
-            if (attivitaSovvrapposta(&att->Array[i], &att->Array[j]) && (V[i] < TMP[i] + V[j])) {
+            if (!attivitaSovvrapposta(&att->Array[i], &att->Array[j]) && (V[i] < TMP[i] + V[j])) {
                 V[i] = TMP[i] + V[j];
                 P[i] = j;
             }
@@ -35,12 +34,15 @@ void LIA_calc(arrayAttivita *att) {
         }
     }
     printf("Lunghezza: %d\nSequenza attività: ", ris);
-    LIA_display(att, P, last);
+    return last;
 }
 
 void selezioneDinamica(arrayAttivita *a) {
     ordina(a);
-    LIA_calc(a);
+    int P[a->NumeroElementi];
+    unsigned int ultimo = calcolaLA(a, P);
+    displayLA(a, P, ultimo);
+    printf("\n");
 }
 
 int main() {
@@ -54,10 +56,6 @@ int main() {
     printf("Sul file sono presenti ");
     printArrayAttivita(&a);
     printf("\n");
-    selezioneDinamica(&a);
-    puts("OLD");
-    attSel(a.NumeroElementi, a.Array);
-    puts("\nDinamica:\n");
     selezioneDinamica(&a);
     return 0;
 }
