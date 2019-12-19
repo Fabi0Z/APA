@@ -6,6 +6,7 @@ struct TabellaPersonaggio {
     unsigned int NumeroPersonaggi;
 };
 
+// Crea una tabellaPersonaggio
 tabellaPersonaggio creaTabellaPersonaggio() {
     tabellaPersonaggio t = (tabellaPersonaggio)malloc(sizeof(struct TabellaPersonaggio));
     t->HEAD              = creaPersonaggioLink(NULL);
@@ -13,6 +14,19 @@ tabellaPersonaggio creaTabellaPersonaggio() {
     t->NumeroPersonaggi  = 0;
     return t;
 }
+
+// Elimina un personaggio indicato per ID, restituisce false se il personaggio non esiste
+bool eliminaPersonaggioByID(tabellaPersonaggio t, uint16_t *ID) {
+    personaggioLink precedente = ricercaIDprecedente(t, ID); // Trovo l'elemento precedente
+    if (precedente != NULL) {                                // Se ho trovato l'ID
+        if (getNextItem(precedente) == t->TAIL) {            // Se è l'ultimo elemento
+            t->TAIL = precedente;                            // Aggiorno la TAIL
+        }
+        eliminaAndPrint(precedente);
+        return true;
+    }
+    return false;
+};
 
 // Restituisce la HEAD di una tabellaPersonaggio
 personaggioLink getTableHead(tabellaPersonaggio t) {

@@ -1,6 +1,6 @@
 #include "inventario.h"
-#include "listaPersonaggio.h"
 #include "smartfunctions.h"
+#include "tabellaPersonaggio.h"
 
 const uint8_t MAX_TRASPORTABILI = 8;
 
@@ -10,7 +10,7 @@ bool checkLimiteEquipaggiamento(personaggio p, inventario i) {
 }
 
 // Mostra il menu interattivo
-int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
+int promptMenu(tabellaPersonaggio TABLE, inventario *INVENTORY) {
     enum opzioneMenu { caricaPersonaggi,
                        caricaInventario,
                        aggiungiPersonaggio,
@@ -60,21 +60,18 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
             }
 
             case eliminaPersonaggio: {
-                printPersonaggioLink(TABLE->HEAD);
+                printPersonaggioLink(getTableHead(TABLE));
                 puts("Inserisci l'ID del personaggio da eliminare (senza \"PG\" davanti):");
                 printf("==> ");
                 uint16_t ID;
                 getchar();
-                scanf("%" SCNd16, &ID);                                             // Leggo l'ID
-                personaggioLink precedente = ricercaIDprecedente(TABLE->HEAD, &ID); // Trovo l'elemento precedente
-                if (precedente != NULL) {                                           // Se ho trovato l'ID
-                    if (getNextItem(precedente) == TABLE->TAIL) {                   // Se è l'ultimo elemento
-                        TABLE->TAIL = precedente;                                   // Aggiorno la TAIL
-                    }
-                    eliminaAndPrint(precedente);
+                scanf("%" SCNd16, &ID); // Leggo l'ID
+                if (eliminaPersonaggioByID(TABLE, &ID)) {
+                    puts("Personaggio eliminato");
                 } else {
-                    puts("ID non trovato");
+                    puts("Personaggio non trovato!");
                 }
+
                 premiPerContinuare();
                 break;
             }
@@ -212,14 +209,11 @@ int promptMenu(tabellaPersonaggio *TABLE, inventario *INVENTORY) {
 
 int main() {
     // Creo e inizializzo la tabella dei personaggi
-    tabellaPersonaggio table;
-    table.HEAD             = creaLista(NULL);
-    table.TAIL             = table.HEAD;
-    table.NumeroPersonaggi = 0;
+    tabellaPersonaggio table = creaTabellaPersonaggio();
 
     // Creo e inizializzo l'array per l'inventario
     inventario inventory;
 
     // Apro il menu
-    return promptMenu(&table, &inventory);
+    return promptMenu(table, &inventory);
 }
