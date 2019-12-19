@@ -78,19 +78,19 @@ void printPersonaggioLinkFile(personaggioLink l, FILE *stream) {
 }
 
 // Ricerca e restituisce l'elemento precedete a quello indicato tramite ID
-personaggioLink ricercaIDprecedenteR(personaggioLink next, uint16_t *ID) {
-    personaggioLink pointer = getNextItem(next);
+personaggioLink ricercaIDprecedenteR(personaggioLink precedente, uint16_t *ID) {
+    personaggioLink pointer = precedente->Next;
     if (pointer == NULL) { // Condizione di terminazione (lista vuota)
         return NULL;
     }
 
     if (pointer->Next == NULL) { // Condizione di terminazione (lista di un elemento)
-        return pointer->Personaggio->ID == *ID ? next : NULL;
+        return pointer->Personaggio->ID == *ID ? precedente : NULL;
     }
 
     if (pointer->Personaggio->ID == *ID) { // Se ho trovato la corrispondenza
-        return next;
+        return precedente;
     }
 
-    return ricercaIDprecedenteR(next, ID); // Ricerco sull'elemento successivo
+    return ricercaIDprecedenteR(pointer, ID); // Ricerco sull'elemento successivo
 }
