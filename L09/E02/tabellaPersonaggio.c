@@ -65,6 +65,11 @@ void parsePersonaggi(tabellaPersonaggio TABLE, FILE *stream) {
     freePersonaggio(temp);
 }
 
+// Stampa una tabellaPersonaggio
+void printTabellaPersonaggio(tabellaPersonaggio t) {
+    printPersonaggioLink(t->HEAD);
+}
+
 // Ricerca e restituisce un personaggio tramite ID
 personaggioLink ricercaID(tabellaPersonaggio t, uint16_t *ID) {
     personaggioLink precedente = ricercaIDprecedente(t, ID);

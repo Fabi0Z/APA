@@ -60,7 +60,7 @@ int promptMenu(tabellaPersonaggio TABLE, inventario *INVENTORY) {
             }
 
             case eliminaPersonaggio: {
-                printPersonaggioLink(getTableHead(TABLE));
+                printTabellaPersonaggio(TABLE);
                 puts("Inserisci l'ID del personaggio da eliminare (senza \"PG\" davanti):");
                 printf("==> ");
                 uint16_t ID;
@@ -71,21 +71,20 @@ int promptMenu(tabellaPersonaggio TABLE, inventario *INVENTORY) {
                 } else {
                     puts("Personaggio non trovato!");
                 }
-
                 premiPerContinuare();
                 break;
             }
 
             case modificaEquipaggiamento: {
-                printPersonaggioLink(TABLE->HEAD);
+                printTabellaPersonaggio(TABLE);
                 // Leggo il personaggio
                 puts("Inserisci l'ID del personaggio a cui modificare l'equipaggiamento (senza \"PG\" davanti):");
                 printf("==> ");
                 uint16_t ID;
                 getchar();
-                scanf("%" SCNd16, &ID);                               // Leggo l'ID
-                personaggioLink pgLink = ricercaID(TABLE->HEAD, &ID); // Trovo l'elemento
-                if (pgLink == NULL) {                                 // Se non ho trovato l'ID
+                scanf("%" SCNd16, &ID);                         // Leggo l'ID
+                personaggioLink pgLink = ricercaID(TABLE, &ID); // Trovo l'elemento
+                if (pgLink == NULL) {                           // Se non ho trovato l'ID
                     puts("ID non trovato");
                     premiPerContinuare();
                     break;
@@ -145,14 +144,14 @@ int promptMenu(tabellaPersonaggio TABLE, inventario *INVENTORY) {
             }
 
             case contaStatistiche: {
-                printPersonaggioLink(TABLE->HEAD);
+                printTabellaPersonaggio(TABLE);
                 puts("Inserisci l'ID del personaggio di cui vuoi calcolare le statistiche (senza \"PG\" davanti):");
                 printf("==> ");
                 uint16_t ID;
                 getchar();
-                scanf("%" SCNd16, &ID);                           // Leggo l'ID
-                personaggioLink pg = ricercaID(TABLE->HEAD, &ID); // Trovo il pg
-                if (pg != NULL) {                                 // Se ho trovato l'ID
+                scanf("%" SCNd16, &ID);                     // Leggo l'ID
+                personaggioLink pg = ricercaID(TABLE, &ID); // Trovo il pg
+                if (pg != NULL) {                           // Se ho trovato l'ID
                     int16_t s[N_STATISTICHE];
                     calcolaStatistiche(getPersonaggio(pg), s);
                     puts("Le statistiche sono");
@@ -168,7 +167,7 @@ int promptMenu(tabellaPersonaggio TABLE, inventario *INVENTORY) {
             }
 
             case stampaPersonaggi: {
-                printPersonaggioLink(TABLE->HEAD);
+                printTabellaPersonaggio(TABLE);
                 premiPerContinuare();
                 break;
             }
@@ -180,14 +179,14 @@ int promptMenu(tabellaPersonaggio TABLE, inventario *INVENTORY) {
             }
 
             case stampaEquipaggiamento: {
-                printPersonaggioLink(TABLE->HEAD);
+                printTabellaPersonaggio(TABLE);
                 puts("Inserisci l'ID del personaggio di cui vuoi stampare l'equipaggiamento (senza \"PG\" davanti):");
                 printf("==> ");
                 uint16_t ID;
                 getchar();
-                scanf("%" SCNd16, &ID);                           // Leggo l'ID
-                personaggioLink pg = ricercaID(TABLE->HEAD, &ID); // Trovo il pg
-                if (pg != NULL) {                                 // Se ho trovato l'ID
+                scanf("%" SCNd16, &ID);                     // Leggo l'ID
+                personaggioLink pg = ricercaID(TABLE, &ID); // Trovo il pg
+                if (pg != NULL) {                           // Se ho trovato l'ID
                     equipaggiamento e = getPersonaggio(pg)->Equipaggiamento;
                     printEquipaggiamento(e, false);
 

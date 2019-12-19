@@ -6,6 +6,7 @@
 typedef struct TabellaPersonaggio *tabellaPersonaggio;
 
 personaggioLink ricercaID(tabellaPersonaggio t, uint16_t *ID);
+void printTabellaPersonaggio(tabellaPersonaggio t);
 void parsePersonaggi(tabellaPersonaggio TABLE, FILE *stream);
 personaggioLink getTableTail(tabellaPersonaggio t);
 unsigned int getTableNumeroPersonaggi(tabellaPersonaggio t);
