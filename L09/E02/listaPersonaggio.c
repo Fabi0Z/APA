@@ -13,6 +13,28 @@ struct TabellaPersonaggio {
 
 const uint8_t PERSONAGGIO_MAX_STRING = 50;
 
+// * Funzioni "private"
+
+// Componente ricorsiva di ricercaIDPrecedente
+personaggioLink ricercaIDprecedenteR(personaggioLink next, uint16_t *ID) {
+    personaggioLink pointer = getNextItem(next);
+    if (pointer == NULL) { // Condizione di terminazione (lista vuota)
+        return NULL;
+    }
+
+    if (pointer->Next == NULL) { // Condizione di terminazione (lista di un elemento)
+        return pointer->Personaggio->ID == *ID ? next : NULL;
+    }
+
+    if (pointer->Personaggio->ID == *ID) { // Se ho trovato la corrispondenza
+        return next;
+    }
+
+    return ricercaIDprecedenteR(next, ID); // Ricerco sull'elemento successivo
+}
+
+// * Funzioni pubbliche
+
 // Aggiunge un elemento next subito dopo un elemento l in una lista
 void addNext(personaggioLink l, personaggioLink next) {
     if (l->Next == NULL) { // Se si tratta dell'ultimo elemento
@@ -27,13 +49,6 @@ void addNext(personaggioLink l, personaggioLink next) {
     return;
 }
 
-// Crea, alloca e restituisce un puntatore a personaggioLink
-personaggioLink creaElementoLista(personaggio p) {
-    personaggioLink l = (personaggioLink)malloc(sizeof(personaggioLink));
-    l->Personaggio    = p;
-    return l;
-}
-
 // Salva un personaggio in un elemento di tipo personaggioLink
 personaggioLink creaPersonaggioLink(personaggio p) {
     personaggioLink l = (personaggioLink)malloc(sizeof(struct PersonaggioLink));
@@ -43,7 +58,7 @@ personaggioLink creaPersonaggioLink(personaggio p) {
 
 tabellaPersonaggio creaTabellaPersonaggio() {
     tabellaPersonaggio t = (tabellaPersonaggio)malloc(sizeof(struct TabellaPersonaggio));
-    t->HEAD              = creaElementoLista(NULL);
+    t->HEAD              = creaPersonaggioLink(NULL);
     t->TAIL              = t->HEAD;
     t->NumeroPersonaggi  = 0;
     return t;
@@ -83,7 +98,7 @@ personaggio getPersonaggio(personaggioLink l) {
 }
 
 // Restituisce la HEAD di una tabellaPersonaggio
-personaggio getTableHead(tabellaPersonaggio t) {
+personaggioLink getTableHead(tabellaPersonaggio t) {
     return t->HEAD;
 }
 
@@ -93,12 +108,12 @@ unsigned int getTableNumeroPersonaggi(tabellaPersonaggio t) {
 }
 
 // Restituisce la TAIL di una tabellaPersonaggio
-personaggio getTableTail(tabellaPersonaggio t) {
+personaggioLink getTableTail(tabellaPersonaggio t) {
     return t->TAIL;
 }
 
 // Legge i personaggi da file e li salva in una lista
-void parsePersonaggi(tabellaPersonaggio *TABLE, FILE *stream) {
+void parsePersonaggi(tabellaPersonaggio TABLE, FILE *stream) {
     personaggio temp = creaPersonaggio(PERSONAGGIO_MAX_STRING, PERSONAGGIO_MAX_STRING);
     personaggioLink tempList;
 
@@ -136,25 +151,12 @@ void printPersonaggioLinkFile(personaggioLink l, FILE *stream) {
 }
 
 // Ricerca e restituisce un personaggio tramite ID
-personaggioLink ricercaID(personaggioLink HEAD, uint16_t *ID) {
-    personaggioLink precedente = ricercaIDprecedente(HEAD, ID);
+personaggioLink ricercaID(tabellaPersonaggio t, uint16_t *ID) {
+    personaggioLink precedente = ricercaIDprecedente(t, ID);
     return precedente == NULL ? NULL : precedente->Next;
 }
 
-// Ricerca ricorsiva che restituisce l'elemento precedete a quello trovato
-personaggioLink ricercaIDprecedente(personaggioLink HEAD, uint16_t *ID) {
-    personaggioLink pointer = getNextItem(HEAD);
-    if (pointer == NULL) { // Condizione di terminazione (lista vuota)
-        return NULL;
-    }
-
-    if (pointer->Next == NULL) { // Condizione di terminazione (lista di un elemento)
-        return pointer->Personaggio->ID == *ID ? HEAD : NULL;
-    }
-
-    if (pointer->Personaggio->ID == *ID) { // Se ho trovato la corrispondenza
-        return HEAD;
-    }
-
-    return ricercaIDprecedente(pointer, ID); // Ricerco sull'elemento successivo
+// Ricerca e restituisce l'elemento precedete a quello indicato tramite ID
+personaggioLink ricercaIDprecedente(tabellaPersonaggio t, uint16_t *ID) {
+    return ricercaIDprecedenteR(t->HEAD, ID);
 }
