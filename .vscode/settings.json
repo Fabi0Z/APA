@@ -23,6 +23,7 @@
         "oggetto.h": "c",
         "attivita.h": "c",
         "arrayoggetti.h": "c",
-        "arraypuntatorioggetto.h": "c"
+        "arraypuntatorioggetto.h": "c",
+        "listapersonaggio.h": "c"
     }
 }

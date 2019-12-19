@@ -5,6 +5,12 @@ struct PersonaggioLink {
     personaggioLink Next;
 };
 
+struct TabellaPersonaggio {
+    personaggioLink HEAD;
+    personaggioLink TAIL;
+    unsigned int NumeroPersonaggi;
+};
+
 const uint8_t PERSONAGGIO_MAX_STRING = 50;
 
 // Aggiunge un elemento next subito dopo un elemento l in una lista
@@ -22,7 +28,7 @@ void addNext(personaggioLink l, personaggioLink next) {
 }
 
 // Crea, alloca e restituisce un puntatore a personaggioLink
-personaggioLink creaLista(personaggio p) {
+personaggioLink creaElementoLista(personaggio p) {
     personaggioLink l = (personaggioLink)malloc(sizeof(personaggioLink));
     l->Personaggio    = p;
     return l;
@@ -33,6 +39,14 @@ personaggioLink creaPersonaggioLink(personaggio p) {
     personaggioLink l = (personaggioLink)malloc(sizeof(struct PersonaggioLink));
     l->Personaggio    = p;
     return l;
+}
+
+tabellaPersonaggio creaTabellaPersonaggio() {
+    tabellaPersonaggio t = (tabellaPersonaggio)malloc(sizeof(struct TabellaPersonaggio));
+    t->HEAD              = creaElementoLista(NULL);
+    t->TAIL              = t->HEAD;
+    t->NumeroPersonaggi  = 0;
+    return t;
 }
 
 // Estrare l'elemento successivo a quello dato da una lista, lo stampa e libera la memoria
@@ -66,6 +80,21 @@ personaggioLink getNextItem(personaggioLink item) {
 // Restituisce il personaggio relativo ad un elemento di tipo lista
 personaggio getPersonaggio(personaggioLink l) {
     return l->Personaggio;
+}
+
+// Restituisce la HEAD di una tabellaPersonaggio
+personaggio getTableHead(tabellaPersonaggio t) {
+    return t->HEAD;
+}
+
+// Restituisce il numero di personaggi di una tabellaPersonaggio
+unsigned int getTableNumeroPersonaggi(tabellaPersonaggio t) {
+    return t->NumeroPersonaggi;
+}
+
+// Restituisce la TAIL di una tabellaPersonaggio
+personaggio getTableTail(tabellaPersonaggio t) {
+    return t->TAIL;
 }
 
 // Legge i personaggi da file e li salva in una lista
