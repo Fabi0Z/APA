@@ -2,7 +2,6 @@
 #define PERSONAGGIO_H
 
 #include "equipaggiamento.h"
-#include "inventario.h"
 
 typedef struct Personaggio {
     uint16_t ID;

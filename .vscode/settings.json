@@ -25,6 +25,8 @@
         "arrayoggetti.h": "c",
         "arraypuntatorioggetto.h": "c",
         "listapersonaggio.h": "c",
-        "tuple": "c"
+        "tuple": "c",
+        "statistiche.h": "c",
+        "tabellapersonaggio.h": "c"
     }
 }
