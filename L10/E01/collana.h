@@ -1,14 +1,21 @@
 #ifndef COLLANA_H
 #define COLLANA_H
 
-#include "pietra.h"
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+typedef enum { zaffiro,
+               rubino,
+               topazio,
+               smeraldo,
+               totale,
+               numeroCampi } pietra;
+
 typedef struct Collana {
-    unsigned int Pietre[totale + 1];
-    pietra *Array;
+    unsigned int Pietre[numeroCampi];
+    unsigned int LunghezzaMassima;
 } collana;
 
 unsigned int maxCollana(unsigned int *pietre);
