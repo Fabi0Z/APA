@@ -1,22 +1,14 @@
-#include "collana.h"
+#include "arrayCollane.h"
 #include "smartfunctions.h"
 #include <inttypes.h>
 
 const uint8_t MAX_FILENAME = 51;
 
-void parseFromFile(char *filename) { // Esegue i vari test presenti in un file
-    FILE *stream = smartFopen(filename, "r");
-    unsigned int nTest, massima;
-    fscanf(stream, "%u\n", &nTest);
-    for (unsigned int i = 0; i < nTest; i++) { // Per ogni test
-        char riga[MAX_FILENAME];
-        fgets(riga, MAX_FILENAME - 1, stream);
-        collana c = parseCollana(riga);
-        printf("TEST #%d\n", i + 1);
-        unsigned int lunghezza = maxCollana(c->Pietre);
-        printf("Lunghezza massima: %d\n", lunghezza);
+// Calcola le lunghezze delle collane in un array
+void calcolaLunghezze(arrayCollane a) {
+    for (unsigned int i = 0; i < a->NumeroElementi; i++) { // Per ogni collana
+        a->Array[i]->LunghezzaMassima = maxCollana(a->Array[i]->Pietre);
     }
-    fclose(stream);
 }
 
 int main() {
@@ -26,6 +18,10 @@ int main() {
     char filename[51] = "e1_easy_test_set.txt";
     // fgets(filename, (MAX_FILENAME - 1), stdin);
     // sscanf(filename, "%s", filename);
-    parseFromFile(filename);
+    FILE *stream = smartFopen(filename, "r");
+
+    arrayCollane array = parseArrayCollane(stream); // Leggo le collaneparseFromFile(filename);
+    calcolaLunghezze(array);                        // Calcolo le lunghezze
+    printArrayCollane(array);                       // Stampo le collane
     return 0;
 }
