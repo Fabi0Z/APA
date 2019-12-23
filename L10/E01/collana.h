@@ -17,12 +17,13 @@ typedef struct Collana {
     unsigned int LunghezzaMassima;
 } * collana;
 
-unsigned int maxCollana(unsigned int *pietre);
+void printCollana(collana c);
+collana parseCollana(char *string);
 unsigned int maxSmeraldi(unsigned int *pietre);
 unsigned int maxTopazi(unsigned int *pietre);
 unsigned int maxRubini(unsigned int *pietre);
 unsigned int maxZaffiri(unsigned int *pietre);
-collana parseCollana(char *string);
+unsigned int maxCollana(unsigned int *pietre);
 collana creaCollana();
 
 #endif // COLLANA_H
