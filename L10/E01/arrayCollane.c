@@ -29,7 +29,7 @@ arrayCollane parseArrayCollane(FILE *stream) {
 // Stampa un array di collane
 void printArrayCollane(arrayCollane a) {
     for (unsigned int i = 0; i < a->NumeroElementi; i++) { // Per ogni elemento
-        printf("TEST #%u\n", i);
+        printf("TEST #%u\n", i + 1);
         printCollana(a->Array[i]);
         printf("\n");
     }
