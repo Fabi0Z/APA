@@ -27,6 +27,7 @@
         "listapersonaggio.h": "c",
         "tuple": "c",
         "statistiche.h": "c",
-        "tabellapersonaggio.h": "c"
+        "tabellapersonaggio.h": "c",
+        "collana.h": "c"
     }
 }
