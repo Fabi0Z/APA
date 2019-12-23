@@ -16,13 +16,6 @@ unsigned int maxSmeraldi(unsigned int *pietre);
 unsigned int maxTopazi(unsigned int *pietre);
 unsigned int maxRubini(unsigned int *pietre);
 unsigned int maxZaffiri(unsigned int *pietre);
-bool verificaSmeraldiRubini(pietra *array);
-bool verificaZaffiriTopazi(pietra *array);
-void printCollana(collana *c);
 collana parseCollana(char *string);
-bool verificaOrdine(pietra *array);
-void contaPietre(collana *c);
-bool generaCollane(unsigned int pos, collana *c, collana *max);
-unsigned int collaneVarieLunghezze(collana *c, collana *max);
 
 #endif // COLLANA_H
