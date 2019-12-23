@@ -167,10 +167,10 @@ unsigned int maxZaffiri(unsigned int *pietre) {
 
     pietre[zaffiro]--; // Rimuovo uno zaffiro
 
-    if (pietre[rubino] > 0) { // Se ho almeno un rubino
-        return maxRubini(pietre) + 1;
-    } else { // Altrimenti continuo sul prossimo zaffiro
+    if (pietre[zaffiro] > 0) { // Se ho altri zaffiri
         return maxZaffiri(pietre) + 1;
+    } else if (pietre[rubino] > 0) { // Se ho almeno un rubino
+        return maxRubini(pietre) + 1;
     }
 }
 
@@ -182,15 +182,11 @@ unsigned int maxRubini(unsigned int *pietre) {
 
     pietre[rubino]--; // Rimuovo un rubino
 
-    // Calcolo il massimo delle due scelte
-    unsigned int pietre2[totale];
-    memcpy(pietre2, pietre, sizeof(unsigned int) * totale);
-    unsigned int numTopazi = maxTopazi(pietre2);
-    memcpy(pietre2, pietre, sizeof(unsigned int) * totale);
-    unsigned int numSmeraldi = maxSmeraldi(pietre2);
-
-    // Restiuisco il risultato della catena che da la lunghezza maggiore
-    return numTopazi > numSmeraldi ? maxTopazi(pietre) + 1 : maxSmeraldi(pietre) + 1;
+    if (pietre[topazio] > 0) { // Se ho almeno un topazio
+        return maxTopazi(pietre) + 1;
+    } else if (pietre[smeraldo] > 0) { // Se ho almeno uno smeraldo
+        return maxSmeraldi(pietre) + 1;
+    }
 }
 
 // Calcola la lunghezza massima di una collana composta da un tot di pietre e iniziante per un topazio
@@ -216,10 +212,10 @@ unsigned int maxSmeraldi(unsigned int *pietre) {
 
     pietre[smeraldo]--; // Rimuovo uno smeraldo
 
-    if (pietre[topazio] > 0) { // Se ho almeno un topazio
-        return maxZaffiri(pietre) + 1;
-    } else { // Altrimenti continuo sugli smeraldi
+    if (pietre[smeraldo] > 0) { // Se ho altri smeraldi
         return maxSmeraldi(pietre) + 1;
+    } else if (pietre[topazio] > 0) { // Se ho almeno un topazio
+        return maxTopazi(pietre) + 1;
     }
 }
 
@@ -228,10 +224,15 @@ unsigned int maxCollana(unsigned int *pietre) {
     unsigned int risultati[totale];
 
     // Calcolo i risultati con inizi differenti
-    risultati[zaffiro]  = maxZaffiri(pietre);
-    risultati[rubino]   = maxRubini(pietre);
-    risultati[topazio]  = maxTopazi(pietre);
-    risultati[smeraldo] = maxSmeraldi(pietre);
+    unsigned int pietre2[totale];
+    memcpy(pietre2, pietre, sizeof(unsigned int) * totale);
+    risultati[zaffiro] = maxZaffiri(pietre2);
+    memcpy(pietre2, pietre, sizeof(unsigned int) * totale);
+    risultati[rubino] = maxRubini(pietre2);
+    memcpy(pietre2, pietre, sizeof(unsigned int) * totale);
+    risultati[topazio] = maxTopazi(pietre2);
+    memcpy(pietre2, pietre, sizeof(unsigned int) * totale);
+    risultati[smeraldo] = maxSmeraldi(pietre2);
 
     unsigned int max = 0;
     pietra maxTipo;
@@ -244,5 +245,5 @@ unsigned int maxCollana(unsigned int *pietre) {
         }
     }
 
-    return risultati[maxTipo]; // Restituisco il massimo
+    return risultati[maxTipo] + 1; // Restituisco il massimo
 }
