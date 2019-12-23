@@ -13,7 +13,7 @@ void parseFromFile(char *filename) { // Esegue i vari test presenti in un file
         fgets(riga, MAX_FILENAME - 1, stream);
         collana c = parseCollana(riga);
         printf("TEST #%d\n", i + 1);
-        unsigned int lunghezza = maxCollana(c.Pietre);
+        unsigned int lunghezza = maxCollana(c->Pietre);
         printf("Lunghezza massima: %d\n", lunghezza);
     }
     fclose(stream);
