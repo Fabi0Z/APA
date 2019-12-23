@@ -11,6 +11,11 @@ typedef struct Collana {
     pietra *Array;
 } collana;
 
+unsigned int maxCollana(unsigned int *pietre);
+unsigned int maxSmeraldi(unsigned int *pietre);
+unsigned int maxTopazi(unsigned int *pietre);
+unsigned int maxRubini(unsigned int *pietre);
+unsigned int maxZaffiri(unsigned int *pietre);
 bool verificaSmeraldiRubini(pietra *array);
 bool verificaZaffiriTopazi(pietra *array);
 void printCollana(collana *c);

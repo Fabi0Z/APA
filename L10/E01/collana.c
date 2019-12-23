@@ -158,3 +158,91 @@ bool verificaZaffiriTopazi(pietra *array) {
     }
     return false;
 }
+
+// Calcola la lunghezza massima di una collana composta da un tot di pietre e iniziante per uno zaffiro
+unsigned int maxZaffiri(unsigned int *pietre) {
+    if (pietre[zaffiro] == 0) { // Se non ho nemmeno uno zaffiro
+        return 0;
+    }
+
+    pietre[zaffiro]--; // Rimuovo uno zaffiro
+
+    if (pietre[rubino] > 0) { // Se ho almeno un rubino
+        return maxRubini(pietre) + 1;
+    } else { // Altrimenti continuo sul prossimo zaffiro
+        return maxZaffiri(pietre) + 1;
+    }
+}
+
+// Calcola la lunghezza massima di una collana composta da un tot di pietre e iniziante per un rubino
+unsigned int maxRubini(unsigned int *pietre) {
+    if (pietre[rubino] == 0) { // Se non ho nemmeno un rubino
+        return 0;
+    }
+
+    pietre[rubino]--; // Rimuovo un rubino
+
+    // Calcolo il massimo delle due scelte
+    unsigned int pietre2[totale];
+    memcpy(pietre2, pietre, sizeof(unsigned int) * totale);
+    unsigned int numTopazi = maxTopazi(pietre2);
+    memcpy(pietre2, pietre, sizeof(unsigned int) * totale);
+    unsigned int numSmeraldi = maxSmeraldi(pietre2);
+
+    // Restiuisco il risultato della catena che da la lunghezza maggiore
+    return numTopazi > numSmeraldi ? maxTopazi(pietre) + 1 : maxSmeraldi(pietre) + 1;
+}
+
+// Calcola la lunghezza massima di una collana composta da un tot di pietre e iniziante per un topazio
+unsigned int maxTopazi(unsigned int *pietre) {
+    if (pietre[topazio] == 0) { // Se non ho nemmeno un topazio
+        return 0;
+    }
+
+    pietre[topazio]--; // Rimuovo un topazio
+
+    if (pietre[zaffiro] > 0) { // Se ho almeno uno zaffiro
+        return maxZaffiri(pietre) + 1;
+    } else if (pietre[rubino] > 0) { // Se ho almeno un rubino
+        return maxRubini(pietre) + 1;
+    }
+}
+
+// Calcola la lunghezza massima di una collana composta da un tot di pietre e iniziante per uno smeraldo
+unsigned int maxSmeraldi(unsigned int *pietre) {
+    if (pietre[smeraldo] == 0) { // Se non ho nemmeno uno smeraldo
+        return 0;
+    }
+
+    pietre[smeraldo]--; // Rimuovo uno smeraldo
+
+    if (pietre[topazio] > 0) { // Se ho almeno un topazio
+        return maxZaffiri(pietre) + 1;
+    } else { // Altrimenti continuo sugli smeraldi
+        return maxSmeraldi(pietre) + 1;
+    }
+}
+
+// Restituisce la collana di lunghezza massima per un insieme di pietre
+unsigned int maxCollana(unsigned int *pietre) {
+    unsigned int risultati[totale];
+
+    // Calcolo i risultati con inizi differenti
+    risultati[zaffiro]  = maxZaffiri(pietre);
+    risultati[rubino]   = maxRubini(pietre);
+    risultati[topazio]  = maxTopazi(pietre);
+    risultati[smeraldo] = maxSmeraldi(pietre);
+
+    unsigned int max = 0;
+    pietra maxTipo;
+
+    // Trovo il massimo
+    for (size_t i = 0; i < totale; i++) { // Per ogni tipo di pietra
+        if (risultati[i] > max) {
+            max     = risultati[i];
+            maxTipo = i;
+        }
+    }
+
+    return risultati[maxTipo]; // Restituisco il massimo
+}
