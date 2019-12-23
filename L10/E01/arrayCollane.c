@@ -19,7 +19,7 @@ arrayCollane parseArrayCollane(FILE *stream) {
     for (unsigned int i = 0; i < nTest; i++) { // Per ogni test
         char riga[MAX_STRING + 1];
         fgets(riga, MAX_STRING, stream);
-        collana c = parseCollana(riga);
+        a->Array[i] = parseCollana(riga);
     }
 
     fclose(stream);
