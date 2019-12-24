@@ -1,6 +1,6 @@
 #include "elemento.h"
 
-const uint8_t MAX_STRING = 150;
+static const uint8_t MAX_STRING = 150;
 
 // Crea un elemento
 elemento creaElemento() {
