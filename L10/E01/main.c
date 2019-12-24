@@ -6,13 +6,16 @@ const uint8_t MAX_FILENAME = 51;
 
 // Calcola le lunghezze delle collane in un array
 void calcolaLunghezze(arrayCollane a) {
-    // Creo la matrice di memoizzazione
-    memoizationMatrix m = creaMemoizationMatrix();
-    calcolaDimensioniMatrice(a, m);
-    allocaMemoizationMatrix(m);
+    // Creo le matrice di memoizzazione
+    memoizationMatrix matrici[totale];    
+    for (uint8_t i = 0; i < totale; i++) { // Per ogni tipo di pietra
+        matrici[i] = creaMemoizationMatrix();
+        calcolaDimensioniMatrice(a, matrici[i]);
+        allocaMemoizationMatrix(matrici[i]);
+    }
 
     for (unsigned int i = 0; i < a->NumeroElementi; i++) { // Per ogni collana
-        a->Array[i]->LunghezzaMassima = maxCollana(a->Array[i]->Pietre);
+        a->Array[i]->LunghezzaMassima = maxCollana(a->Array[i]->Pietre, matrici);
     }
 }
 

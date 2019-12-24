@@ -28,6 +28,7 @@
         "tuple": "c",
         "statistiche.h": "c",
         "tabellapersonaggio.h": "c",
-        "collana.h": "c"
+        "collana.h": "c",
+        "memoizationmatrix.h": "c"
     }
 }
