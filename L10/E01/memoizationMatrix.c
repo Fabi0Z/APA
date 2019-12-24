@@ -45,6 +45,20 @@ void calcolaDimensioniMatrice(arrayCollane a, memoizationMatrix m) {
     }
 }
 
+// Restitusice true se ci sono altre pietre disponibili oltre quella indicata, altrimenti false
+bool checkPietreDisponibili(pietra p, unsigned int *pietre) {
+    bool disponibili = false;
+    for (uint8_t i = 0; i < totale; i++) {
+        if (i != p) {
+            disponibili = pietre[i] > 0 ? true : false;
+            if (disponibili) {
+                break;
+            }
+        }
+    }
+    return disponibili;
+}
+
 // Crea una memoizationMatric
 memoizationMatrix creaMemoizationMatrix() {
     return (memoizationMatrix)malloc(sizeof(struct MemoizationMatrix));
@@ -76,7 +90,7 @@ unsigned int maxCollana(unsigned int *pietre, memoizationMatrix *matrici) {
     risultati[smeraldo] = maxSmeraldi(pietre2, matrici[smeraldo]);
 
     unsigned int max = 0;
-    pietra maxTipo;
+    pietra maxTipo   = 0;
 
     // Trovo il massimo
     for (unsigned int i = 0; i < totale; i++) { // Per ogni tipo di pietra
@@ -86,15 +100,15 @@ unsigned int maxCollana(unsigned int *pietre, memoizationMatrix *matrici) {
         }
     }
 
-    return risultati[maxTipo] + 1; // Restituisco il massimo
+    return risultati[maxTipo]; // Restituisco il massimo
 }
 
 // Calcola la lunghezza massima di una collana composta da un tot di pietre e iniziante per un rubino
 unsigned int maxRubini(unsigned int *pietre, memoizationMatrix m) {
     unsigned int massimo = leggiMassimo(m, pietre);
-    if (massimo != (unsigned int)-1) { // Se ne ho già calcolato il valore
+    /*if (massimo != (unsigned int)-1) { // Se ne ho già calcolato il valore
         return massimo;
-    }
+    }*/
 
     if (pietre[rubino] == 0) { // Se non ho nemmeno un rubino
         return 0;
@@ -104,23 +118,28 @@ unsigned int maxRubini(unsigned int *pietre, memoizationMatrix m) {
     memcpy(posizione, pietre, sizeof(unsigned int) * totale); // Memorizzo la posizione per la memoizzazione
     pietre[rubino]--;                                         // Rimuovo un rubino
 
-    if (pietre[topazio] > 0) { // Se ho almeno un topazio
-        massimo = maxTopazi(pietre, m) + 1;
-        salvaMassimo(m, posizione, massimo);
-        return massimo;
-    } else if (pietre[smeraldo] > 0) { // Se ho almeno uno smeraldo
-        massimo = maxSmeraldi(pietre, m) + 1;
-        salvaMassimo(m, posizione, massimo);
-        return massimo;
+    // Controllo se ci sono altre pietre disponibili
+    if (checkPietreDisponibili(rubino, pietre)) {
+        if (pietre[topazio] > 0) { // Se ho almeno un topazio
+            massimo = maxTopazi(pietre, m) + 1;
+            salvaMassimo(m, posizione, massimo);
+            return massimo;
+        } else if (pietre[smeraldo] > 0) { // Se ho almeno uno smeraldo
+            massimo = maxSmeraldi(pietre, m) + 1;
+            salvaMassimo(m, posizione, massimo);
+            return massimo;
+        }
     }
+
+    return 1; // Se non ci sono altre pietre disponibili
 }
 
 // Calcola la lunghezza massima di una collana composta da un tot di pietre e iniziante per uno smeraldo
 unsigned int maxSmeraldi(unsigned int *pietre, memoizationMatrix m) {
     unsigned int massimo = leggiMassimo(m, pietre);
-    if (massimo != (unsigned int)-1) { // Se ne ho già calcolato il valore
+    /*if (massimo != (unsigned int)-1) { // Se ne ho già calcolato il valore
         return massimo;
-    }
+    }*/
 
     if (pietre[smeraldo] == 0) { // Se non ho nemmeno uno smeraldo
         return 0;
@@ -139,14 +158,16 @@ unsigned int maxSmeraldi(unsigned int *pietre, memoizationMatrix m) {
         salvaMassimo(m, posizione, massimo);
         return massimo;
     }
+
+    return 1; // Altrimenti restituisco l'unica pietra
 }
 
 // Calcola la lunghezza massima di una collana composta da un tot di pietre e iniziante per un topazio
 unsigned int maxTopazi(unsigned int *pietre, memoizationMatrix m) {
     unsigned int massimo = leggiMassimo(m, pietre);
-    if (massimo != (unsigned int)-1) { // Se ne ho già calcolato il valore
+    /*if (massimo != (unsigned int)-1) { // Se ne ho già calcolato il valore
         return massimo;
-    }
+    }*/
 
     if (pietre[topazio] == 0) { // Se non ho nemmeno un topazio
         return 0;
@@ -156,23 +177,28 @@ unsigned int maxTopazi(unsigned int *pietre, memoizationMatrix m) {
     memcpy(posizione, pietre, sizeof(unsigned int) * totale); // Memorizzo la posizione per la memoizzazione
     pietre[topazio]--;                                        // Rimuovo un topazio
 
-    if (pietre[zaffiro] > 0) { // Se ho almeno uno zaffiro
-        massimo = maxZaffiri(pietre, m) + 1;
-        salvaMassimo(m, posizione, massimo);
-        return massimo;
-    } else if (pietre[rubino] > 0) { // Se ho almeno un rubino
-        massimo = maxRubini(pietre, m) + 1;
-        salvaMassimo(m, posizione, massimo);
-        return massimo;
+    // Se ci sono altre pietre disponibili
+    if (checkPietreDisponibili(topazio, pietre)) {
+        if (pietre[zaffiro] > 0) { // Se ho almeno uno zaffiro
+            massimo = maxZaffiri(pietre, m) + 1;
+            salvaMassimo(m, posizione, massimo);
+            return massimo;
+        } else if (pietre[rubino] > 0) { // Se ho almeno un rubino
+            massimo = maxRubini(pietre, m) + 1;
+            salvaMassimo(m, posizione, massimo);
+            return massimo;
+        }
     }
+
+    return 1; // Se non ho altre pietre
 }
 
 // Calcola la lunghezza massima di una collana composta da un tot di pietre e iniziante per uno zaffiro
 unsigned int maxZaffiri(unsigned int *pietre, memoizationMatrix m) {
     unsigned int massimo = leggiMassimo(m, pietre);
-    if (massimo != (unsigned int)-1) { // Se ne ho già calcolato il valore
+    /*if (massimo != (unsigned int)-1) { // Se ne ho già calcolato il valore
         return massimo;
-    }
+    }*/
 
     if (pietre[zaffiro] == 0) { // Se non ho nemmeno uno zaffiro
         return 0;
@@ -191,6 +217,8 @@ unsigned int maxZaffiri(unsigned int *pietre, memoizationMatrix m) {
         salvaMassimo(m, posizione, massimo);
         return massimo;
     }
+
+    return 1; // Altrimenti restituisco l'unica pietra
 }
 
 // Salva la lunghezza massima nella matrice

@@ -2,6 +2,8 @@
 #define MEMOIZATIONMATRIX_H
 
 #include "arrayCollane.h"
+#include <inttypes.h>
+#include <stdbool.h>
 
 typedef struct MemoizationMatrix *memoizationMatrix;
 
