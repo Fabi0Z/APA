@@ -106,9 +106,9 @@ unsigned int maxCollana(unsigned int *pietre, memoizationMatrix *matrici) {
 // Calcola la lunghezza massima di una collana composta da un tot di pietre e iniziante per un rubino
 unsigned int maxRubini(unsigned int *pietre, memoizationMatrix m) {
     unsigned int massimo = leggiMassimo(m, pietre);
-    /*if (massimo != (unsigned int)-1) { // Se ne ho già calcolato il valore
+    if (massimo != (unsigned int)-1) { // Se ne ho già calcolato il valore
         return massimo;
-    }*/
+    }
 
     if (pietre[rubino] == 0) { // Se non ho nemmeno un rubino
         return 0;
@@ -137,9 +137,9 @@ unsigned int maxRubini(unsigned int *pietre, memoizationMatrix m) {
 // Calcola la lunghezza massima di una collana composta da un tot di pietre e iniziante per uno smeraldo
 unsigned int maxSmeraldi(unsigned int *pietre, memoizationMatrix m) {
     unsigned int massimo = leggiMassimo(m, pietre);
-    /*if (massimo != (unsigned int)-1) { // Se ne ho già calcolato il valore
+    if (massimo != (unsigned int)-1) { // Se ne ho già calcolato il valore
         return massimo;
-    }*/
+    }
 
     if (pietre[smeraldo] == 0) { // Se non ho nemmeno uno smeraldo
         return 0;
@@ -165,9 +165,9 @@ unsigned int maxSmeraldi(unsigned int *pietre, memoizationMatrix m) {
 // Calcola la lunghezza massima di una collana composta da un tot di pietre e iniziante per un topazio
 unsigned int maxTopazi(unsigned int *pietre, memoizationMatrix m) {
     unsigned int massimo = leggiMassimo(m, pietre);
-    /*if (massimo != (unsigned int)-1) { // Se ne ho già calcolato il valore
+    if (massimo != (unsigned int)-1) { // Se ne ho già calcolato il valore
         return massimo;
-    }*/
+    }
 
     if (pietre[topazio] == 0) { // Se non ho nemmeno un topazio
         return 0;
@@ -196,9 +196,9 @@ unsigned int maxTopazi(unsigned int *pietre, memoizationMatrix m) {
 // Calcola la lunghezza massima di una collana composta da un tot di pietre e iniziante per uno zaffiro
 unsigned int maxZaffiri(unsigned int *pietre, memoizationMatrix m) {
     unsigned int massimo = leggiMassimo(m, pietre);
-    /*if (massimo != (unsigned int)-1) { // Se ne ho già calcolato il valore
+    if (massimo != (unsigned int)-1) { // Se ne ho già calcolato il valore
         return massimo;
-    }*/
+    }
 
     if (pietre[zaffiro] == 0) { // Se non ho nemmeno uno zaffiro
         return 0;
