@@ -131,6 +131,7 @@ unsigned int maxRubini(unsigned int *pietre, memoizationMatrix m) {
         }
     }
 
+    salvaMassimo(m, posizione, 1);
     return 1; // Se non ci sono altre pietre disponibili
 }
 
@@ -159,7 +160,8 @@ unsigned int maxSmeraldi(unsigned int *pietre, memoizationMatrix m) {
         return massimo;
     }
 
-    return 1; // Altrimenti restituisco l'unica pietra
+    salvaMassimo(m, posizione, 1);
+    return 1; // Se non ci sono altre pietre disponibili
 }
 
 // Calcola la lunghezza massima di una collana composta da un tot di pietre e iniziante per un topazio
@@ -190,7 +192,8 @@ unsigned int maxTopazi(unsigned int *pietre, memoizationMatrix m) {
         }
     }
 
-    return 1; // Se non ho altre pietre
+    salvaMassimo(m, posizione, 1);
+    return 1; // Se non ci sono altre pietre disponibili
 }
 
 // Calcola la lunghezza massima di una collana composta da un tot di pietre e iniziante per uno zaffiro
@@ -218,7 +221,8 @@ unsigned int maxZaffiri(unsigned int *pietre, memoizationMatrix m) {
         return massimo;
     }
 
-    return 1; // Altrimenti restituisco l'unica pietra
+    salvaMassimo(m, posizione, 1);
+    return 1; // Se non ci sono altre pietre disponibili
 }
 
 // Salva la lunghezza massima nella matrice
