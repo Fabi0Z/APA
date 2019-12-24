@@ -14,7 +14,7 @@ typedef struct Array {
 void premiPerContinuare();
 FILE *smartFopen(char *filename, char *mode);
 array parseFromFile(char *filename, unsigned int max_string, void *(*parseObject)(char *), unsigned int sizeOf);
-void freeArray(array a);
+void freeArray(array a, void (*freeItem)(void *));
 bool checkFilestream(FILE *stream);
 array creaArray();
 void allocaArray(array a, unsigned int NumeroElementi, unsigned int sizeOf);

@@ -20,10 +20,11 @@ bool checkFilestream(FILE *stream) {
     return stream == NULL ? false : true;
 }
 
-// Elimina un array ed il suo contenuto
-void freeArray(array a) {
+/* Elimina un array ed il suo contenuto
+   freeItem è la funzione per eliminare il singolo elemento */
+void freeArray(array a, void (*freeItem)(void *)) {
     for (unsigned int i = 0; i < a->NumeroElementi; i++) { // Per ogni elemento
-        free(a->Elementi[i]);
+        (*freeItem)(a->Elementi[i]);
     }
     free(a);
 }
