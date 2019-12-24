@@ -28,17 +28,9 @@ void allocaMemoizationMatrix(memoizationMatrix m) {
 }
 
 // Calcola le dimensioni della matrice Memoization
-void calcolaDimensioniMatrice(arrayCollane a, memoizationMatrix m) {
-    memset(m->Dimensioni, 0, sizeof(int) * totale); // Azzero le dimensioni
-
-    // Trovo il massimo di ogni dimensione
-    for (unsigned int i = 0; i < a->NumeroElementi; i++) {
-        for (unsigned int j = 0; j < totale; j++) { // Per ogni tipo di pietra
-            // Controllo se il valore è maggiore, nel caso lo sovrascrivo
-            m->Dimensioni[j] = a->Array[i]->Pietre[j] > m->Dimensioni[j] ? a->Array[i]->Pietre[j] : m->Dimensioni[j];
-        }
-    }
-
+void calcolaDimensioniMatrice(collana c, memoizationMatrix m) {
+    memset(m->Dimensioni, 0, sizeof(int) * totale);                  // Azzero le dimensioni
+    memcpy(m->Dimensioni, c->Pietre, sizeof(unsigned int) * totale); // Copio il numero di pietre
     // Incremento le dimensioni di 1
     for (unsigned int i = 0; i < totale; i++) {
         m->Dimensioni[i]++;
@@ -75,7 +67,15 @@ unsigned int leggiMassimo(memoizationMatrix m, unsigned int *posizione) {
 }
 
 // Restituisce la collana di lunghezza massima per un insieme di pietre
-unsigned int maxCollana(unsigned int *pietre, memoizationMatrix *matrici) {
+unsigned int maxCollana(collana c) {
+    // Creo le matrice di memoizzazione
+    memoizationMatrix matrici[totale];
+    for (uint8_t i = 0; i < totale; i++) { // Per ogni tipo di pietra
+        matrici[i] = creaMemoizationMatrix();
+        calcolaDimensioniMatrice(c, matrici[i]);
+        allocaMemoizationMatrix(matrici[i]);
+    }
+    unsigned int *pietre = c->Pietre;
     unsigned int risultati[totale];
 
     // Calcolo i risultati con inizi differenti

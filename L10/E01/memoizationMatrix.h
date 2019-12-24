@@ -12,10 +12,11 @@ unsigned int maxSmeraldi(unsigned int *pietre, memoizationMatrix m);
 unsigned int maxTopazi(unsigned int *pietre, memoizationMatrix m);
 unsigned int maxRubini(unsigned int *pietre, memoizationMatrix m);
 unsigned int maxZaffiri(unsigned int *pietre, memoizationMatrix m);
-unsigned int maxCollana(unsigned int *pietre, memoizationMatrix *m);
+unsigned int maxCollana(collana c);
 unsigned int leggiMassimo(memoizationMatrix m, unsigned int *posizione);
 memoizationMatrix creaMemoizationMatrix();
-void calcolaDimensioniMatrice(arrayCollane a, memoizationMatrix m);
+bool checkPietreDisponibili(pietra p, unsigned int *pietre);
+void calcolaDimensioniMatrice(collana c, memoizationMatrix m);
 void allocaMemoizationMatrix(memoizationMatrix m);
 
 #endif // MEMOIZATIONMATRIX_H
