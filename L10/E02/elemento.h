@@ -25,4 +25,9 @@ typedef struct Elemento {
     uint8_t Difficolta;
 } * elemento;
 
+elemento parseElemento(char *string);
+void freeElemento(elemento e);
+elemento creaElemento();
+extern const uint8_t MAX_STRING;
+
 #endif // ELEMENTO_H
