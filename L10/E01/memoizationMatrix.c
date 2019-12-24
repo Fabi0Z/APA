@@ -56,6 +56,21 @@ memoizationMatrix creaMemoizationMatrix() {
     return (memoizationMatrix)malloc(sizeof(struct MemoizationMatrix));
 }
 
+// Elimina una memoization matrix
+void freeMemoizationMatrix(memoizationMatrix m) {
+    for (unsigned int i = 0; i < m->Dimensioni[zaffiro]; i++) {
+        for (unsigned int j = 0; j < m->Dimensioni[rubino]; j++) {
+            for (unsigned int k = 0; k < m->Dimensioni[topazio]; k++) {
+                free(m->Matrice[i][j][k]); // Delloco gli smeraldi
+            }
+            free(m->Matrice[i][j]); // Dealloco i topazi
+        }
+        free(m->Matrice[i]); // Dealloco i rubini
+    }
+    free(m->Matrice);
+    free(m);
+}
+
 // Legge la lunghezza massima dalla matrice
 unsigned int leggiMassimo(memoizationMatrix m, unsigned int *posizione) {
     unsigned int i = posizione[zaffiro];
@@ -98,6 +113,10 @@ unsigned int maxCollana(collana c) {
             max     = risultati[i];
             maxTipo = i;
         }
+    }
+
+    for (uint8_t i = 0; i < totale; i++) { // Per ogni tipo di pietra
+        freeMemoizationMatrix(matrici[i]);
     }
 
     return risultati[maxTipo]; // Restituisco il massimo

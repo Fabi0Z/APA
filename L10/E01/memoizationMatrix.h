@@ -14,6 +14,7 @@ unsigned int maxRubini(unsigned int *pietre, memoizationMatrix m);
 unsigned int maxZaffiri(unsigned int *pietre, memoizationMatrix m);
 unsigned int maxCollana(collana c);
 unsigned int leggiMassimo(memoizationMatrix m, unsigned int *posizione);
+void freeMemoizationMatrix(memoizationMatrix m);
 memoizationMatrix creaMemoizationMatrix();
 bool checkPietreDisponibili(pietra p, unsigned int *pietre);
 void calcolaDimensioniMatrice(collana c, memoizationMatrix m);
