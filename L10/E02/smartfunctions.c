@@ -1,13 +1,9 @@
 #include "smartfunctions.h"
 
 // Alloca un array
-void allocaArray(array a, unsigned int NumeroElementi, unsigned int sizeOf) {
+void allocaArray(array a, unsigned int NumeroElementi) {
     a->NumeroElementi = NumeroElementi;
     a->Elementi       = (void **)calloc(a->NumeroElementi, sizeof(void *));
-
-    for (unsigned int i = 0; i < a->NumeroElementi; i++) { // Per ogni elemento
-        a->Elementi[i] = (void *)malloc(sizeOf);
-    }
 }
 
 // Crea un array
@@ -30,14 +26,13 @@ void freeArray(array a, void (*freeItem)(void *)) {
 }
 
 /* Effettua il parse da file di una serie di elementi
-   parseObject è la funzione che si occupa di effettuare il parse del singolo oggetto da string
-   sizeOf è il risultato della sizeof() sul tipo del dato */
-array parseFromFile(char *filename, unsigned int max_string, void *(*parseObject)(char *), unsigned int sizeOf) {
+   parseObject è la funzione che si occupa di effettuare il parse del singolo oggetto da string */
+array parseFromFile(char *filename, unsigned int max_string, void *(*parseObject)(char *)) {
     FILE *stream = smartFopen(filename, "r"); // Apro il filestream
 
     array a = creaArray();
     fscanf(stream, "%u\n", a->NumeroElementi); // Leggo il numero di attività
-    allocaArray(a, a->NumeroElementi, sizeOf); // Alloco la memoria
+    allocaArray(a, a->NumeroElementi); // Alloco la memoria
 
     char string[max_string + 1];
     for (unsigned int i = 0; i < a->NumeroElementi; i++) { // Per ogni elemento
