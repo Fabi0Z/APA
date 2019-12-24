@@ -35,7 +35,7 @@ array parseFromFile(char *filename, unsigned int max_string, void *(*parseObject
     FILE *stream = smartFopen(filename, "r"); // Apro il filestream
 
     array a = creaArray();
-    fscanf(stream, "%d\n", a->NumeroElementi); // Leggo il numero di attività
+    fscanf(stream, "%u\n", a->NumeroElementi); // Leggo il numero di attività
     allocaArray(a, a->NumeroElementi, sizeOf); // Alloco la memoria
 
     char string[max_string + 1];
