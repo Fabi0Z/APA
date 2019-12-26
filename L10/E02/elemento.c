@@ -20,15 +20,15 @@ elemento parseElemento(char *string) {
     elemento e = creaElemento();
     char tempNome[MAX_STRING];
 
-    sscanf(string, "%s%[^\n]", tempNome);               // Leggo il nome
-    sscanf(string, "%" SCNd8 "%[^\n]", &e->Tipo);       // Leggo il tipo
-    sscanf(string, "%" SCNd8 "%[^\n]", &e->Ingresso);   // Leggo l'ingresso
-    sscanf(string, "%" SCNd8 "%[^\n]", &e->Uscita);     // Leggo l'uscita
-    sscanf(string, "%" SCNd8 "%[^\n]", &e->Precedenza); // Leggo la precedenza
-    sscanf(string, "%" SCNd8 "%[^\n]", &e->Finale);     // Leggo il finale
-    sscanf(string, "%" SCNd8 "%[^\n]", &e->Ingresso);   // Leggo l'ingresso
-    sscanf(string, "%f%[^\n]", &e->Valore);             // Leggo il valore
-    sscanf(string, "%u%[^\n]", &e->Difficolta);         // Leggo la difficoltà
+    sscanf(string, "%s%[^\n]", tempNome, string);               // Leggo il nome
+    sscanf(string, "%" SCNd8 "%[^\n]", &e->Tipo, string);       // Leggo il tipo
+    sscanf(string, "%" SCNd8 "%[^\n]", &e->Ingresso, string);   // Leggo l'ingresso
+    sscanf(string, "%" SCNd8 "%[^\n]", &e->Uscita, string);     // Leggo l'uscita
+    sscanf(string, "%" SCNd8 "%[^\n]", &e->Precedenza, string); // Leggo la precedenza
+    sscanf(string, "%" SCNd8 "%[^\n]", &e->Finale, string);     // Leggo il finale
+    sscanf(string, "%" SCNd8 "%[^\n]", &e->Ingresso, string);   // Leggo l'ingresso
+    sscanf(string, "%f%[^\n]", &e->Valore, string);             // Leggo il valore
+    sscanf(string, "%u", &e->Difficolta);                       // Leggo la difficoltà
 
     // Copio il nome ridimensionato
     e->Nome = (char *)calloc(strlen(tempNome), sizeof(char));
