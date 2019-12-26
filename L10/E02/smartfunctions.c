@@ -32,14 +32,14 @@ array parseFromFile(char *filename, unsigned int max_string, void *(*parseObject
 
     array a = creaArray();
     fscanf(stream, "%u\n", &a->NumeroElementi); // Leggo il numero di attività
-    allocaArray(a, a->NumeroElementi); // Alloco la memoria
+    allocaArray(a, a->NumeroElementi);          // Alloco la memoria
 
     char string[max_string + 1];
     for (unsigned int i = 0; i < a->NumeroElementi; i++) { // Per ogni elemento
         fgets(string, max_string, stream);
         a->Elementi[i] = (void *)(*parseObject)(string);
     }
-
+    fclose(stream);
     return a;
 }
 
