@@ -6,16 +6,17 @@
 #include <stdlib.h>
 
 // Array generico
-typedef struct Array {
+typedef struct Array *array;
+struct Array {
     void **Elementi;
     unsigned int NumeroElementi;
-} * array;
+    void (*freeArray)(void *, void (*freeItem)(void *));
+    void (*printArray)(array, void(*printObject(void *)));
+};
 
 void premiPerContinuare();
-FILE *smartFopen(char *filename, char *mode);
-void printArray(array a, void(*printObject(void *)));
 array parseFromFile(char *filename, unsigned int max_string, void *(*parseObject)(char *));
-void freeArray(array a, void (*freeItem)(void *));
+FILE *smartFopen(char *filename, char *mode);
 bool checkFilestream(FILE *stream);
 array creaArray();
 void allocaArray(array a, unsigned int NumeroElementi);
