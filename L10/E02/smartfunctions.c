@@ -50,6 +50,15 @@ void premiPerContinuare() {
     getchar();
 }
 
+/* Stampa un array
+   printObject è la funzione che stampa il singolo oggetto */
+void printArray(array a, void(*printObject(void *))) {
+    for (unsigned int i = 0; i < a->NumeroElementi; i++) { // Per ogni elemento
+        (*printObject)(a->Elementi[i]);
+    }
+    printf("\n");
+}
+
 // Apre in maniera sicura un file, interrompe il programma se non è possibile aprirlo
 FILE *smartFopen(char *filename, char *mode) {
     FILE *f = fopen(filename, mode);

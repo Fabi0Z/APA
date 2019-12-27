@@ -13,6 +13,7 @@ typedef struct Array {
 
 void premiPerContinuare();
 FILE *smartFopen(char *filename, char *mode);
+void printArray(array a, void(*printObject(void *)));
 array parseFromFile(char *filename, unsigned int max_string, void *(*parseObject)(char *));
 void freeArray(array a, void (*freeItem)(void *));
 bool checkFilestream(FILE *stream);
