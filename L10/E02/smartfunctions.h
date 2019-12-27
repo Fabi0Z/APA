@@ -10,12 +10,18 @@ typedef struct Array *array;
 struct Array {
     void **Elementi;
     unsigned int NumeroElementi;
-    void (*freeArray)(void *, void (*freeItem)(void *));
-    void (*printArray)(array, void(*printObject(void *)));
+    /* Elimina un array ed il suo contenuto
+    freeItem è la funzione per eliminare il singolo elemento */
+    void (*free)(array, void (*freeItem)(void *));
+    /* Effettua il parse da file di una serie di elementi
+   parseObject è la funzione che si occupa di effettuare il parse del singolo oggetto da string */
+    void (*parse)(array, char *filename, unsigned int max_string, void *(*parseObject)(char *));
+    /* Stampa un array
+   printObject è la funzione che stampa il singolo oggetto */
+    void (*print)(array, void(*printObject(void *)));
 };
 
 void premiPerContinuare();
-array parseFromFile(char *filename, unsigned int max_string, void *(*parseObject)(char *));
 FILE *smartFopen(char *filename, char *mode);
 bool checkFilestream(FILE *stream);
 array creaArray();

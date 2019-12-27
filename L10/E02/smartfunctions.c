@@ -11,6 +11,22 @@ void freeArray(array a, void (*freeItem)(void *)) {
     free(a);
 }
 
+/* Effettua il parse da file di una serie di elementi
+   parseObject è la funzione che si occupa di effettuare il parse del singolo oggetto da string */
+void parseFromFile(array a, char *filename, unsigned int max_string, void *(*parseObject)(char *)) {
+    FILE *stream = smartFopen(filename, "r"); // Apro il filestream
+
+    fscanf(stream, "%u\n", &a->NumeroElementi); // Leggo il numero di attività
+    allocaArray(a, a->NumeroElementi);          // Alloco la memoria
+
+    char string[max_string + 1];
+    for (unsigned int i = 0; i < a->NumeroElementi; i++) { // Per ogni elemento
+        fgets(string, max_string, stream);
+        a->Elementi[i] = (void *)(*parseObject)(string);
+    }
+    fclose(stream);
+}
+
 /* Stampa un array
    printObject è la funzione che stampa il singolo oggetto */
 void printArray(array a, void(*printObject(void *))) {
@@ -30,33 +46,16 @@ void allocaArray(array a, unsigned int NumeroElementi) {
 
 // Crea un array
 array creaArray() {
-    array a       = (array)malloc(sizeof(struct Array));
-    a->freeArray  = &freeArray;
-    a->printArray = &printArray;
+    array a  = (array)malloc(sizeof(struct Array));
+    a->free  = &freeArray;
+    a->print = &printArray;
+    a->parse = &parseFromFile;
     return a;
 }
 
 // Controlla errori di apertura del file
 bool checkFilestream(FILE *stream) {
     return stream == NULL ? false : true;
-}
-
-/* Effettua il parse da file di una serie di elementi
-   parseObject è la funzione che si occupa di effettuare il parse del singolo oggetto da string */
-array parseFromFile(char *filename, unsigned int max_string, void *(*parseObject)(char *)) {
-    FILE *stream = smartFopen(filename, "r"); // Apro il filestream
-
-    array a = creaArray();
-    fscanf(stream, "%u\n", &a->NumeroElementi); // Leggo il numero di attività
-    allocaArray(a, a->NumeroElementi);          // Alloco la memoria
-
-    char string[max_string + 1];
-    for (unsigned int i = 0; i < a->NumeroElementi; i++) { // Per ogni elemento
-        fgets(string, max_string, stream);
-        a->Elementi[i] = (void *)(*parseObject)(string);
-    }
-    fclose(stream);
-    return a;
 }
 
 // Stampa un "Premi invio per continuare..."
