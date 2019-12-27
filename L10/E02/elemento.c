@@ -26,7 +26,6 @@ elemento parseElemento(char *string) {
     sscanf(string, "%" SCNd8 "%[^\n]", &e->Uscita, string);     // Leggo l'uscita
     sscanf(string, "%" SCNd8 "%[^\n]", &e->Precedenza, string); // Leggo la precedenza
     sscanf(string, "%" SCNd8 "%[^\n]", &e->Finale, string);     // Leggo il finale
-    sscanf(string, "%" SCNd8 "%[^\n]", &e->Ingresso, string);   // Leggo l'ingresso
     sscanf(string, "%f%[^\n]", &e->Valore, string);             // Leggo il valore
     sscanf(string, "%u", &e->Difficolta);                       // Leggo la difficoltà
 
@@ -44,7 +43,6 @@ void printElemento(elemento e) {
     printf("%" SCNd8 " ", e->Uscita);     // Stampo l'uscita
     printf("%" SCNd8 " ", e->Precedenza); // Stampo la precedenza
     printf("%" SCNd8 " ", e->Finale);     // Stampo il finale
-    printf("%" SCNd8 " ", e->Ingresso);   // Stampo l'ingresso
-    printf("%f ", e->Valore);             // Stampo il valore
+    printf("%.2f ", e->Valore);             // Stampo il valore
     printf("%u\n", e->Difficolta);        // Stampo la difficoltà
 }
