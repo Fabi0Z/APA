@@ -5,10 +5,9 @@ const uint8_t MAX_STRING = 150;
 
 int main() {
     char filename[] = "elementi.txt";
-    // arrayElemento elementi = parseElementoFromFile(filename);
-    // printElemento(elementi->Array[0]);
-    array elementi = parseFromFile(filename, MAX_STRING, (void *)&parseElemento);
-    elementi->printArray(elementi, &printElemento);
-    elementi->freeArray(elementi, &freeElemento);
+    array elementi = creaArray();
+    elementi->parse(elementi, filename, MAX_STRING, (void *)&parseElemento);
+    elementi->print(elementi, (void *)&printElemento);
+    elementi->free(elementi, (void *)&freeElemento);
     return 0;
 }
