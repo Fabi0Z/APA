@@ -5,8 +5,10 @@
 /* Elimina un array ed il suo contenuto
    freeItem è la funzione per eliminare il singolo elemento */
 void freeArray(array a, void (*freeItem)(void *)) {
-    for (unsigned int i = 0; i < a->NumeroElementi; i++) { // Per ogni elemento
-        (*freeItem)(a->Elementi[i]);
+    if (a->Elementi != NULL) {                                 // Se l'array è allocato
+        for (unsigned int i = 0; i < a->NumeroElementi; i++) { // Per ogni elemento
+            (*freeItem)(a->Elementi[i]);
+        }
     }
     free(a);
 }
