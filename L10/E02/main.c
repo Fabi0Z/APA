@@ -8,7 +8,7 @@ int main() {
     // arrayElemento elementi = parseElementoFromFile(filename);
     // printElemento(elementi->Array[0]);
     array elementi = parseFromFile(filename, MAX_STRING, (void *)&parseElemento);
-    printArray(elementi, &printElemento);
-    freeArray(elementi, &freeElemento);
+    elementi->printArray(elementi, &printElemento);
+    elementi->freeArray(elementi, &freeElemento);
     return 0;
 }
