@@ -29,6 +29,8 @@
         "statistiche.h": "c",
         "tabellapersonaggio.h": "c",
         "collana.h": "c",
-        "memoizationmatrix.h": "c"
+        "memoizationmatrix.h": "c",
+        "elemento.h": "c",
+        "arrayelemento.h": "c"
     }
 }
