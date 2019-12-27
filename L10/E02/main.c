@@ -1,5 +1,5 @@
 #include "elemento.h"
-#include "smartfunctions.h"
+#include "smartlib.h"
 
 const uint8_t MAX_STRING = 150;
 

@@ -1,4 +1,4 @@
-#include "smartfunctions.h"
+#include "smartlib.h"
 
 // * hidden functions
 
