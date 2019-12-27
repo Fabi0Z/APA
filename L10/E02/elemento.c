@@ -34,3 +34,16 @@ elemento parseElemento(char *string) {
     e->Nome = (char *)calloc(strlen(tempNome), sizeof(char));
     strcpy(e->Nome, tempNome);
 }
+
+// Stampa un elemento
+void printElemento(elemento e) {
+    printf("%s ", e->Nome);                // Stampo il nome
+    printf("%" SCNd8 " ", &e->Tipo);       // Stampo il tipo
+    printf("%" SCNd8 " ", &e->Ingresso);   // Stampo l'ingresso
+    printf("%" SCNd8 " ", &e->Uscita);     // Stampo l'uscita
+    printf("%" SCNd8 " ", &e->Precedenza); // Stampo la precedenza
+    printf("%" SCNd8 " ", &e->Finale);     // Stampo il finale
+    printf("%" SCNd8 " ", &e->Ingresso);   // Stampo l'ingresso
+    printf("%f ", &e->Valore);             // Stampo il valore
+    printf("%u\n", &e->Difficolta);        // Stampo la difficoltà
+}

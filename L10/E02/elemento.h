@@ -25,6 +25,7 @@ typedef struct Elemento {
     uint8_t Difficolta;
 } * elemento;
 
+void printElemento(elemento e);
 elemento parseElemento(char *string);
 void freeElemento(elemento e);
 elemento creaElemento();
