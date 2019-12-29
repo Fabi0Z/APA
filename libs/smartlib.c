@@ -23,12 +23,16 @@ bool checkFilestream(FILE *stream) {
     return stream == NULL ? false : true;
 }
 
-// Elimina un array ed il suo contenuto
-void freeArray(array a) {
-    if (a->Objects != NULL) {                                 // Se l'array è allocato
-        for (unsigned int i = 0; i < a->ObjectsNumber; i++) { // Per ogni elemento
-            a->freeObject(a->Objects[i]);
+/* Elimina un array
+   Se il valore freeObjects è true elimina anche i dati memorizzati */
+void freeArray(array a, bool freeObjects) {
+    if (a->Objects != NULL) { // Se l'array è allocato
+        if (freeObjects) {
+            for (unsigned int i = 0; i < a->ObjectsNumber; i++) { // Per ogni elemento
+                a->freeObject(a->Objects[i]);
+            }
         }
+        free(a->Objects);
     }
     free(a);
 }

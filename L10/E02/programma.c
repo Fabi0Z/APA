@@ -16,7 +16,7 @@ programma creaGruppoDiagonali(void (*freeObject)(void *), void *(*parseObject)(c
 // Elimina un programma acrobatico
 void freeGruppoDiagonali(programma g) {
     for (uint8_t i = 0; i < NUMERO_DIAGONALI; i++) {
-        freeArray(g[i]);
+        freeArray(g[i], false);
     }
 }
 

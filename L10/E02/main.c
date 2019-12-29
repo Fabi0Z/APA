@@ -7,6 +7,6 @@ int main() {
     array elementi  = creaArray((void *)&freeElemento, (void *)&parseElemento, (void *)&printElemento);
     parseArrayFromFile(elementi, filename, MAX_STRING);
     printArray(elementi);
-    freeArray(elementi);
+    freeArray(elementi, true);
     return 0;
 }
