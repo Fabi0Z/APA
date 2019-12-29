@@ -25,6 +25,6 @@ void parseArrayFromFile(array a, char *filename, unsigned int max_string);
 void freeArray(array a);
 bool checkFilestream(FILE *stream);
 array creaArray(void (*freeObject)(void *), void *(*parseObject)(char *), void (*printObject)(void *));
-void allocaArray(array a, unsigned int NumeroElementi);
+void allocaArray(array a, unsigned int ObjectsNumber);
 
 #endif // SMARTLIB_H
