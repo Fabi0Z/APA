@@ -1,5 +1,5 @@
-#ifndef SMARTFUNCTIONS_H
-#define SMARTFUNCTIONS_H
+#ifndef SMARTLIB_H
+#define SMARTLIB_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -8,23 +8,23 @@
 // Array generico
 typedef struct Array *array;
 struct Array {
-    void **Elementi;
-    unsigned int NumeroElementi;
-    /* Elimina un array ed il suo contenuto
-    freeItem è la funzione per eliminare il singolo elemento */
-    void (*free)(array, void (*freeItem)(void *));
-    /* Effettua il parse da file di una serie di elementi
-   parseObject è la funzione che si occupa di effettuare il parse del singolo oggetto da string */
-    void (*parse)(array, char *filename, unsigned int max_string, void *(*parseObject)(char *));
-    /* Stampa un array
-   printObject è la funzione che stampa il singolo oggetto */
-    void (*print)(array, void(*printObject(void *)));
+    void **Objects;
+    unsigned int ObjectsNumber;
+    // Funzione per eliminare il singolo oggetto
+    void (*freeObject)(void *);
+    // Funzione che si occupa di effettuare il parse del singolo oggetto da stringa
+    void *(*parseObject)(char *);
+    // Funzione che stampa il singolo oggetto
+    void (*printObject)(void *);
 };
 
+void printArray(array a);
 void premiPerContinuare();
 FILE *smartFopen(char *filename, char *mode);
+void parseArrayFromFile(array a, char *filename, unsigned int max_string);
+void freeArray(array a);
 bool checkFilestream(FILE *stream);
-array creaArray();
+array creaArray(void (*freeObject)(void *), void *(*parseObject)(char *), void (*printObject)(void *));
 void allocaArray(array a, unsigned int NumeroElementi);
 
-#endif // SMARTFUNCTIONS_H
+#endif // SMARTLIB_H
