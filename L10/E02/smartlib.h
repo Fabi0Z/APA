@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 // Array generico
 typedef struct Array *array;
@@ -23,6 +24,7 @@ void premiPerContinuare();
 FILE *smartFopen(char *filename, char *mode);
 void parseArrayFromFile(array a, char *filename, unsigned int max_string);
 void freeArray(array a, bool freeObjects);
+void copiaArray(array DEST, array SRC);
 bool checkFilestream(FILE *stream);
 array creaArray(void (*freeObject)(void *), void *(*parseObject)(char *), void (*printObject)(void *));
 void allocaArray(array a, unsigned int ObjectsNumber);

@@ -23,6 +23,15 @@ bool checkFilestream(FILE *stream) {
     return stream == NULL ? false : true;
 }
 
+// Copia SRC in DEST
+void copiaArray(array DEST, array SRC) {
+    DEST->ObjectsNumber = SRC->ObjectsNumber;
+    DEST->freeObject    = SRC->freeObject;
+    DEST->parseObject   = SRC->parseObject;
+    DEST->printObject   = SRC->printObject;
+    memcpy(DEST->Objects, SRC->Objects, SRC->ObjectsNumber * sizeof(void *));
+}
+
 /* Elimina un array
    Se il valore freeObjects è true elimina anche i dati memorizzati */
 void freeArray(array a, bool freeObjects) {
