@@ -43,6 +43,6 @@ void printElemento(elemento e) {
     printf("%" SCNd8 " ", e->Uscita);     // Stampo l'uscita
     printf("%" SCNd8 " ", e->Precedenza); // Stampo la precedenza
     printf("%" SCNd8 " ", e->Finale);     // Stampo il finale
-    printf("%.2f ", e->Valore);             // Stampo il valore
+    printf("%.2f ", e->Valore);           // Stampo il valore
     printf("%u\n", e->Difficolta);        // Stampo la difficoltà
 }
