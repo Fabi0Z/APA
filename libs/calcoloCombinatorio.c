@@ -6,11 +6,11 @@
 check = funzione che si occupa della condizione di terminazione
 ending = funzione che si occupa del return nella condizione di terminazione
 next = funzione che si occupa di che fare con l'elemento successivo */
-unsigned int _PRESET_disposizioniRipetute(array valori, array soluzione, unsigned int posizione, bool (*check)(array, array, unsigned int), unsigned int (*ending)(array, array, unsigned int), bool (*next)(array, array, unsigned int, unsigned int)) {
+unsigned int _PRESET_disposizioniRipetute(array valori, array soluzione, unsigned int posizione, bool (*check)(array, unsigned int), unsigned int (*ending)(array, unsigned int), bool (*next)(array, array, unsigned int, unsigned int)) {
     unsigned int count = 0; // Contatore pre il numero di soluzioni
 
-    if ((*check)(valori, soluzione, posizione)) {       // Condizione di terminazione
-        return (*ending)(valori, soluzione, posizione); // Condizione di verifica per il return
+    if ((*check)(soluzione, posizione)) {       // Condizione di terminazione
+        return (*ending)(soluzione, posizione); // Condizione di verifica per il return
     }
 
     for (unsigned int i = 0; i < valori->ObjectsNumber; i++) { // Per ogni valore
@@ -26,14 +26,21 @@ unsigned int _PRESET_disposizioniRipetute(array valori, array soluzione, unsigne
 // * CHECKS
 
 // Controlla se la posizione ha raggiunto o superato la lunghezza massima dell'array soluzione
-bool _CHECKS_posizioneLunghezzaSoluzione(array valori, array soluzione, unsigned int posizione) {
+bool _CHECKS_posizioneLunghezzaSoluzione(array soluzione, unsigned int posizione) {
     return posizione >= soluzione->ObjectsNumber;
 }
 
 // * ENDINGS
 
 // Stampa la soluzione e restituisce 1
-unsigned int _ENDINGS_printOnly(array valori, array soluzione, unsigned int posizione) {
+unsigned int _ENDINGS_printOnly(array soluzione, unsigned int posizione) {
+    if (soluzione->ObjectsNumber != posizione) {
+        unsigned int tmp         = soluzione->ObjectsNumber;
+        soluzione->ObjectsNumber = posizione;
+        printArray(soluzione);
+        soluzione->ObjectsNumber = tmp;
+    }
+
     printArray(soluzione);
     return 1;
 }
