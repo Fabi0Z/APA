@@ -1,12 +1,15 @@
 #ifndef PROGRAMMA_H
 #define PROGRAMMA_H
 
-#include "elemento.h"
-#include "smartlib.h"
+#include "diagonale.h"
 
-typedef array *programma;
+typedef struct Programma {
+    diagonale *Diagonali;
+    unsigned int Difficolta;
+    float Punteggio;
+} * programma;
 
-void freeGruppoDiagonali(programma g);
-programma creaGruppoDiagonali(void (*freeObject)(void *), void *(*parseObject)(char *), void (*printObject)(void *));
+void freeProgramma(programma p);
+programma creaProgramma();
 
 #endif // PROGRAMMA_H
