@@ -6,20 +6,20 @@
 // Array generico
 typedef struct Array *array;
 struct Array {
-    Item *Objects;
+    item *Objects;
     unsigned int ObjectsNumber;
     // Funzione per eliminare il singolo oggetto
-    void (*freeObject)(Item);
+    void (*freeObject)(item);
     // Funzione che si occupa di effettuare il parse del singolo oggetto da stringa
-    Item (*parseObject)(char *);
+    item (*parseObject)(char *);
     // Funzione che stampa il singolo oggetto
-    void (*printObject)(Item);
+    void (*printObject)(item);
 };
 
 void printArray(array a);
 void parseArrayFromFile(array a, char *filename, unsigned int max_string);
 void freeArray(array a, bool freeObjects);
-array creaArray(void (*freeObject)(Item), Item (*parseObject)(char *), void (*printObject)(Item));
+array creaArray(void (*freeObject)(item), item (*parseObject)(char *), void (*printObject)(item));
 void copiaArray(array DEST, array SRC);
 void allocaArray(array a, unsigned int ObjectsNumber);
 

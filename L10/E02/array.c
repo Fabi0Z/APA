@@ -3,7 +3,7 @@
 // Alloca un array
 void allocaArray(array a, unsigned int ObjectsNumber) {
     a->ObjectsNumber = ObjectsNumber;
-    a->Objects       = (Item *)calloc(a->ObjectsNumber, sizeof(Item));
+    a->Objects       = (item *)calloc(a->ObjectsNumber, sizeof(item));
 }
 
 // Copia SRC in DEST
@@ -22,7 +22,7 @@ void copiaArray(array DEST, array SRC) {
    freeObject = funzione per eliminare il singolo oggetto
    printObject = funzione che si occupa di effettuare il parse del singolo oggetto da stringa
    parseObject = funzione che stampa il singolo oggetto */
-array creaArray(void (*freeObject)(Item), Item (*parseObject)(char *), void (*printObject)(Item)) {
+array creaArray(void (*freeObject)(item), item (*parseObject)(char *), void (*printObject)(item)) {
     array a        = (array)malloc(sizeof(struct Array));
     a->freeObject  = freeObject;
     a->printObject = printObject;
