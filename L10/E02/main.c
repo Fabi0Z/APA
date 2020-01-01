@@ -9,6 +9,9 @@ int main() {
     printArray(elementi);
 
     programma soluzione = creaProgramma();
+    diagonale massimo   = creaDiagonale();
+    generaDiagonale(elementi, soluzione->Diagonali[0], massimo, 0, 25);
+    printArray(massimo->Elementi);
 
     freeProgramma(soluzione);
     freeArray(elementi, true);
