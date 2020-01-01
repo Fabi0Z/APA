@@ -25,7 +25,7 @@ void freeListFromTail(link list) {
     free(list);
 }
 
-// Eliminare ogni nodo della lista dalla memoria
+// Elimina ogni nodo della lista dalla memoria
 void freeList(link list) {
     link next = list->Next;
     freeListFromTail(list);
