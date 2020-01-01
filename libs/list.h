@@ -10,6 +10,9 @@ struct List {
     link Next;
 };
 
+item searchByID(link list, void *ID, bool(*matchID(item, void *)));
+item searchByIDfromTail(link list, void *ID, bool(*matchID(item, void *)));
+item searchByIDfromHead(link list, void *ID, bool(*matchID(item, void *)));
 void putItem(link list, item i);
 void putLink(link list, link l);
 void pushItem(link list, item i);

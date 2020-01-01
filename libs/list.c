@@ -103,3 +103,28 @@ void putItem(link list, item i) {
     link l = creaLink(i);
     putLink(list, l);
 }
+
+/* Ricerca un item tramite un campo identificativo ed una funzione di match partendo dal link sino alla tail, restitusice NULL se non è stato trovato
+   matchID = Funzione che restituisce true se l'elemento corretto combacia con l'identificativo */
+item searchByIDfromHead(link list, void *ID, bool(*matchID(item, void *))) {
+    if (list->Next == NULL) {
+        return (*matchID)(list->Item, ID) ? list->Item : NULL;
+    }
+    return (*matchID)(list->Item, ID) ? list->Item : (*matchID)(list->Next, ID);
+}
+
+/* Ricerca un item tramite un campo identificativo ed una funzione di match partendo dal link sino alla head, restitusice NULL se non è stato trovato
+   matchID = Funzione che restituisce true se l'elemento corretto combacia con l'identificativo */
+item searchByIDfromTail(link list, void *ID, bool(*matchID(item, void *))) {
+    if (list->Previous == NULL) {
+        return (*matchID)(list->Item, ID) ? list->Item : NULL;
+    }
+    return (*matchID)(list->Item, ID) ? list->Item : (*matchID)(list->Previous, ID);
+}
+
+/* Ricerca un item tramite un campo identificativo ed una funzione di match, restitusice NULL se non è stato trovato
+   matchID = Funzione che restituisce true se l'elemento corretto combacia con l'identificativo */
+item searchByID(link list, void *ID, bool(*matchID(item, void *))) {
+    link top = searchByIDfromTail(list, ID, matchID);
+    return top == NULL ? searchByIDfromHead(list, ID, matchID) : top;
+}
