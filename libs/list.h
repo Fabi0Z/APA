@@ -23,6 +23,9 @@ item popLink(link list);
 item popItem(link list);
 link getTail(link l);
 link getHead(link l);
+void freeList(link list);
+void freeListFromTail(link list);
+void freeListFromHead(link list);
 link creaLink(item i);
 
 #endif // LIST_H

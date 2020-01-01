@@ -9,6 +9,29 @@ link creaLink(item i) {
     return l;
 }
 
+// Elimina ogni nodo di una lista a partire dalla head
+void freeListFromHead(link list) {
+    if (list->Next != NULL) {
+        freeListFromHead(list->Next);
+    }
+    free(list);
+}
+
+// Elimina ogni nodo di una lista a partire dalla tail
+void freeListFromTail(link list) {
+    if (list->Previous != NULL) {
+        freeListFromTail(list->Previous);
+    }
+    free(list);
+}
+
+// Eliminare ogni nodo della lista dalla memoria
+void freeList(link list) {
+    link next = list->Next;
+    freeListFromTail(list);
+    freeListFromHead(next);
+}
+
 // Restituisce la testa di una lista
 link getHead(link l) {
     if (l->Previous == NULL) {
