@@ -1,8 +1,8 @@
 #ifndef DIAGONALE_H
 #define DIAGONALE_H
 
+#include "array.h"
 #include "elemento.h"
-#include "smartlib.h"
 
 typedef struct Diagonale {
     array Elementi;
