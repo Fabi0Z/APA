@@ -11,6 +11,34 @@ unsigned int calcolaDifficoltaProgramma(programma p) {
     return p->Difficolta;
 }
 
+/* Funzione per generare le combinazioni ripetute
+   Il limite di elementi k è dato dalla lunghezza dell'array soluzione
+   Nella chiamata posizione e start devono esser pari a 0 */
+void combinazioniRipetuteProgramma(unsigned int posizione, array valori, programma soluzione, programma max, unsigned int start, unsigned int difficoltaProgramma) {
+    if (posizione >= NUMERO_DIAGONALI) {
+        if (!verificaProgramma(soluzione, difficoltaProgramma)) { // Se il programma non è valido
+            return;
+        }
+
+        if (soluzione->Punteggio > max->Punteggio) { // Se il punteggio è maggiore
+            copiaProgramma(soluzione, max);          // Salvo il programma
+        }
+        return;
+    }
+    for (unsigned i = start; i < valori->ObjectsNumber; i++) {
+        soluzione->Diagonali[posizione] = valori->Objects[i];
+        combinazioniRipetuteRecursive(posizione + 1, valori, soluzione, max, start, difficoltaProgramma);
+        start++;
+    }
+}
+
+// Copia SRC in DEST
+void copiaProgramma(programma DEST, programma SRC) {
+    DEST->Difficolta = SRC->Difficolta;
+    DEST->Punteggio  = SRC->Punteggio;
+    memcpy(DEST->Diagonali, SRC->Diagonali, sizeof(diagonale) * NUMERO_DIAGONALI);
+}
+
 // Crea un programma acrobatico
 programma creaProgramma() {
     programma p  = malloc(sizeof(struct Programma));                         // Creo il programma
@@ -39,13 +67,8 @@ void freeProgramma(programma p) {
    DD = Limite di difficoltà per la diagonale
    DP = Limite di difficolta per il programma */
 programma generaMigliorProgramma(array elementi, unsigned int DD, unsigned int DP) {
-    programma p                    = creaProgramma();
-    unsigned int difficoltaAttuale = 0;
-
-    // A ogni giro incremento la difficoltà massima del programma sinché non raggiungo
-    for (unsigned int i = 0; i < DP; i += NUMERO_DIAGONALI) {
-        /* code */
-    }
+    programma p               = creaProgramma();
+    unsigned int maxPunteggio = 0;
 }
 
 // Verifica che un programma rispetti tutti i limiti

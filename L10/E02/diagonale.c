@@ -51,12 +51,13 @@ float calcolaPunteggioDiagonale(diagonale d) {
 
 // Genera tutte le diagonali possibili rispettando il limite di difficoltà e l'ordine di inserimento
 unsigned int generaDiagonali(array elementi, diagonale soluzione, link list, unsigned int posizione, unsigned int difficoltaDiagonale) {
+    unsigned int conto = 0;
     if (posizione >= MAX_ELEMENTI) { // Condizione di terminazione per eccesso di elementi
-        return 1;
+        return 0;
     }
 
     if (soluzione->Difficolta > difficoltaDiagonale) { // Condizione di terminazione per difficoltà massima
-        return 2;
+        return 0;
     }
 
     if (posizione > 0) { // Se è già presente almeno un elemento nella soluzione
@@ -72,7 +73,7 @@ unsigned int generaDiagonali(array elementi, diagonale soluzione, link list, uns
 
         elemento previous = elementi->Objects[posizione - 1]; // Salvo l'elemento precedente
         if (previous->Finale) {                               // Se l'elemento non può esser seguito da altri elementi
-            return 3;
+            return 1;
         }
     }
 
@@ -96,5 +97,5 @@ loop:
         generaDiagonali(elementi, soluzione, list, posizione + 1, difficoltaDiagonale);
     }
 
-    return 0;
+    return conto;
 }
