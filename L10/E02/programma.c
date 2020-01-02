@@ -8,7 +8,7 @@ programma creaProgramma() {
     p->Diagonali = (diagonale *)calloc(NUMERO_DIAGONALI, sizeof(diagonale)); // Creo l'array di diagonali
 
     for (uint8_t i = 0; i < NUMERO_DIAGONALI; i++) { // Per ogni diagonale
-        p->Diagonali[i] = creaDiagonale();
+        p->Diagonali[i] = creaDiagonale(0);
     }
 
     p->Difficolta = 0;

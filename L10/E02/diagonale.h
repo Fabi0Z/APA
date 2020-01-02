@@ -3,6 +3,7 @@
 
 #include "array.h"
 #include "elemento.h"
+#include "list.h"
 
 typedef struct Diagonale {
     array Elementi;
@@ -15,6 +16,6 @@ float calcolaPunteggioDiagonale(diagonale d);
 void freeDiagonale(diagonale d);
 unsigned int calcolaDifficoltaDiagonale(diagonale d);
 void copiaDiagonale(diagonale DEST, diagonale SRC);
-diagonale creaDiagonale();
+diagonale creaDiagonale(unsigned int NumeroElementi);
 
 #endif // DIAGONALE_H
