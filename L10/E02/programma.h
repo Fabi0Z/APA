@@ -9,10 +9,12 @@ typedef struct Programma {
     float Punteggio;
 } * programma;
 
-bool verificaProgramma(programma p, unsigned int difficoltaProgramma);
 programma generaMigliorProgramma(array elementi, unsigned int DD, unsigned int DP);
 void freeProgramma(programma p);
 programma creaProgramma();
+void copiaProgramma(programma DEST, programma SRC);
+bool verificaProgramma(programma p, unsigned int difficoltaProgramma);
+void combinazioniRipetuteProgramma(unsigned int posizione, array valori, programma soluzione, programma max, unsigned int start, unsigned int difficoltaProgramma);
 unsigned int calcolaDifficoltaProgramma(programma p);
 
 #endif // PROGRAMMA_H

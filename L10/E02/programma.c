@@ -27,7 +27,7 @@ void combinazioniRipetuteProgramma(unsigned int posizione, array valori, program
     }
     for (unsigned i = start; i < valori->ObjectsNumber; i++) {
         soluzione->Diagonali[posizione] = valori->Objects[i];
-        combinazioniRipetuteRecursive(posizione + 1, valori, soluzione, max, start, difficoltaProgramma);
+        combinazioniRipetuteProgramma(posizione + 1, valori, soluzione, max, start, difficoltaProgramma);
         start++;
     }
 }
@@ -36,7 +36,9 @@ void combinazioniRipetuteProgramma(unsigned int posizione, array valori, program
 void copiaProgramma(programma DEST, programma SRC) {
     DEST->Difficolta = SRC->Difficolta;
     DEST->Punteggio  = SRC->Punteggio;
-    memcpy(DEST->Diagonali, SRC->Diagonali, sizeof(diagonale) * NUMERO_DIAGONALI);
+    for (uint8_t i = 0; i < NUMERO_DIAGONALI; i++) {           // Per ogni diagonale
+        copiaDiagonale(DEST->Diagonali[i], SRC->Diagonali[i]); // Copio la diagonale
+    }
 }
 
 // Crea un programma acrobatico
@@ -67,8 +69,27 @@ void freeProgramma(programma p) {
    DD = Limite di difficoltà per la diagonale
    DP = Limite di difficolta per il programma */
 programma generaMigliorProgramma(array elementi, unsigned int DD, unsigned int DP) {
-    programma p               = creaProgramma();
-    unsigned int maxPunteggio = 0;
+    programma p             = creaProgramma(); // Programma contenente la soluzione
+    programma tempProgramma = creaProgramma(); // Programma d'appoggio
+
+    link listaDiagonali            = creaLink(NULL);   // Lista contenente tutto le diagonali
+    diagonale tempDiag             = creaDiagonale(0); // Diagonale d'appoggio per la soluzione
+    unsigned int diagonaliGenerate = generaDiagonali(elementi, tempDiag, listaDiagonali, 0, DD);
+    freeDiagonale(tempDiag); // Elimino la diagonale d'appoggio
+
+    array arrayDiagonali = creaArray((void *)&freeDiagonale, NULL, NULL); // Array contenente le diagonali generate
+    allocaArray(arrayDiagonali, diagonaliGenerate);
+    listaDiagonali = listaDiagonali->Next;
+    unsigned i     = 0;                                       // Indice d'esplorazione dell'array
+    while (listaDiagonali != NULL && i < diagonaliGenerate) { // Sinché posso esplorare
+        arrayDiagonali->Objects[i++] = listaDiagonali->Item;  // Copio il dato dalla lista all'array
+        listaDiagonali               = listaDiagonali->Next;  // Vado al passo successivo
+    }
+    freeList(listaDiagonali); // Elimino la lista
+
+    combinazioniRipetuteProgramma(0, arrayDiagonali, tempProgramma, p, 0, DP); // Genero il programma migliore
+    freeArray(arrayDiagonali, true);                                           // Elimino l'array
+    return p;                                                                  // Restituisco il programma
 }
 
 // Verifica che un programma rispetti tutti i limiti
@@ -84,7 +105,7 @@ bool verificaProgramma(programma p, unsigned int difficoltaProgramma) {
 
     // Sinché almeno uno degli elementi è false esploro le diagonali
     while (!elementoAvanti || !elementoIndietro || !diagDueElementi && index < NUMERO_DIAGONALI) {
-        array temp = p->Diagonali[index++]->Elementi->Objects;
+        array temp = p->Diagonali[index++]->Elementi;
 
         diagDueElementi = temp->ObjectsNumber >= 2 ? true : diagDueElementi; // Controllo se la diagonale ha almeno due elementi
 
