@@ -62,3 +62,31 @@ unsigned int diposizioniRipetuteDefault(array valori, array soluzione) {
                                         &_ENDINGS_printOnly,
                                         &_NEXT_copyNext);
 }
+
+/* Funzione per generare le combinazioni ripetute
+   Il limite di elementi k è dato dalla lunghezza dell'array soluzione */
+unsigned int combinazioniRipetute(array valori, array soluzione) {
+    return combinazioniRipetuteRecursive(0, valori, soluzione, 0);
+}
+
+/* Funzione per generare le combinazioni ripetute
+   Il limite di elementi k è dato dalla lunghezza dell'array soluzione
+   Nella chiamata posizione e start devono esser pari a 0 */
+unsigned int combinazioniRipetuteRecursive(unsigned int posizione, array valori, array soluzione, unsigned int start) {
+    unsigned int count = 0;
+    if (posizione >= soluzione->ObjectsNumber) {
+        unsigned int tempSize    = soluzione->ObjectsNumber; // Salvo il valore della soluzione
+        soluzione->ObjectsNumber = posizione;
+
+        printArray(soluzione); // Stampo la soluzione
+
+        soluzione->ObjectsNumber = tempSize; // Ripristino la dimensione precedente
+        return 1;
+    }
+    for (unsigned i = start; i < valori->ObjectsNumber; i++) {
+        soluzione->Objects[posizione] = valori->Objects[i];
+        count += combinazioniRipetuteRecursive(posizione + 1, valori, soluzione, start);
+        start++;
+    }
+    return count;
+}
