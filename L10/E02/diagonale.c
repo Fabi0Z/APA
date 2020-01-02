@@ -49,51 +49,52 @@ float calcolaPunteggioDiagonale(diagonale d) {
 
 // * Calcolo combinatorio
 
-// Genera una diagonale rispettando il limite di difficoltà e l'ordine di inserimento
-// unsigned int generaDiagonali(array elementi, diagonale soluzione, link list, unsigned int posizione, unsigned int difficoltaDiagonale) {
-//     if (posizione >= MAX_ELEMENTI) { // Condizione di terminazione per eccesso di elementi
-//         return 1;
-//     }
+// Genera tutte le diagonali possibili rispettando il limite di difficoltà e l'ordine di inserimento
+unsigned int generaDiagonali(array elementi, diagonale soluzione, link list, unsigned int posizione, unsigned int difficoltaDiagonale) {
+    if (posizione >= MAX_ELEMENTI) { // Condizione di terminazione per eccesso di elementi
+        return 1;
+    }
 
-//     if (soluzione->Difficolta > difficoltaDiagonale) { // Condizione di terminazione per difficoltà massima
-//         return 2;
-//     }
+    if (soluzione->Difficolta > difficoltaDiagonale) { // Condizione di terminazione per difficoltà massima
+        return 2;
+    }
 
-//     if (posizione > 0) {                                      // Se è già presente almeno un elemento nella soluzione
-//         elemento previous = elementi->Objects[posizione - 1]; // Salvo l'elemento precedente
-//         if (previous->Finale) {                               // Se l'elemento non può esser seguito da altri elementi
-//             diagonale soluzione = creaDiagonale();
-//             putItem(list, (item)soluzione);
-//         }
-//     }
+    if (posizione > 0) { // Se è già presente almeno un elemento nella soluzione
+        diagonale soluzioneDaSalvare = creaDiagonale(posizione - 1);
 
-//     if (soluzione->Punteggio > max->Punteggio) { // Se la soluzione ha un incremento di punteggio
-//         copiaDiagonale(max, soluzione);
-//     }
+        unsigned int tempDimensione        = soluzione->Elementi->ObjectsNumber; // Salvo il numero di elementi
+        soluzione->Elementi->ObjectsNumber = posizione - 1;
 
-//     for (unsigned int i = 0; i < elementi->ObjectsNumber; i++) { // Per ogni valore
-//     loop:
-//         elemento next = elementi->Objects[i]; // Salvo l'elemento successivo
+        copiaDiagonale(soluzioneDaSalvare, soluzione); // Copio i dati
+        pushItem(list, (item)soluzioneDaSalvare);      // Salvo la soluzione
 
-//         if (posizione == 0) {       // Se mi trovo all'inizio di una sequenza
-//             if (next->Precedenza) { // Se l'elemento non può esser eseguito per primo
-//                 i++;
-//                 if (i < elementi->ObjectsNumber) { // Controllo per saltare il loop o interromperlo
-//                     goto loop;
-//                 } else {
-//                     break;
-//                 }
-//             }
-//         }
+        soluzione->Elementi->ObjectsNumber = tempDimensione; // Ripristino la dimensione originale
 
-//         soluzione->Elementi->Objects[posizione] = elementi->Objects[i]; // Copio l'elemento successivo
+        elemento previous = elementi->Objects[posizione - 1]; // Salvo l'elemento precedente
+        if (previous->Finale) {                               // Se l'elemento non può esser seguito da altri elementi
+            return 3;
+        }
+    }
 
-//         soluzione->Elementi->ObjectsNumber = posizione + 1;
-//         calcolaDifficoltaDiagonale(soluzione); // Ricalcolo la difficoltà
-//         calcolaPunteggioDiagonale(soluzione);  // Ricalcolo il punteggio
+loop:
+    for (unsigned int i = 0; i < elementi->ObjectsNumber; i++) { // Per ogni valore
+        elemento next = elementi->Objects[i];                    // Salvo l'elemento successivo
 
-//         generaDiagonale(elementi, soluzione, max, posizione + 1, difficoltaDiagonale);
-//     }
+        if (posizione == 0) {       // Se mi trovo all'inizio di una sequenza
+            if (next->Precedenza) { // Se l'elemento non può esser eseguito per primo
+                i++;
+                goto loop;
+            }
+        }
 
-//     return 0;
-// }
+        soluzione->Elementi->Objects[posizione] = elementi->Objects[i]; // Copio l'elemento successivo
+
+        soluzione->Elementi->ObjectsNumber = posizione + 1;
+        calcolaDifficoltaDiagonale(soluzione); // Ricalcolo la difficoltà
+        calcolaPunteggioDiagonale(soluzione);  // Ricalcolo il punteggio
+
+        generaDiagonali(elementi, soluzione, list, posizione + 1, difficoltaDiagonale);
+    }
+
+    return 0;
+}

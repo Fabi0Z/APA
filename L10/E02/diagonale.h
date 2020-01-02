@@ -11,7 +11,7 @@ typedef struct Diagonale {
     float Punteggio;
 } * diagonale;
 
-unsigned int generaDiagonale(array elementi, diagonale soluzione, diagonale max, unsigned int posizione, unsigned int difficoltaDiagonale);
+unsigned int generaDiagonali(array elementi, diagonale soluzione, link list, unsigned int posizione, unsigned int difficoltaDiagonale);
 float calcolaPunteggioDiagonale(diagonale d);
 void freeDiagonale(diagonale d);
 unsigned int calcolaDifficoltaDiagonale(diagonale d);
