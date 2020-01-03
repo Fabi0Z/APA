@@ -8,12 +8,9 @@ int main() {
     parseArrayFromFile(elementi, filename, MAX_STRING);
     printArray(elementi);
 
-    programma soluzione = creaProgramma();
-    link head           = creaLink(NULL);
+    programma p = generaMigliorProgramma(elementi, 10, 30);
+    printProgramma(p);
 
-    generaDiagonale(elementi, soluzione->Diagonali[0], head, 0, 25);
-
-    freeProgramma(soluzione);
     freeArray(elementi, true);
     return 0;
 }
