@@ -9,6 +9,7 @@ typedef struct Programma {
     float Punteggio;
 } * programma;
 
+void printProgramma(programma p);
 programma generaMigliorProgramma(array elementi, unsigned int DD, unsigned int DP);
 void freeProgramma(programma p);
 programma creaProgramma();

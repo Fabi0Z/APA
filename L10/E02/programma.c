@@ -110,6 +110,14 @@ programma generaMigliorProgramma(array elementi, unsigned int DD, unsigned int D
     return p;                                                                  // Restituisco il programma
 }
 
+// Stampa un programma a video
+void printProgramma(programma p) {
+    printf("Il punteggio del programma vale %f e la sua difficoltà è %u:\n", p->Punteggio, p->Difficolta);
+    for (uint8_t i = 0; i < NUMERO_DIAGONALI; i++) {
+        printDiagonale(p->Diagonali[i]);
+    }
+}
+
 // Verifica che un programma rispetti tutti i limiti
 bool verificaProgramma(programma p, unsigned int difficoltaProgramma) {
     if (calcolaDifficoltaProgramma(p) > difficoltaProgramma) {
