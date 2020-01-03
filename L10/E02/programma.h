@@ -15,6 +15,7 @@ programma creaProgramma();
 void copiaProgramma(programma DEST, programma SRC);
 bool verificaProgramma(programma p, unsigned int difficoltaProgramma);
 void combinazioniRipetuteProgramma(unsigned int posizione, array valori, programma soluzione, programma max, unsigned int start, unsigned int difficoltaProgramma);
+float calcolaPunteggioProgramma(programma p);
 unsigned int calcolaDifficoltaProgramma(programma p);
 
 #endif // PROGRAMMA_H

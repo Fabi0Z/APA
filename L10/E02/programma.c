@@ -11,6 +11,23 @@ unsigned int calcolaDifficoltaProgramma(programma p) {
     return p->Difficolta;
 }
 
+// Calcola il punteggio di un programma
+float calcolaPunteggioProgramma(programma p) {
+    p->Punteggio = 0;
+
+    diagonale ultimaDiagonale   = p->Diagonali[NUMERO_DIAGONALI - 1];
+    uint8_t ultimoElementoIndex = ultimaDiagonale->Elementi->ObjectsNumber - 1;
+    elemento ultimoElemento     = ultimaDiagonale->Elementi->Objects[ultimoElementoIndex];
+    if (ultimoElemento->Finale) {          // Se è un elemento finale
+        ultimaDiagonale->Punteggio *= 1.5; // Moltiplico il punteggio
+    }
+
+    for (uint8_t i = 0; i < NUMERO_DIAGONALI; i++) { // Sommo i valori delle diagonali
+        p->Punteggio += p->Diagonali[i]->Punteggio;
+    }
+    return p->Punteggio;
+}
+
 /* Funzione per generare le combinazioni ripetute
    Il limite di elementi k è dato dalla lunghezza dell'array soluzione
    Nella chiamata posizione e start devono esser pari a 0 */
@@ -20,13 +37,14 @@ void combinazioniRipetuteProgramma(unsigned int posizione, array valori, program
             return;
         }
 
-        if (soluzione->Punteggio > max->Punteggio) { // Se il punteggio è maggiore
-            copiaProgramma(soluzione, max);          // Salvo il programma
+        if (calcolaPunteggioProgramma(soluzione) > max->Punteggio) { // Se il punteggio è maggiore
+            copiaProgramma(soluzione, max);                          // Salvo il programma
         }
         return;
     }
     for (unsigned i = start; i < valori->ObjectsNumber; i++) {
         soluzione->Diagonali[posizione] = valori->Objects[i];
+
         combinazioniRipetuteProgramma(posizione + 1, valori, soluzione, max, start, difficoltaProgramma);
         start++;
     }
