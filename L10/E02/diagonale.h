@@ -12,10 +12,11 @@ typedef struct Diagonale {
 } * diagonale;
 
 unsigned int generaDiagonali(array elementi, diagonale soluzione, link list, unsigned int posizione, unsigned int difficoltaDiagonale);
-float calcolaPunteggioDiagonale(diagonale d);
+void printDiagonale(diagonale d);
 void freeDiagonale(diagonale d);
-unsigned int calcolaDifficoltaDiagonale(diagonale d);
-void copiaDiagonale(diagonale DEST, diagonale SRC);
 diagonale creaDiagonale(unsigned int NumeroElementi);
+void copiaDiagonale(diagonale DEST, diagonale SRC);
+float calcolaPunteggioDiagonale(diagonale d);
+unsigned int calcolaDifficoltaDiagonale(diagonale d);
 
 #endif // DIAGONALE_H

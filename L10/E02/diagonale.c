@@ -2,6 +2,33 @@
 
 static const uint8_t MAX_ELEMENTI = 5;
 
+// Calcola e restituisce la difficoltà di una diagonale
+unsigned int calcolaDifficoltaDiagonale(diagonale d) {
+    d->Difficolta = 0;
+    for (unsigned int i = 0; i < d->Elementi->ObjectsNumber; i++) {
+        elemento tmp = (elemento)d->Elementi->Objects[i];
+        d->Difficolta += tmp->Difficolta;
+    }
+    return d->Difficolta;
+}
+
+// Calcola e restituisce il punteggio di una diagonale
+float calcolaPunteggioDiagonale(diagonale d) {
+    d->Punteggio = 0;
+    for (unsigned int i = 0; i < d->Elementi->ObjectsNumber; i++) {
+        elemento tmp = (elemento)d->Elementi->Objects[i];
+        d->Punteggio += tmp->Valore;
+    }
+    return d->Punteggio;
+}
+
+// Copia SRC in DEST
+void copiaDiagonale(diagonale DEST, diagonale SRC) {
+    DEST->Difficolta = SRC->Difficolta;
+    DEST->Punteggio  = SRC->Punteggio;
+    copiaArray(DEST->Elementi, SRC->Elementi);
+}
+
 /* Crea e alloca una diagonale
    Se NumeroElementi è pari a 0 il numero di elementi sarà il valore di default */
 diagonale creaDiagonale(unsigned int NumeroElementi) {
@@ -14,37 +41,16 @@ diagonale creaDiagonale(unsigned int NumeroElementi) {
     return d;
 }
 
-// Copia SRC in DEST
-void copiaDiagonale(diagonale DEST, diagonale SRC) {
-    DEST->Difficolta = SRC->Difficolta;
-    DEST->Punteggio  = SRC->Punteggio;
-    copiaArray(DEST->Elementi, SRC->Elementi);
-}
-
-// Calcola e restituisce la difficoltà di una diagonale
-unsigned int calcolaDifficoltaDiagonale(diagonale d) {
-    d->Difficolta = 0;
-    for (unsigned int i = 0; i < d->Elementi->ObjectsNumber; i++) {
-        elemento tmp = (elemento)d->Elementi->Objects[i];
-        d->Difficolta += tmp->Difficolta;
-    }
-    return d->Difficolta;
-}
-
 // Elimina una diagonale
 void freeDiagonale(diagonale d) {
     freeArray(d->Elementi, false);
     free(d);
 }
 
-// Calcola e restituisce il punteggio di una diagonale
-float calcolaPunteggioDiagonale(diagonale d) {
-    d->Punteggio = 0;
-    for (unsigned int i = 0; i < d->Elementi->ObjectsNumber; i++) {
-        elemento tmp = (elemento)d->Elementi->Objects[i];
-        d->Punteggio += tmp->Valore;
-    }
-    return d->Punteggio;
+// Stampa una diagonale a video
+void printDiagonale(diagonale d) {
+    printf("Il punteggi della diagonale è %f e la sua difficoltà %u:\n", d->Punteggio, d->Difficolta);
+    printArray(d->Elementi);
 }
 
 // * Calcolo combinatorio
