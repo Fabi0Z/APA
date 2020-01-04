@@ -1,7 +1,7 @@
 #ifndef MEMOIZATIONMATRIX_H
 #define MEMOIZATIONMATRIX_H
 
-#include "arrayCollane.h"
+#include "collana.h"
 #include <inttypes.h>
 #include <stdbool.h>
 

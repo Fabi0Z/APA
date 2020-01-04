@@ -1,15 +1,15 @@
-#include "smartfunctions.h"
+#include "smartlib.h"
+
+// Controlla errori di apertura del file
+bool checkFilestream(FILE *stream) {
+    return stream == NULL ? false : true;
+}
 
 // Stampa un "Premi invio per continuare..."
 void premiPerContinuare() {
     puts("Premi invio per continuare...");
     getchar();
     getchar();
-}
-
-// Controlla errori di apertura del file
-bool checkFilestream(FILE *stream) {
-    return stream == NULL ? false : true;
 }
 
 // Apre in maniera sicura un file, interrompe il programma se non è possibile aprirlo

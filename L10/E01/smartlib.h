@@ -1,12 +1,14 @@
-#ifndef SMARTFUNCTIONS_H
-#define SMARTFUNCTIONS_H
+#ifndef SMARTLIB_H
+#define SMARTLIB_H
 
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef void *item;
+
+void premiPerContinuare();
 FILE *smartFopen(char *filename, char *mode);
 bool checkFilestream(FILE *stream);
-void premiPerContinuare();
 
-#endif // SMARTFUNCTIONS_H
+#endif // SMARTLIB_H

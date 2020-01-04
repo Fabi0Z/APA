@@ -1,25 +1,26 @@
+#include "array.h"
 #include "memoizationMatrix.h"
-#include "smartfunctions.h"
 
-const uint8_t MAX_FILENAME = 51;
+const unsigned int MAX_STRING = 50;
 
 // Calcola le lunghezze delle collane in un array
-void calcolaLunghezze(arrayCollane a) {
-    for (unsigned int i = 0; i < a->NumeroElementi; i++) { // Per ogni collana
-        a->Array[i]->LunghezzaMassima = maxCollana(a->Array[i]);
+void calcolaLunghezze(array a) {
+    for (unsigned int i = 0; i < a->ObjectsNumber; i++) { // Per ogni collana
+        collana tmp           = a->Objects[i];
+        tmp->LunghezzaMassima = maxCollana(a->Objects[i]);
     }
 }
 
 int main() {
-    char filename[MAX_FILENAME];
+    char filename[MAX_STRING + 1];
     puts("Inserisci il nome del file:");
     printf("==> ");
-    fgets(filename, (MAX_FILENAME - 1), stdin);
+    fgets(filename, MAX_STRING, stdin);
     sscanf(filename, "%s", filename);
-    FILE *stream = smartFopen(filename, "r");
 
-    arrayCollane array = parseArrayCollane(stream); // Leggo le collane
-    calcolaLunghezze(array);                        // Calcolo le lunghezze
-    printArrayCollane(array);                       // Stampo le collane
+    array collane = creaArray(NULL, (void *)&parseCollana, (void *)&printCollana);
+    parseArrayFromFile(collane, filename, MAX_STRING);
+    calcolaLunghezze(collane); // Calcolo le lunghezze
+    printArray(collane);
     return 0;
 }
