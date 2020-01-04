@@ -67,14 +67,13 @@ unsigned int generaDiagonali(array elementi, diagonale soluzione, link list, uns
     }
 
     if (posizione > 0) { // Se è già presente almeno un elemento nella soluzione
-        // diagonale soluzioneDaSalvare = creaDiagonale(posizione);
+        diagonale soluzioneDaSalvare = creaDiagonale(posizione);
 
         uint8_t tempDimensione             = soluzione->Elementi->ObjectsNumber; // Salvo il numero di elementi
         soluzione->Elementi->ObjectsNumber = posizione;
 
-        // copiaDiagonale(soluzioneDaSalvare, soluzione); // Copio i dati
-        // pushItem(list, (item)soluzione);      // Salvo la soluzione
-        printDiagonale(soluzione);
+        copiaDiagonale(soluzioneDaSalvare, soluzione); // Copio i dati
+        pushItem(list, (item)soluzione);               // Salvo la soluzione
 
         soluzione->Elementi->ObjectsNumber = tempDimensione; // Ripristino la dimensione originale
 
