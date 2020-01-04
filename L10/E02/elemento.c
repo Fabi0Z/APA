@@ -30,7 +30,7 @@ elemento parseElemento(char *string) {
     sscanf(string, "%u", &e->Difficolta);                       // Leggo la difficoltà
 
     // Copio il nome ridimensionato
-    e->Nome = (char *)calloc(strlen(tempNome), sizeof(char));
+    e->Nome = (char *)calloc(strlen(tempNome) + 1, sizeof(char));
     strcpy(e->Nome, tempNome);
     return e;
 }
