@@ -58,7 +58,7 @@ void printDiagonale(diagonale d) {
 // Genera tutte le diagonali possibili rispettando il limite di difficoltà e l'ordine di inserimento
 unsigned int generaDiagonali(array elementi, diagonale soluzione, link list, unsigned int posizione, unsigned int difficoltaDiagonale) {
     unsigned int conto = 0;
-    if (posizione >= MAX_ELEMENTI) { // Condizione di terminazione per eccesso di elementi
+    if (posizione >= soluzione->Elementi->ObjectsNumber) { // Condizione di terminazione per eccesso di elementi
         return 0;
     }
 
@@ -67,13 +67,14 @@ unsigned int generaDiagonali(array elementi, diagonale soluzione, link list, uns
     }
 
     if (posizione > 0) { // Se è già presente almeno un elemento nella soluzione
-        diagonale soluzioneDaSalvare = creaDiagonale(posizione - 1);
+        // diagonale soluzioneDaSalvare = creaDiagonale(posizione);
 
-        unsigned int tempDimensione        = soluzione->Elementi->ObjectsNumber; // Salvo il numero di elementi
-        soluzione->Elementi->ObjectsNumber = posizione - 1;
+        uint8_t tempDimensione             = soluzione->Elementi->ObjectsNumber; // Salvo il numero di elementi
+        soluzione->Elementi->ObjectsNumber = posizione;
 
-        copiaDiagonale(soluzioneDaSalvare, soluzione); // Copio i dati
-        pushItem(list, (item)soluzioneDaSalvare);      // Salvo la soluzione
+        // copiaDiagonale(soluzioneDaSalvare, soluzione); // Copio i dati
+        // pushItem(list, (item)soluzione);      // Salvo la soluzione
+        printDiagonale(soluzione);
 
         soluzione->Elementi->ObjectsNumber = tempDimensione; // Ripristino la dimensione originale
 
@@ -96,9 +97,11 @@ loop:
 
         soluzione->Elementi->Objects[posizione] = elementi->Objects[i]; // Copio l'elemento successivo
 
+        uint8_t dimensioneTemp             = soluzione->Elementi->ObjectsNumber;
         soluzione->Elementi->ObjectsNumber = posizione + 1;
         calcolaDifficoltaDiagonale(soluzione); // Ricalcolo la difficoltà
         calcolaPunteggioDiagonale(soluzione);  // Ricalcolo il punteggio
+        soluzione->Elementi->ObjectsNumber = dimensioneTemp;
 
         generaDiagonali(elementi, soluzione, list, posizione + 1, difficoltaDiagonale);
     }

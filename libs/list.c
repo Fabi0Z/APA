@@ -37,7 +37,7 @@ link getHead(link l) {
     if (l->Previous == NULL) {
         return l;
     }
-    return getTail(l->Previous);
+    return getHead(l->Previous);
 }
 
 // Restituisce la coda di una lista

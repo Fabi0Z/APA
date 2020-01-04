@@ -89,7 +89,7 @@ void freeProgramma(programma p) {
 programma generaMigliorProgramma(array elementi, unsigned int DD, unsigned int DP) {
     programma p             = creaProgramma(); // Programma contenente la soluzione
     programma tempProgramma = creaProgramma(); // Programma d'appoggio
-
+    
     link listaDiagonali            = creaLink(NULL);   // Lista contenente tutto le diagonali
     diagonale tempDiag             = creaDiagonale(0); // Diagonale d'appoggio per la soluzione
     unsigned int diagonaliGenerate = generaDiagonali(elementi, tempDiag, listaDiagonali, 0, DD);
