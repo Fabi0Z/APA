@@ -29,7 +29,9 @@ void freeListFromTail(link list) {
 void freeList(link list) {
     link next = list->Next;
     freeListFromTail(list);
-    freeListFromHead(next);
+    if (next != NULL) {
+        freeListFromHead(next);
+    }
 }
 
 // Restituisce la testa di una lista
@@ -117,8 +119,9 @@ void pushItem(link list, item i) {
 
 // Aggiunge un link a fine lista
 void putLink(link list, link l) {
-    link tail      = getTail(list);
-    tail->Previous = l;
+    link tail   = getTail(list);
+    l->Previous = tail;
+    tail->Next  = l;
 }
 
 // Aggiunge un item a fine lista
