@@ -102,6 +102,7 @@ loop:
         calcolaPunteggioDiagonale(soluzione);  // Ricalcolo il punteggio
         soluzione->Elementi->ObjectsNumber = dimensioneTemp;
 
+        list = getHead(list);
         generaDiagonali(elementi, soluzione, list, posizione + 1, difficoltaDiagonale);
     }
 
