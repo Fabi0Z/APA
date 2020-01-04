@@ -26,7 +26,7 @@ float calcolaPunteggioDiagonale(diagonale d) {
 void copiaDiagonale(diagonale DEST, diagonale SRC) {
     DEST->Difficolta = SRC->Difficolta;
     DEST->Punteggio  = SRC->Punteggio;
-    copiaArray(DEST->Elementi, SRC->Elementi);
+    copyArray(DEST->Elementi, SRC->Elementi);
 }
 
 /* Crea e alloca una diagonale
@@ -36,8 +36,8 @@ diagonale creaDiagonale(unsigned int NumeroElementi) {
     diagonale d    = (diagonale)malloc(sizeof(struct Diagonale));
     d->Difficolta  = 0;
     d->Punteggio   = 0;
-    d->Elementi    = creaArray((void *)&freeElemento, (void *)&parseElemento, (void *)&printElemento);
-    allocaArray(d->Elementi, NumeroElementi);
+    d->Elementi    = newArray((void *)&freeElemento, (void *)&parseElemento, (void *)&printElemento);
+    allocateArray(d->Elementi, NumeroElementi);
     return d;
 }
 

@@ -1,13 +1,13 @@
 #include "array.h"
 
 // Alloca un array
-void allocaArray(array a, unsigned int ObjectsNumber) {
+void allocateArray(array a, unsigned int ObjectsNumber) {
     a->ObjectsNumber = ObjectsNumber;
     a->Objects       = (item *)calloc(a->ObjectsNumber, sizeof(item));
 }
 
 // Copia SRC in DEST
-void copiaArray(array DEST, array SRC) {
+void copyArray(array DEST, array SRC) {
     DEST->ObjectsNumber = SRC->ObjectsNumber;
     DEST->freeObject    = SRC->freeObject;
     DEST->parseObject   = SRC->parseObject;
@@ -18,11 +18,19 @@ void copiaArray(array DEST, array SRC) {
     }
 }
 
+// Restituisce una copia dell'array SRC
+array cloneArray(array SRC) {
+    array DEST = newArray(NULL, NULL, NULL);
+    allocateArray(DEST, SRC->ObjectsNumber);
+    copyArray(DEST, SRC);
+    return DEST;
+}
+
 /* Crea un array
    freeObject = funzione per eliminare il singolo oggetto
    printObject = funzione che si occupa di effettuare il parse del singolo oggetto da stringa
    parseObject = funzione che stampa il singolo oggetto */
-array creaArray(void (*freeObject)(item), item (*parseObject)(char *), void (*printObject)(item)) {
+array newArray(void (*freeObject)(item), item (*parseObject)(char *), void (*printObject)(item)) {
     array a        = (array)malloc(sizeof(struct Array));
     a->freeObject  = freeObject;
     a->printObject = printObject;
@@ -49,7 +57,7 @@ void parseArrayFromFile(array a, char *filename, unsigned int max_string) {
     FILE *stream = smartFopen(filename, "r"); // Apro il filestream
 
     fscanf(stream, "%u\n", &a->ObjectsNumber); // Leggo il numero di attività
-    allocaArray(a, a->ObjectsNumber);          // Alloco la memoria
+    allocateArray(a, a->ObjectsNumber);          // Alloco la memoria
 
     char string[max_string + 1];
     for (unsigned int i = 0; i < a->ObjectsNumber; i++) { // Per ogni elemento

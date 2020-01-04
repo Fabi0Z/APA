@@ -95,8 +95,8 @@ programma generaMigliorProgramma(array elementi, unsigned int DD, unsigned int D
     unsigned int diagonaliGenerate = generaDiagonali(elementi, tempDiag, listaDiagonali, 0, DD);
     freeDiagonale(tempDiag); // Elimino la diagonale d'appoggio
 
-    array arrayDiagonali = creaArray((void *)&freeDiagonale, NULL, NULL); // Array contenente le diagonali generate
-    allocaArray(arrayDiagonali, diagonaliGenerate);
+    array arrayDiagonali = newArray((void *)&freeDiagonale, NULL, NULL); // Array contenente le diagonali generate
+    allocateArray(arrayDiagonali, diagonaliGenerate);
     listaDiagonali = listaDiagonali->Next;
     unsigned i     = 0;                                       // Indice d'esplorazione dell'array
     while (listaDiagonali != NULL && i < diagonaliGenerate) { // Sinché posso esplorare

@@ -19,8 +19,9 @@ struct Array {
 void printArray(array a);
 void parseArrayFromFile(array a, char *filename, unsigned int max_string);
 void freeArray(array a, bool freeObjects);
-array creaArray(void (*freeObject)(item), item (*parseObject)(char *), void (*printObject)(item));
-void copiaArray(array DEST, array SRC);
-void allocaArray(array a, unsigned int ObjectsNumber);
+array newArray(void (*freeObject)(item), item (*parseObject)(char *), void (*printObject)(item));
+array cloneArray(array SRC);
+void copyArray(array DEST, array SRC);
+void allocateArray(array a, unsigned int ObjectsNumber);
 
 #endif // ARRAY_H
