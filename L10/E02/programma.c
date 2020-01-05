@@ -28,28 +28,6 @@ float calcolaPunteggioProgramma(programma p) {
     return p->Punteggio;
 }
 
-/* Funzione per generare le combinazioni ripetute
-   Il limite di elementi k è dato dalla lunghezza dell'array soluzione
-   Nella chiamata posizione e start devono esser pari a 0 */
-void combinazioniRipetuteProgramma(unsigned int posizione, array valori, programma soluzione, programma max, unsigned int start, unsigned int difficoltaProgramma) {
-    if (posizione >= NUMERO_DIAGONALI) {
-        if (!verificaProgramma(soluzione, difficoltaProgramma)) { // Se il programma non è valido
-            return;
-        }
-
-        if (calcolaPunteggioProgramma(soluzione) > max->Punteggio) { // Se il punteggio è maggiore
-            copiaProgramma(soluzione, max);                          // Salvo il programma
-        }
-        return;
-    }
-    for (unsigned i = start; i < valori->ObjectsNumber; i++) {
-        soluzione->Diagonali[posizione] = valori->Objects[i];
-
-        combinazioniRipetuteProgramma(posizione + 1, valori, soluzione, max, start, difficoltaProgramma);
-        start++;
-    }
-}
-
 // Copia SRC in DEST
 void copiaProgramma(programma DEST, programma SRC) {
     DEST->Difficolta = SRC->Difficolta;
@@ -83,31 +61,16 @@ void freeProgramma(programma p) {
     free(p);
 }
 
-/* Genera il miglior programma dati i limiti di difficoltà
-   DD = Limite di difficoltà per la diagonale
-   DP = Limite di difficolta per il programma */
 programma generaMigliorProgramma(array elementi, unsigned int DD, unsigned int DP) {
-    programma p             = creaProgramma(); // Programma contenente la soluzione
-    programma tempProgramma = creaProgramma(); // Programma d'appoggio
-    
-    link listaDiagonali            = creaLink(NULL);   // Lista contenente tutto le diagonali
-    diagonale tempDiag             = creaDiagonale(0); // Diagonale d'appoggio per la soluzione
-    unsigned int diagonaliGenerate = generaDiagonali(elementi, tempDiag, listaDiagonali, 0, DD);
-    freeDiagonale(tempDiag); // Elimino la diagonale d'appoggio
+    mergeSort(elementi, (void *)&minorEqualValore, &DD); // Ordino l'array
+    programma p      = creaProgramma();                  // Programma contenente la soluzione
+    checks controlli = newChecks();                      // Creo i controlli
 
-    array arrayDiagonali = newArray((void *)&freeDiagonale, NULL, NULL); // Array contenente le diagonali generate
-    allocateArray(arrayDiagonali, diagonaliGenerate);
-    listaDiagonali = listaDiagonali->Next;
-    unsigned i     = 0;                                       // Indice d'esplorazione dell'array
-    while (listaDiagonali != NULL && i < diagonaliGenerate) { // Sinché posso esplorare
-        arrayDiagonali->Objects[i++] = listaDiagonali->Item;  // Copio il dato dalla lista all'array
-        listaDiagonali               = listaDiagonali->Next;  // Vado al passo successivo
-    }
-    freeList(listaDiagonali); // Elimino la lista
+    p->Diagonali[0] = generaDiagonale(elementi, DD, DP, controlli);
+    // p->Diagonali[0] = generaDiagonale(elementi, DD, DP, controlli);
+    // p->Diagonali[0] = generaDiagonale(elementi, DD, DP, controlli);
 
-    combinazioniRipetuteProgramma(0, arrayDiagonali, tempProgramma, p, 0, DP); // Genero il programma migliore
-    freeArray(arrayDiagonali, true);                                           // Elimino l'array
-    return p;                                                                  // Restituisco il programma
+    return p; // Restituisco il programma
 }
 
 // Stampa un programma a video

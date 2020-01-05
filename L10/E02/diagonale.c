@@ -53,62 +53,6 @@ void printDiagonale(diagonale d) {
     printArray(d->Elementi);
 }
 
-// * Calcolo combinatorio
-
-// Genera tutte le diagonali possibili rispettando il limite di difficoltà e l'ordine di inserimento
-unsigned int generaDiagonali(array elementi, diagonale soluzione, link list, unsigned int posizione, unsigned int difficoltaDiagonale) {
-    unsigned int conto = 0;
-    if (posizione >= soluzione->Elementi->ObjectsNumber) { // Condizione di terminazione per eccesso di elementi
-        return 0;
-    }
-
-    if (soluzione->Difficolta > difficoltaDiagonale) { // Condizione di terminazione per difficoltà massima
-        return 0;
-    }
-
-    if (posizione > 0) { // Se è già presente almeno un elemento nella soluzione
-        diagonale soluzioneDaSalvare = creaDiagonale(posizione);
-
-        uint8_t tempDimensione             = soluzione->Elementi->ObjectsNumber; // Salvo il numero di elementi
-        soluzione->Elementi->ObjectsNumber = posizione;
-
-        copiaDiagonale(soluzioneDaSalvare, soluzione); // Copio i dati
-        pushItem(list, (item)soluzione);               // Salvo la soluzione
-
-        soluzione->Elementi->ObjectsNumber = tempDimensione; // Ripristino la dimensione originale
-
-        elemento previous = elementi->Objects[posizione - 1]; // Salvo l'elemento precedente
-        if (previous->Finale) {                               // Se l'elemento non può esser seguito da altri elementi
-            return 1;
-        }
-    }
-
-loop:
-    for (unsigned int i = 0; i < elementi->ObjectsNumber; i++) { // Per ogni valore
-        elemento next = elementi->Objects[i];                    // Salvo l'elemento successivo
-
-        if (posizione == 0) {       // Se mi trovo all'inizio di una sequenza
-            if (next->Precedenza) { // Se l'elemento non può esser eseguito per primo
-                i++;
-                goto loop;
-            }
-        }
-
-        soluzione->Elementi->Objects[posizione] = elementi->Objects[i]; // Copio l'elemento successivo
-
-        uint8_t dimensioneTemp             = soluzione->Elementi->ObjectsNumber;
-        soluzione->Elementi->ObjectsNumber = posizione + 1;
-        calcolaDifficoltaDiagonale(soluzione); // Ricalcolo la difficoltà
-        calcolaPunteggioDiagonale(soluzione);  // Ricalcolo il punteggio
-        soluzione->Elementi->ObjectsNumber = dimensioneTemp;
-
-        list = getHead(list);
-        generaDiagonali(elementi, soluzione, list, posizione + 1, difficoltaDiagonale);
-    }
-
-    return conto;
-}
-
 // Ricalcola i controlli
 bool updateChecks(diagonale d, checks c) {
     for (uint8_t i = 0; i < d->Elementi->ObjectsNumber; i++) {
@@ -131,30 +75,43 @@ bool updateChecks(diagonale d, checks c) {
 }
 
 // Genera tutte le diagonali possibili rispettando il limite di difficoltà e l'ordine di inserimento
-void generaDiagonaleR(array elementi, unsigned int difficoltaDiagonale, checks controlli, link soluzione, uint8_t elementiInseribili) {
+uint8_t generaDiagonaleR(array elementi, unsigned int difficoltaDiagonale, checks controlli, link soluzione, uint8_t elementiInseribili) {
+    uint8_t elementiInseriti = 0;
     if (elementiInseribili == 0) { // Interruzione per limite di inserimenti
-        return;
+        return 0;
     }
-
     for (unsigned int i = 0; i < elementi->ObjectsNumber; i++) { // Esploro tutti gli elementi
         elemento tmp = elementi->Objects[i];
         if (tmp->Difficolta <= difficoltaDiagonale) { // Se l'elemento è inseribile
             putItem(soluzione, tmp);
             elementiInseribili--; // Riduco il numero di elementi inseribili
+            elementiInseriti++;
             // Ricorro per l'elemento successivo
-            return generaDiagonaleR(elementi, (difficoltaDiagonale - tmp->Difficolta), controlli, soluzione, elementiInseribili);
+            elementiInseriti += generaDiagonaleR(elementi, (difficoltaDiagonale - tmp->Difficolta), controlli, soluzione, elementiInseribili);
         }
     }
+    return elementiInseriti;
 }
 
 // Genera la miglior diagonale in base ai limiti e ai controlli
 diagonale generaDiagonale(array elementi, unsigned int DD, unsigned int DP, checks controlli) {
-    diagonale maxDiagonale = creaDiagonale(0);
-    generaDiagonaleR(elementi, DD, controlli, maxDiagonale, 0, 0);
+    link maxDiagonale        = creaLink(NULL);
+    uint8_t elementiInseriti = generaDiagonaleR(elementi, DD, controlli, maxDiagonale, MAX_ELEMENTI);
 
-    diagonale tempDiag = creaDiagonale(maxDiagonale->Elementi);
-    copiaDiagonale(tempDiag, maxDiagonale);
-    freeDiagonale(maxDiagonale);
+    diagonale tempDiag = creaDiagonale(elementiInseriti); // Creo la diagonale
+    maxDiagonale       = getHead(maxDiagonale);           // La riporto alla head
+    maxDiagonale       = maxDiagonale->Next;              // Punto sul primo elemento
+
+    uint8_t index = 0;
+    while (maxDiagonale->Next != NULL) {                           // Sinché ho elementi in lista
+        tempDiag->Elementi->Objects[index++] = maxDiagonale->Item; // Inserisco l'elemento nella diagonale
+    }
+
+    // Ricalcolo i valori
+    calcolaDifficoltaDiagonale(tempDiag);
+    calcolaPunteggioDiagonale(tempDiag);
+
+    freeList(maxDiagonale); // Elimino la lista
 
     return tempDiag;
 }

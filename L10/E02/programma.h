@@ -2,6 +2,7 @@
 #define PROGRAMMA_H
 
 #include "diagonale.h"
+#include "sortlib.h"
 
 typedef struct Programma {
     diagonale *Diagonali;
