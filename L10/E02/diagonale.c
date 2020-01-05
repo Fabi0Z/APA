@@ -108,3 +108,71 @@ loop:
 
     return conto;
 }
+
+// Ricalcola i controlli
+bool updateChecks(diagonale d, checks c) {
+    for (uint8_t i = 0; i < d->Elementi->ObjectsNumber; i++) {
+        elemento temp = d->Elementi->Objects[i];
+        if (temp->Ingresso == avanti) {
+            c[elementoAvanti] = true;
+        }
+        if (temp->Ingresso == indietro) {
+            c[elementoIndietro] = true;
+        }
+        if (i >= 1) {
+            c[dueElementi] = true;
+        }
+
+        if (c[elementoAvanti] && c[elementoIndietro] && c[dueElementi]) { // Se sono tutte e tre verificate
+            break;
+        }
+    }
+    return c[elementoAvanti] && c[elementoIndietro] && c[dueElementi];
+}
+
+// Genera tutte le diagonali possibili rispettando il limite di difficoltà e l'ordine di inserimento
+void generaDiagonaleR(array elementi, unsigned int difficoltaDiagonale, checks controlli, link soluzione, uint8_t elementiInseribili) {
+    if (elementiInseribili == 0) { // Interruzione per limite di inserimenti
+        return;
+    }
+
+    for (unsigned int i = 0; i < elementi->ObjectsNumber; i++) { // Esploro tutti gli elementi
+        elemento tmp = elementi->Objects[i];
+        if (tmp->Difficolta <= difficoltaDiagonale) { // Se l'elemento è inseribile
+            putItem(soluzione, tmp);
+            elementiInseribili--; // Riduco il numero di elementi inseribili
+            // Ricorro per l'elemento successivo
+            return generaDiagonaleR(elementi, (difficoltaDiagonale - tmp->Difficolta), controlli, soluzione, elementiInseribili);
+        }
+    }
+}
+
+// Genera la miglior diagonale in base ai limiti e ai controlli
+diagonale generaDiagonale(array elementi, unsigned int DD, unsigned int DP, checks controlli) {
+    diagonale maxDiagonale = creaDiagonale(0);
+    generaDiagonaleR(elementi, DD, controlli, maxDiagonale, 0, 0);
+
+    diagonale tempDiag = creaDiagonale(maxDiagonale->Elementi);
+    copiaDiagonale(tempDiag, maxDiagonale);
+    freeDiagonale(maxDiagonale);
+
+    return tempDiag;
+}
+
+// Restituisce il valore massimo ottenibile come sequenza consecutiva dello stesso elemento senza superare una data diffioltà
+unsigned int maxValoreConDifficolta(elemento e, unsigned int difficolta) {
+    uint8_t nElementi              = 0;
+    float valore                   = 0;
+    unsigned int difficoltaAttuale = 0;
+    while (nElementi < MAX_ELEMENTI, (difficoltaAttuale + e->Difficolta) <= difficolta) { // Sinché rientro nei limiti
+        valore += e->Valore;
+        difficoltaAttuale += e->Difficolta;
+        nElementi++;
+    }
+    return valore;
+}
+
+// Restituisce true se l'elemento a è più ottimale rispetto a b
+bool minorEqualValore(elemento a, elemento b, unsigned int *difficoltaDiagonale) {
+    return maxValoreConDifficolta(a, *difficoltaDiagonale) <= maxValoreConDifficolta(b, *difficoltaDiagonale);
+}
