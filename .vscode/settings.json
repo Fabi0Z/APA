@@ -32,6 +32,7 @@
         "memoizationmatrix.h": "c",
         "elemento.h": "c",
         "arrayelemento.h": "c",
-        "programma.h": "c"
+        "programma.h": "c",
+        "diagonale.h": "c"
     }
 }

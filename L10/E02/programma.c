@@ -66,10 +66,11 @@ programma generaMigliorProgramma(array elementi, unsigned int DD, unsigned int D
     programma p      = creaProgramma();                  // Programma contenente la soluzione
     checks controlli = newChecks();                      // Creo i controlli
 
-    p->Diagonali[0] = generaDiagonale(elementi, DD, DP, controlli);
+    // p->Diagonali[0] = generaDiagonale(elementi, DD, DP, controlli);
     // p->Diagonali[0] = generaDiagonale(elementi, DD, DP, controlli);
     // p->Diagonali[0] = generaDiagonale(elementi, DD, DP, controlli);
 
+    free(controlli);
     return p; // Restituisco il programma
 }
 

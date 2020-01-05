@@ -117,11 +117,11 @@ diagonale generaDiagonale(array elementi, unsigned int DD, unsigned int DP, chec
 }
 
 // Restituisce il valore massimo ottenibile come sequenza consecutiva dello stesso elemento senza superare una data diffioltà
-unsigned int maxValoreConDifficolta(elemento e, unsigned int difficolta) {
+float maxValoreConDifficolta(elemento e, unsigned int difficolta) {
     uint8_t nElementi              = 0;
     float valore                   = 0;
     unsigned int difficoltaAttuale = 0;
-    while (nElementi < MAX_ELEMENTI, (difficoltaAttuale + e->Difficolta) <= difficolta) { // Sinché rientro nei limiti
+    while (nElementi < MAX_ELEMENTI && (difficoltaAttuale + e->Difficolta) <= difficolta) { // Sinché rientro nei limiti
         valore += e->Valore;
         difficoltaAttuale += e->Difficolta;
         nElementi++;
