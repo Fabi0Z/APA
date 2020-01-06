@@ -54,24 +54,30 @@ void printDiagonale(diagonale d) {
 }
 
 // Ricalcola i controlli
-bool updateChecks(diagonale d, checks c) {
-    for (uint8_t i = 0; i < d->Elementi->ObjectsNumber; i++) {
-        elemento temp = d->Elementi->Objects[i];
-        if (temp->Ingresso == avanti) {
-            c[elementoAvanti] = true;
-        }
-        if (temp->Ingresso == indietro) {
-            c[elementoIndietro] = true;
-        }
-        if (i >= 1) {
-            c[dueElementi] = true;
-        }
-
-        if (c[elementoAvanti] && c[elementoIndietro] && c[dueElementi]) { // Se sono tutte e tre verificate
-            break;
-        }
+bool updateChecks(elemento e, checks c, unsigned int elementiRimanenti) {
+    if (e->Ingresso == avanti) {
+        c[elementoAvanti] = true;
     }
-    return c[elementoAvanti] && c[elementoIndietro] && c[dueElementi];
+    if (e->Ingresso == indietro) {
+        c[elementoIndietro] = true;
+    }
+    if (elementiRimanenti < MAX_ELEMENTI) {
+        c[elementoIndietro] = true;
+    }
+    return c[elementoAvanti] && c[elementoIndietro];
+}
+
+bool insertCheck(elemento e, unsigned int difficoltaDiagonale, checks controlli, unsigned int elementiInseribili) {
+    if (e->Difficolta > difficoltaDiagonale) { // Interruzione per limite difficoltà
+        return false;
+    }
+    if (e->Finale && elementiInseribili != 1) { // Interruzione per elemento finale non in ultima posizione
+        return false;
+    }
+    if (!updateChecks(e, controlli, elementiInseribili)) { // Interruzione basata sui controlli
+        return false;
+    }
+    return true;
 }
 
 // Genera tutte le diagonali possibili rispettando il limite di difficoltà e l'ordine di inserimento
@@ -80,17 +86,19 @@ uint8_t generaDiagonaleR(array elementi, unsigned int difficoltaDiagonale, check
     if (elementiInseribili == 0) { // Interruzione per limite di inserimenti
         return 0;
     }
+    if (difficoltaDiagonale == 0) { // Interruzione per limite di difficoltà
+        return 0;
+    }
     for (unsigned int i = 0; i < elementi->ObjectsNumber; i++) { // Esploro tutti gli elementi
         elemento tmp = elementi->Objects[i];
-        if (tmp->Difficolta <= difficoltaDiagonale) { // Se l'elemento è inseribile
+        if (insertCheck(tmp, difficoltaDiagonale, controlli, elementiInseribili)) { // Se l'elemento è inseribile
             putItem(soluzione, tmp);
             elementiInseribili--; // Riduco il numero di elementi inseribili
             elementiInseriti++;
             // Ricorro per l'elemento successivo
-            elementiInseriti += generaDiagonaleR(elementi, (difficoltaDiagonale - tmp->Difficolta), controlli, soluzione, elementiInseribili);
+            return elementiInseriti += generaDiagonaleR(elementi, (difficoltaDiagonale - tmp->Difficolta), controlli, soluzione, elementiInseribili);
         }
     }
-    return elementiInseriti;
 }
 
 // Genera la miglior diagonale in base ai limiti e ai controlli
@@ -99,12 +107,11 @@ diagonale generaDiagonale(array elementi, unsigned int DD, unsigned int DP, chec
     uint8_t elementiInseriti = generaDiagonaleR(elementi, DD, controlli, maxDiagonale, MAX_ELEMENTI);
 
     diagonale tempDiag = creaDiagonale(elementiInseriti); // Creo la diagonale
-    maxDiagonale       = getHead(maxDiagonale);           // La riporto alla head
-    maxDiagonale       = maxDiagonale->Next;              // Punto sul primo elemento
 
     uint8_t index = 0;
-    while (maxDiagonale->Next != NULL) {                           // Sinché ho elementi in lista
-        tempDiag->Elementi->Objects[index++] = maxDiagonale->Item; // Inserisco l'elemento nella diagonale
+    while (maxDiagonale->Next != NULL && index < tempDiag->Elementi->ObjectsNumber) { // Sinché ho elementi in lista
+        maxDiagonale                         = maxDiagonale->Next;
+        tempDiag->Elementi->Objects[index++] = maxDiagonale->Item;                    // Inserisco l'elemento nella diagonale
     }
 
     // Ricalcolo i valori
@@ -131,5 +138,5 @@ float maxValoreConDifficolta(elemento e, unsigned int difficolta) {
 
 // Restituisce true se l'elemento a è più ottimale rispetto a b
 bool minorEqualValore(elemento a, elemento b, unsigned int *difficoltaDiagonale) {
-    return maxValoreConDifficolta(a, *difficoltaDiagonale) <= maxValoreConDifficolta(b, *difficoltaDiagonale);
+    return maxValoreConDifficolta(b, *difficoltaDiagonale) <= maxValoreConDifficolta(a, *difficoltaDiagonale);
 }

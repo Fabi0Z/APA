@@ -16,7 +16,7 @@ bool minorEqualValore(elemento a, elemento b, unsigned int *difficoltaDiagonale)
 float maxValoreConDifficolta(elemento e, unsigned int difficolta);
 diagonale generaDiagonale(array elementi, unsigned int DD, unsigned int DP, checks controlli);
 uint8_t generaDiagonaleR(array elementi, unsigned int difficoltaDiagonale, checks controlli, link soluzione, uint8_t elementiInseribili);
-bool updateChecks(diagonale d, checks c);
+bool updateChecks(elemento e, checks c, unsigned int elementiRimanenti);
 void printDiagonale(diagonale d);
 void freeDiagonale(diagonale d);
 diagonale creaDiagonale(unsigned int NumeroElementi);
