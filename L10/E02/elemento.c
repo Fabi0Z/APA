@@ -15,6 +15,11 @@ void freeElemento(elemento e) {
     free(e);
 }
 
+// Restituisce true se a ha una difficoltà minore di b
+bool minoreElemento(elemento a, elemento b) {
+    return a->Difficolta < b->Difficolta;
+}
+
 // Legge e crea un elemento da stringa
 elemento parseElemento(char *string) {
     elemento e = creaElemento();

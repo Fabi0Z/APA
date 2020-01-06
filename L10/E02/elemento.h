@@ -27,6 +27,7 @@ typedef struct Elemento {
 
 void printElemento(elemento e);
 elemento parseElemento(char *string);
+bool minoreElemento(elemento a, elemento b);
 void freeElemento(elemento e);
 elemento creaElemento();
 
