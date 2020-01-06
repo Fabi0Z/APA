@@ -26,6 +26,16 @@ array cloneArray(array SRC) {
     return DEST;
 }
 
+/* Restituisce il massimo o il minimo dell'array secondo una funzione di comparazione
+   compare(item a, item b) = restituisce true se a è "migliore" di b secondo la comparazione */
+item getMinOrMax(array a, bool (*compare)(item a, item b)) {
+    item extreme = a->Objects[0];
+    for (unsigned int i = 0; i < a->ObjectsNumber; i++) {
+        extreme = (*compare)(a->Objects[i], extreme) ? a->Objects[i] : extreme;
+    }
+    return extreme;
+}
+
 /* Crea un array
    freeObject = funzione per eliminare il singolo oggetto
    printObject = funzione che si occupa di effettuare il parse del singolo oggetto da stringa
