@@ -8,6 +8,7 @@ enum checksType { elementoAvanti,
                   elementoIndietro,
                   dueElementi,
                   ultimaDiagonale,
+                  checksRichiesti,
                   checksTotale };
 
 checks newChecks();
