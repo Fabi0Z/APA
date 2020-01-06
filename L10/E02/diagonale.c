@@ -111,7 +111,7 @@ diagonale generaDiagonale(array elementi, unsigned int DD, unsigned int DP, chec
     uint8_t index = 0;
     while (maxDiagonale->Next != NULL && index < tempDiag->Elementi->ObjectsNumber) { // Sinché ho elementi in lista
         maxDiagonale                         = maxDiagonale->Next;
-        tempDiag->Elementi->Objects[index++] = maxDiagonale->Item;                    // Inserisco l'elemento nella diagonale
+        tempDiag->Elementi->Objects[index++] = maxDiagonale->Item; // Inserisco l'elemento nella diagonale
     }
 
     // Ricalcolo i valori
@@ -124,7 +124,7 @@ diagonale generaDiagonale(array elementi, unsigned int DD, unsigned int DP, chec
 }
 
 // Restituisce il valore massimo ottenibile come sequenza consecutiva dello stesso elemento senza superare una data diffioltà
-float maxValoreConDifficolta(elemento e, unsigned int difficolta) {
+float maxValoreConDifficolta(elemento e, unsigned int difficolta, bool moltiplicatore) {
     uint8_t nElementi              = 0;
     float valore                   = 0;
     unsigned int difficoltaAttuale = 0;
@@ -133,10 +133,16 @@ float maxValoreConDifficolta(elemento e, unsigned int difficolta) {
         difficoltaAttuale += e->Difficolta;
         nElementi++;
     }
+    valore *= difficoltaAttuale && moltiplicatore >= 8 ? 1.5 : 1; // Se il moltiplicatore è attivo incremento il punteggio
     return valore;
 }
 
 // Restituisce true se l'elemento a è più ottimale rispetto a b
-bool minorEqualValore(elemento a, elemento b, unsigned int *difficoltaDiagonale) {
-    return maxValoreConDifficolta(b, *difficoltaDiagonale) <= maxValoreConDifficolta(a, *difficoltaDiagonale);
+bool maggiorValore(elemento a, elemento b, unsigned int *difficoltaDiagonale) {
+    return maxValoreConDifficolta(a, *difficoltaDiagonale, false) > maxValoreConDifficolta(b, *difficoltaDiagonale, false);
+}
+
+// Restituisce true se l'elemento a è più ottimale rispetto a b
+bool maggiorValoreConMoltiplicatore(elemento a, elemento b, unsigned int *difficoltaDiagonale) {
+    return maxValoreConDifficolta(a, *difficoltaDiagonale, true) > maxValoreConDifficolta(b, *difficoltaDiagonale, true);
 }
