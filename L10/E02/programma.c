@@ -63,12 +63,30 @@ void freeProgramma(programma p) {
 
 programma generaMigliorProgramma(array elementi, unsigned int DD, unsigned int DP) {
     mergeSort(elementi, (void *)&minorEqualValore, &DD); // Ordino l'array
-    programma p      = creaProgramma();                  // Programma contenente la soluzione
-    checks controlli = newChecks();                      // Creo i controlli
+    printArray(elementi);
+    programma p                   = creaProgramma(); // Programma contenente la soluzione
+    checks controlli              = newChecks();     // Creo i controlli
+    unsigned int limiteDifficolta = DD;
 
-    // p->Diagonali[0] = generaDiagonale(elementi, DD, DP, controlli);
-    // p->Diagonali[0] = generaDiagonale(elementi, DD, DP, controlli);
-    // p->Diagonali[0] = generaDiagonale(elementi, DD, DP, controlli);
+    controlli[elementoIndietro] = true;
+    controlli[dueElementi]      = true;
+    diagonale tmpDiagonale      = p->Diagonali[0];
+    p->Diagonali[0]             = generaDiagonale(elementi, limiteDifficolta, DP, controlli);
+
+    controlli[elementoIndietro] = false;
+    DP -= tmpDiagonale->Difficolta;
+    limiteDifficolta = DP < DD ? DP : DD;
+    tmpDiagonale     = p->Diagonali[1];
+    p->Diagonali[1]  = generaDiagonale(elementi, limiteDifficolta, DP, controlli);
+
+    controlli[dueElementi] = false;
+    DP -= tmpDiagonale->Difficolta;
+    limiteDifficolta = DP < DD ? DP : DD;
+    tmpDiagonale     = p->Diagonali[2];
+    p->Diagonali[2]  = generaDiagonale(elementi, 10, limiteDifficolta, controlli);
+
+    calcolaDifficoltaProgramma(p);
+    calcolaPunteggioProgramma(p);
 
     free(controlli);
     return p; // Restituisco il programma
