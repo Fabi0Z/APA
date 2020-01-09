@@ -109,7 +109,7 @@ uint8_t generaDiagonaleR(array elementi, unsigned int difficoltaDiagonale, check
 }
 
 // Genera la miglior diagonale in base ai limiti e ai controlli
-diagonale generaDiagonale(array elementi, unsigned int DD, unsigned int DP, checks controlli, unsigned int difficoltaMinima) {
+diagonale generaDiagonale(array elementi, unsigned int DD, checks controlli, unsigned int difficoltaMinima) {
     link maxDiagonale        = creaLink(NULL);
     uint8_t elementiInseriti = generaDiagonaleR(elementi, DD, controlli, maxDiagonale, difficoltaMinima);
 

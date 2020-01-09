@@ -11,7 +11,7 @@ int main() {
     array elementi  = newArray((void *)&freeElemento, (void *)&parseElemento, (void *)&printElemento);
     parseArrayFromFile(elementi, filename, MAX_STRING);
 
-    programma p = generaMigliorProgramma(elementi, 10, 30);
+    programma p = generaMigliorProgramma(elementi, 15, 30);
     printArray(elementi);
     printProgramma(p);
 
