@@ -10,7 +10,6 @@ typedef struct Checks {
 enum checksType { elementoAvanti,
                   elementoIndietro,
                   dueElementi,
-                  ultimaDiagonale,
                   checksTotale };
 
 bool verificaChecks(checks c);
