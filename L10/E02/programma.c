@@ -64,15 +64,15 @@ void freeProgramma(programma p) {
 // Aggiorna il limite di difficoltà
 static unsigned int updateLimiteDifficolta(unsigned int difficoltaDiagonalePrecedente, unsigned int DD, unsigned int *DP) {
     *DP -= difficoltaDiagonalePrecedente;
-    return DP < DD ? DP : DD;
+    return *DP < DD ? *DP : DD;
 }
 
 programma generaMigliorProgramma(array elementi, unsigned int DD, unsigned int DP) {
     printArray(elementi);
-    programma p         = creaProgramma();                        // Programma contenente la soluzione
-    checks controlli    = newChecks();                            // Creo i controlli
-    elemento diffMinima = getMinOrMax(elementi, &minoreElemento); // Salvo l'elemento di difficoltà minima
-    DP -= diffMinima->Difficolta;                                 // Imposto il limite minimo per l'ultima diagonale generata
+    programma p         = creaProgramma();                                // Programma contenente la soluzione
+    checks controlli    = newChecks();                                    // Creo i controlli
+    elemento diffMinima = getMinOrMax(elementi, (void *)&minoreElemento); // Salvo l'elemento di difficoltà minima
+    DP -= diffMinima->Difficolta;                                         // Imposto il limite minimo per l'ultima diagonale generata
 
     // Genero la terza diagonale di almeno due elementi
     mergeSort(elementi, (void *)&maggiorValoreConMoltiplicatore, &DD); // Ordino l'array
