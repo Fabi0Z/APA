@@ -90,7 +90,7 @@ primeDueDiagonali:
     // Genero la seconda diagonale
     DP += diffMinima->Difficolta;                  // Rimuovo il limite
     controlli->Richiesti[elementoIndietro] = true; // Aggiungo la richiesta di un elemento indietro
-    tmpDiagonale                           = p->Diagonali[1];
+    tmpDiagonale                           = p->Diagonali[0];
     p->Diagonali[1]                        = generaDiagonale(elementi, updateLimiteDifficolta(tmpDiagonale->Difficolta, DD, &DP), controlli, diffMinima->Difficolta);
 
     if (controlli->Valori[dueElementi]) { // Se non sono presenti due elementi in alcuna diagonale
