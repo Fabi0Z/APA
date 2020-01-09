@@ -54,17 +54,22 @@ void printDiagonale(diagonale d) {
 }
 
 // Ricalcola i controlli
-bool updateChecks(elemento e, checks c, unsigned int elementiRimanenti) {
+bool updateChecks(elemento e, checks c) {
     if (e->Ingresso == avanti) {
         c[elementoAvanti] = true;
     }
     if (e->Ingresso == indietro) {
         c[elementoIndietro] = true;
     }
-    if (elementiRimanenti < MAX_ELEMENTI) {
-        c[elementoIndietro] = true;
-    }
     return c[elementoAvanti] && c[elementoIndietro];
+}
+
+void updateChecksDiagonale(diagonale d, checks c) {
+    for (unsigned int i = 0; i < d->Elementi->ObjectsNumber; i++) { // Per ogni elemento della diagonale
+        elemento tmp = d->Elementi->Objects[i];
+        updateChecks(tmp, c);
+    }
+    c[dueElementi] = d->Elementi->ObjectsNumber > 1;
 }
 
 bool insertCheck(elemento e, unsigned int difficoltaDiagonale, checks controlli, unsigned int elementiInseribili) {
@@ -74,7 +79,7 @@ bool insertCheck(elemento e, unsigned int difficoltaDiagonale, checks controlli,
     if (e->Finale && elementiInseribili != 1) { // Interruzione per elemento finale non in ultima posizione
         return false;
     }
-    if (!updateChecks(e, controlli, elementiInseribili)) { // Interruzione basata sui controlli
+    if (!updateChecks(e, controlli)) { // Interruzione basata sui controlli
         return false;
     }
     return true;
