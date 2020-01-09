@@ -77,21 +77,21 @@ programma generaMigliorProgramma(array elementi, unsigned int DD, unsigned int D
     unsigned int DPbackup = DP;                                           // Faccio un "backup" della difficoltà
 
     // Genero la terza diagonale
-    mergeSort(elementi, (void *)&maggiorValoreConMoltiplicatore, &DD);                              // Ordino l'array per la terza
-    p->Diagonali[2] = generaDiagonale(elementi, DD, updateLimiteDifficolta(0, DD, &DP), controlli); // Genero la diagonale
+    mergeSort(elementi, (void *)&maggiorValoreConMoltiplicatore, &DD);                                                      // Ordino l'array per la terza
+    p->Diagonali[2] = generaDiagonale(elementi, DD, updateLimiteDifficolta(0, DD, &DP), controlli, diffMinima->Difficolta); // Genero la diagonale
 
 // Genero la prima diagonale
 primeDueDiagonali:
     mergeSort(elementi, (void *)&maggiorValore, &DD); // Ordino l'array per le restanti diagonali
     controlli->Richiesti[elementoAvanti] = true;      // Aggiungo la richiesta di un elemento in avanti
     diagonale tmpDiagonale               = p->Diagonali[2];
-    p->Diagonali[0]                      = generaDiagonale(elementi, updateLimiteDifficolta(tmpDiagonale->Difficolta, DD, &DP), DP, controlli);
+    p->Diagonali[0]                      = generaDiagonale(elementi, updateLimiteDifficolta(tmpDiagonale->Difficolta, DD, &DP), DP, controlli, diffMinima->Difficolta);
 
     // Genero la seconda diagonale
     DP += diffMinima->Difficolta;                  // Rimuovo il limite
     controlli->Richiesti[elementoIndietro] = true; // Aggiungo la richiesta di un elemento indietro
     tmpDiagonale                           = p->Diagonali[1];
-    p->Diagonali[1]                        = generaDiagonale(elementi, updateLimiteDifficolta(tmpDiagonale->Difficolta, DD, &DP), DP, controlli);
+    p->Diagonali[1]                        = generaDiagonale(elementi, updateLimiteDifficolta(tmpDiagonale->Difficolta, DD, &DP), DP, controlli, diffMinima->Difficolta);
 
     if (controlli->Valori[dueElementi]) { // Se non sono presenti due elementi in alcuna diagonale
         freeProgramma(p);                 // Elimino il programma
@@ -103,8 +103,8 @@ primeDueDiagonali:
 
         // Genero la terza diagonale
         controlli->Richiesti[dueElementi] = true;
-        mergeSort(elementi, (void *)&maggiorValoreConMoltiplicatore, &DD);                              // Ordino l'array per la terza
-        p->Diagonali[2] = generaDiagonale(elementi, DD, updateLimiteDifficolta(0, DD, &DP), controlli); // Genero la diagonale
+        mergeSort(elementi, (void *)&maggiorValoreConMoltiplicatore, &DD);                                                      // Ordino l'array per la terza
+        p->Diagonali[2] = generaDiagonale(elementi, DD, updateLimiteDifficolta(0, DD, &DP), controlli, diffMinima->Difficolta); // Genero la diagonale
 
         goto primeDueDiagonali; // Ricreo le prime due diagonali
     }

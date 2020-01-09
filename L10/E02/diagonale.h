@@ -15,10 +15,10 @@ typedef struct Diagonale {
 bool maggiorValoreConMoltiplicatore(elemento a, elemento b, unsigned int *difficoltaDiagonale);
 bool maggiorValore(elemento a, elemento b, unsigned int *difficoltaDiagonale);
 float maxValoreConDifficolta(elemento e, unsigned int difficolta, bool moltiplicatore);
-diagonale generaDiagonale(array elementi, unsigned int DD, unsigned int DP, checks controlli);
-uint8_t generaDiagonaleR(array elementi, unsigned int difficoltaDiagonale, checks controlli, link soluzione, uint8_t elementiInseribili);
-bool insertCheck(elemento e, unsigned int difficoltaDiagonale, checks controlli, unsigned int elementiInseribili);
-bool updateChecks(elemento e, checks c);
+diagonale generaDiagonale(array elementi, unsigned int DD, unsigned int DP, checks controlli, unsigned int difficoltaMinima);
+uint8_t generaDiagonaleR(array elementi, unsigned int difficoltaDiagonale, checks controlli, link soluzione, unsigned int difficoltaMinima);
+bool insertCheck(elemento e, unsigned int difficoltaDiagonale, checks controlli, unsigned int difficoltaMinima);
+bool updateChecks(elemento e, checks c, unsigned int difficoltaMassima, unsigned int difficoltaMinima);
 void printDiagonale(diagonale d);
 void freeDiagonale(diagonale d);
 diagonale creaDiagonale(unsigned int NumeroElementi);
