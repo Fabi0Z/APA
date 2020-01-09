@@ -56,20 +56,26 @@ void printDiagonale(diagonale d) {
 // Ricalcola i controlli
 bool updateChecks(elemento e, checks c) {
     if (e->Ingresso == avanti) {
-        c[elementoAvanti] = true;
+        c->Valori[elementoAvanti] = true;
     }
     if (e->Ingresso == indietro) {
-        c[elementoIndietro] = true;
+        c->Valori[elementoIndietro] = true;
     }
-    return c[elementoAvanti] && c[elementoIndietro];
+    return c->Valori[elementoAvanti] && c->Valori[elementoIndietro];
 }
 
+// Ricalcola i controlli per tutti gli elementi di una diagonale
 void updateChecksDiagonale(diagonale d, checks c) {
+    c->Valori[elementoAvanti]   = false;
+    c->Valori[elementoIndietro] = false;
     for (unsigned int i = 0; i < d->Elementi->ObjectsNumber; i++) { // Per ogni elemento della diagonale
         elemento tmp = d->Elementi->Objects[i];
         updateChecks(tmp, c);
+        if (c->Valori[elementoAvanti] && c->Valori[elementoIndietro]) { // Se sono già entrambi validi mi interrompo
+            break;
+        }
     }
-    c[dueElementi] = d->Elementi->ObjectsNumber > 1;
+    c->Valori[dueElementi] = d->Elementi->ObjectsNumber > 1;
 }
 
 bool insertCheck(elemento e, unsigned int difficoltaDiagonale, checks controlli, unsigned int elementiInseribili) {

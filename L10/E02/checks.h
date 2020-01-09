@@ -3,14 +3,18 @@
 
 #include "stdbool.h"
 #include "stdlib.h"
-typedef bool *checks;
+typedef struct Checks {
+    bool *Valori;
+    bool *Richiesti;
+} * checks;
 enum checksType { elementoAvanti,
                   elementoIndietro,
                   dueElementi,
                   ultimaDiagonale,
-                  checksRichiesti,
                   checksTotale };
 
+bool verificaChecks(checks c);
+void freeChecks(checks c);
 checks newChecks();
 
 #endif // CHECKS_H
