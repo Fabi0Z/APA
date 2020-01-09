@@ -29,7 +29,7 @@ void freeChecks(checks c) {
 bool verificaChecks(checks c) {
     bool result = true;
     for (unsigned int i = 0; i < ultimaDiagonale; i++) {
-        result *= c->Valori[i];
+        result = c->Richiesti[i] ? result && c->Valori[i] : result;
     }
     return result;
 }

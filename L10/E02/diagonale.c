@@ -54,14 +54,27 @@ void printDiagonale(diagonale d) {
 }
 
 // Ricalcola i controlli
-bool updateChecks(elemento e, checks c) {
-    if (e->Ingresso == avanti) {
-        c->Valori[elementoAvanti] = true;
+bool updateChecks(elemento e, checks c, unsigned int difficoltaMassima, unsigned int difficoltaMinima) {
+    bool valido = false;
+    if (c->Richiesti[elementoAvanti]) { // Se il controllo è richiesto
+        if (e->Ingresso == avanti) {
+            c->Valori[elementoAvanti]    = true;
+            c->Richiesti[elementoAvanti] = false; // Rimuovo la richiesta
+        }
     }
-    if (e->Ingresso == indietro) {
-        c->Valori[elementoIndietro] = true;
+    if (c->Richiesti[elementoIndietro]) { // Se il controllo è richiesto
+        if (e->Ingresso == indietro) {
+            c->Valori[elementoIndietro]    = true;
+            c->Richiesti[elementoIndietro] = false; // Rimuovo la richiesta
+        }
     }
-    return c->Valori[elementoAvanti] && c->Valori[elementoIndietro];
+    if (c->Richiesti[dueElementi]) {                                 // Se il controllo è richiesto
+        if (difficoltaMinima <= difficoltaMassima - e->Difficolta) { // Se rientro nel limite dell'elemento di difficoltà minima
+            c->Valori[dueElementi]    = true;
+            c->Richiesti[dueElementi] = false; // Rimuovo la richiesta
+        }
+    }
+    return verificaChecks(c);
 }
 
 // Ricalcola i controlli per tutti gli elementi di una diagonale
@@ -143,6 +156,9 @@ float maxValoreConDifficolta(elemento e, unsigned int difficolta, bool moltiplic
         valore += e->Valore;
         difficoltaAttuale += e->Difficolta;
         nElementi++;
+        if (e->Finale) { // Se l'elemento è di tipo finale mi interrompo ad un solo inserimento
+            break;
+        }
     }
     valore *= difficoltaAttuale && moltiplicatore >= 8 ? 1.5 : 1; // Se il moltiplicatore è attivo incremento il punteggio
     return valore;
