@@ -77,20 +77,6 @@ bool updateChecks(elemento e, checks c, unsigned int difficoltaMassima, unsigned
     return verificaChecks(c);
 }
 
-// Ricalcola i controlli per tutti gli elementi di una diagonale
-void updateChecksDiagonale(diagonale d, checks c) {
-    c->Valori[elementoAvanti]   = false;
-    c->Valori[elementoIndietro] = false;
-    for (unsigned int i = 0; i < d->Elementi->ObjectsNumber; i++) { // Per ogni elemento della diagonale
-        elemento tmp = d->Elementi->Objects[i];
-        updateChecks(tmp, c);
-        if (c->Valori[elementoAvanti] && c->Valori[elementoIndietro]) { // Se sono già entrambi validi mi interrompo
-            break;
-        }
-    }
-    c->Valori[dueElementi] = d->Elementi->ObjectsNumber > 1;
-}
-
 bool insertCheck(elemento e, unsigned int difficoltaDiagonale, checks controlli, unsigned int elementiInseribili) {
     if (e->Difficolta > difficoltaDiagonale) { // Interruzione per limite difficoltà
         return false;
