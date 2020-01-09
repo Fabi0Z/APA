@@ -36,6 +36,26 @@ item getMinOrMax(array a, bool (*compare)(item a, item b)) {
     return extreme;
 }
 
+// Cerca un item i nell'array e lo sposta nella posizione indicata scambiandolo con quello già presente
+void moveItemArray(array a, item i, unsigned int posizione) {
+    unsigned int posizioneI = (unsigned int)-1;
+    for (unsigned int j = 0; j < a->ObjectsNumber; j++) {
+        if (a->Objects[j] == i) { // Se sono uguali
+            posizioneI = j;
+            break;
+        }
+    }
+
+    if (posizioneI == (unsigned int)-1) { // Se non ho trovato l'indice mi interrompo
+        return;
+    }
+
+    // Effettuo lo scambio
+    item tmp               = a->Objects[posizioneI];
+    a->Objects[posizione]  = a->Objects[posizioneI];
+    a->Objects[posizioneI] = tmp;
+}
+
 /* Crea un array
    freeObject = funzione per eliminare il singolo oggetto
    printObject = funzione che si occupa di effettuare il parse del singolo oggetto da stringa
@@ -67,7 +87,7 @@ void parseArrayFromFile(array a, char *filename, unsigned int max_string) {
     FILE *stream = smartFopen(filename, "r"); // Apro il filestream
 
     fscanf(stream, "%u\n", &a->ObjectsNumber); // Leggo il numero di attività
-    allocateArray(a, a->ObjectsNumber);          // Alloco la memoria
+    allocateArray(a, a->ObjectsNumber);        // Alloco la memoria
 
     char string[max_string + 1];
     for (unsigned int i = 0; i < a->ObjectsNumber; i++) { // Per ogni elemento
