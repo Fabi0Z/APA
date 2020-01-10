@@ -43,6 +43,9 @@ diagonale creaDiagonale(unsigned int NumeroElementi) {
 
 // Elimina una diagonale
 void freeDiagonale(diagonale d) {
+    if (d == NULL) {
+        return;
+    }
     freeArray(d->Elementi, false);
     free(d);
 }
@@ -106,27 +109,31 @@ uint8_t generaDiagonaleR(array elementi, unsigned int difficoltaDiagonale, check
             return elementiInseriti += generaDiagonaleR(elementi, (difficoltaDiagonale - tmp->Difficolta), controlli, soluzione, difficoltaMinima);
         }
     }
+    return 0;
 }
 
 // Genera la miglior diagonale in base ai limiti e ai controlli
 diagonale generaDiagonale(array elementi, unsigned int DD, checks controlli, unsigned int difficoltaMinima) {
     link maxDiagonale        = creaLink(NULL);
     uint8_t elementiInseriti = generaDiagonaleR(elementi, DD, controlli, maxDiagonale, difficoltaMinima);
+    diagonale tempDiag       = creaDiagonale(elementiInseriti); // Creo la diagonale
 
-    diagonale tempDiag = creaDiagonale(elementiInseriti); // Creo la diagonale
+    if (elementiInseriti > 0) {
+        uint8_t index = 0;
+        while (maxDiagonale->Next != NULL) { // Sinché ho elementi in lista
+            maxDiagonale                         = maxDiagonale->Next;
+            tempDiag->Elementi->Objects[index++] = maxDiagonale->Item; // Inserisco l'elemento nella diagonale
+        }
 
-    uint8_t index = 0;
-    while (maxDiagonale->Next != NULL && index < tempDiag->Elementi->ObjectsNumber) { // Sinché ho elementi in lista
-        maxDiagonale                         = maxDiagonale->Next;
-        tempDiag->Elementi->Objects[index++] = maxDiagonale->Item; // Inserisco l'elemento nella diagonale
+        // Ricalcolo i valori
+        calcolaDifficoltaDiagonale(tempDiag);
+        calcolaPunteggioDiagonale(tempDiag);
+
+    } else {
+        tempDiag->Elementi = 0;
     }
 
-    // Ricalcolo i valori
-    calcolaDifficoltaDiagonale(tempDiag);
-    calcolaPunteggioDiagonale(tempDiag);
-
     freeList(maxDiagonale); // Elimino la lista
-
     return tempDiag;
 }
 
