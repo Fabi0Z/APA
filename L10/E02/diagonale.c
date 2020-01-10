@@ -22,6 +22,19 @@ float calcolaPunteggioDiagonale(diagonale d) {
     return d->Punteggio;
 }
 
+// Calcola e restituisce il punteggio della terza diagonale
+float calcolaPunteggioTerzaDiagonale(diagonale d) {
+    d->Punteggio        = 0;
+    bool moltiplicatore = false;
+    for (unsigned int i = 0; i < d->Elementi->ObjectsNumber; i++) {
+        elemento tmp   = (elemento)d->Elementi->Objects[i];
+        moltiplicatore = tmp->Difficolta > 8 ? true : moltiplicatore; // Controllo se ho almeno difficoltà 8
+        d->Punteggio += tmp->Valore;
+    }
+    d->Punteggio *= moltiplicatore ? 1.5 : 1; // moltiplico il punteggio
+    return d->Punteggio;
+}
+
 // Copia SRC in DEST
 void copiaDiagonale(diagonale DEST, diagonale SRC) {
     DEST->Difficolta = SRC->Difficolta;
@@ -71,8 +84,8 @@ bool updateChecks(elemento e, checks c, unsigned int difficoltaMassima, unsigned
             c->Richiesti[elementoIndietro] = false; // Rimuovo la richiesta
         }
     }
-    if (c->Richiesti[dueElementi]) {                                 // Se il controllo è richiesto
-        if (difficoltaMinima <= difficoltaMassima - e->Difficolta) { // Se rientro nel limite dell'elemento di difficoltà minima
+    if (c->Richiesti[dueElementi]) {                                               // Se il controllo è richiesto
+        if (difficoltaMinima <= difficoltaMassima - e->Difficolta && !e->Finale) { // Se rientro nel limite dell'elemento di difficoltà minima e se l'elemento non è un finale
             c->Valori[dueElementi]    = true;
             c->Richiesti[dueElementi] = false; // Rimuovo la richiesta
         }

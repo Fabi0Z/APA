@@ -23,6 +23,7 @@ void printDiagonale(diagonale d);
 void freeDiagonale(diagonale d);
 diagonale creaDiagonale(unsigned int NumeroElementi);
 void copiaDiagonale(diagonale DEST, diagonale SRC);
+float calcolaPunteggioTerzaDiagonale(diagonale d);
 float calcolaPunteggioDiagonale(diagonale d);
 unsigned int calcolaDifficoltaDiagonale(diagonale d);
 
