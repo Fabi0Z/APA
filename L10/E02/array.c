@@ -51,7 +51,7 @@ void moveItemArray(array a, item i, unsigned int posizione) {
     }
 
     // Effettuo lo scambio
-    item tmp               = a->Objects[posizioneI];
+    item tmp               = a->Objects[posizione];
     a->Objects[posizione]  = a->Objects[posizioneI];
     a->Objects[posizioneI] = tmp;
 }
@@ -71,6 +71,9 @@ array newArray(void (*freeObject)(item), item (*parseObject)(char *), void (*pri
 /* Elimina un array
    Se il valore freeObjects è true elimina anche i dati memorizzati */
 void freeArray(array a, bool freeObjects) {
+    if (a == NULL) {
+        return;
+    }
     if (a->Objects != NULL) { // Se l'array è allocato
         if (freeObjects) {
             for (unsigned int i = 0; i < a->ObjectsNumber; i++) { // Per ogni elemento
