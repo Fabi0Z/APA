@@ -31,6 +31,7 @@ static programma generaProgramma(array elementi, unsigned int DD, unsigned int D
     programmaPerTerzaDiagonale(elementi, updateLimiteDifficolta(0, DD, &DP));                                           // Ordino l'array per la terza
     p->Diagonali[2] = generaDiagonale(elementi, updateLimiteDifficolta(0, DD, &DP), controlli, diffMinima->Difficolta); // Genero la diagonale
     tmpDiagonale    = p->Diagonali[2];
+    calcolaPunteggioTerzaDiagonale(tmpDiagonale);
 
 // Genero la prima diagonale
 primeDueDiagonali:
@@ -58,6 +59,8 @@ primeDueDiagonali:
         mergeSort(elementi, (void *)&maggiorValoreConMoltiplicatore, &DD);                                                  // Ordino l'array per la terza
         p->Diagonali[2] = generaDiagonale(elementi, updateLimiteDifficolta(0, DD, &DP), controlli, diffMinima->Difficolta); // Genero la diagonale
         tmpDiagonale    = p->Diagonali[2];
+        calcolaPunteggioTerzaDiagonale(tmpDiagonale);
+        printDiagonale(tmpDiagonale);
         goto primeDueDiagonali; // Ricreo le prime due diagonali
     }
 
@@ -82,17 +85,6 @@ unsigned int calcolaDifficoltaProgramma(programma p) {
 // Calcola il punteggio di un programma
 float calcolaPunteggioProgramma(programma p) {
     p->Punteggio = 0;
-
-    diagonale ultimaDiagonale = p->Diagonali[NUMERO_DIAGONALI - 1];
-
-    for (uint8_t i = 0; i < ultimaDiagonale->Elementi->ObjectsNumber; i++) {
-        elemento tmp = ultimaDiagonale->Elementi->Objects[i];
-        if (tmp->Difficolta >= 8) {            // Se è un elemento almeno di difficoltà 8
-            ultimaDiagonale->Punteggio *= 1.5; // Moltiplico il punteggio
-            break;                             // Esco dal ciclo
-        }
-    }
-
     for (uint8_t i = 0; i < NUMERO_DIAGONALI; i++) { // Sommo i valori delle diagonali
         p->Punteggio += p->Diagonali[i]->Punteggio;
     }

@@ -56,7 +56,7 @@ float calcolaPunteggioTerzaDiagonale(diagonale d) {
     bool moltiplicatore = false;
     for (unsigned int i = 0; i < d->Elementi->ObjectsNumber; i++) {
         elemento tmp   = (elemento)d->Elementi->Objects[i];
-        moltiplicatore = tmp->Difficolta > 8 ? true : moltiplicatore; // Controllo se ho almeno difficoltà 8
+        moltiplicatore = tmp->Difficolta >= 8 ? true : moltiplicatore; // Controllo se ho almeno difficoltà 8
         d->Punteggio += tmp->Valore;
     }
     d->Punteggio *= moltiplicatore ? 1.5 : 1; // moltiplico il punteggio
