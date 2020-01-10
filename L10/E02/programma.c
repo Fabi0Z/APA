@@ -1,6 +1,74 @@
 #include "programma.h"
 
+// * STATIC ITEMS
+
 static const uint8_t NUMERO_DIAGONALI = 3;
+
+// Aggiorna il limite di difficoltà
+static unsigned int updateLimiteDifficolta(unsigned int difficoltaDiagonalePrecedente, unsigned int DD, unsigned int *DP) {
+    *DP -= difficoltaDiagonalePrecedente;
+    return *DP < DD ? *DP : DD;
+}
+
+// Riordina gli elementi per la terza diagonale
+static void programmaPerTerzaDiagonale(array a, unsigned int difficoltaDiagonale) {
+    mergeSort(a, (void *)&maggiorValoreConMoltiplicatore, &difficoltaDiagonale); // Eseguo l'ordinamento
+    elemento miglioreDa8 = a->Objects[0];
+    mergeSort(a, (void *)&maggiorValore, &difficoltaDiagonale); // Ordino l'array per convenienza
+    moveItemArray(a, miglioreDa8, 0);                           // Sposto l'elemento migliore da 8 in prima posizione
+}
+
+// Genera un programma in base ai limiti dati
+static programma generaProgramma(array elementi, unsigned int DD, unsigned int DP) {
+    programma p         = creaProgramma();                                // Programma contenente la soluzione
+    checks controlli    = newChecks();                                    // Creo i controlli
+    elemento diffMinima = getMinOrMax(elementi, (void *)&minoreElemento); // Salvo l'elemento di difficoltà minima
+    DP -= diffMinima->Difficolta;                                         // Imposto il limite minimo per l'ultima diagonale generata
+    unsigned int DPbackup = DP;                                           // Faccio un "backup" della difficoltà
+    diagonale tmpDiagonale;                                               // Creo la diagonale d'appoggio
+
+    // Genero la terza diagonale
+    programmaPerTerzaDiagonale(elementi, updateLimiteDifficolta(0, DD, &DP));                                           // Ordino l'array per la terza
+    p->Diagonali[2] = generaDiagonale(elementi, updateLimiteDifficolta(0, DD, &DP), controlli, diffMinima->Difficolta); // Genero la diagonale
+    tmpDiagonale    = p->Diagonali[2];
+
+// Genero la prima diagonale
+primeDueDiagonali:
+    mergeSort(elementi, (void *)&maggiorValore, &DD); // Ordino l'array per le restanti diagonali
+    controlli->Richiesti[elementoAvanti] = true;      // Aggiungo la richiesta di un elemento in avanti
+    p->Diagonali[0]                      = generaDiagonale(elementi, updateLimiteDifficolta(tmpDiagonale->Difficolta, DD, &DP), controlli, diffMinima->Difficolta);
+    tmpDiagonale                         = p->Diagonali[0];
+
+    // Genero la seconda diagonale
+    DP += diffMinima->Difficolta;                  // Rimuovo il limite
+    controlli->Richiesti[elementoIndietro] = true; // Aggiungo la richiesta di un elemento indietro
+    p->Diagonali[1]                        = generaDiagonale(elementi, updateLimiteDifficolta(tmpDiagonale->Difficolta, DD, &DP), controlli, diffMinima->Difficolta);
+    tmpDiagonale                           = p->Diagonali[1];
+
+    if (!controlli->Valori[dueElementi]) { // Se non sono presenti due elementi in alcuna diagonale
+        freeProgramma(p);                  // Elimino il programma
+        freeChecks(controlli);             // Elimino i controlli
+        controlli   = newChecks();         // Ricreo i controlli
+        programma p = creaProgramma();     // Ricreo il programma
+        DP          = DPbackup;
+        DP -= diffMinima->Difficolta; // Imposto il limite minimo per l'ultima diagonale generata
+
+        // Genero la terza diagonale
+        controlli->Richiesti[dueElementi] = true;
+        mergeSort(elementi, (void *)&maggiorValoreConMoltiplicatore, &DD);                                                  // Ordino l'array per la terza
+        p->Diagonali[2] = generaDiagonale(elementi, updateLimiteDifficolta(0, DD, &DP), controlli, diffMinima->Difficolta); // Genero la diagonale
+        tmpDiagonale    = p->Diagonali[2];
+        goto primeDueDiagonali; // Ricreo le prime due diagonali
+    }
+
+    calcolaDifficoltaProgramma(p);
+    calcolaPunteggioProgramma(p);
+
+    free(controlli);
+    return p; // Restituisco il programma
+}
+
+// * END OF STATIC ITEMS
 
 // Calcola la difficoltà di un programma
 unsigned int calcolaDifficoltaProgramma(programma p) {
@@ -15,11 +83,14 @@ unsigned int calcolaDifficoltaProgramma(programma p) {
 float calcolaPunteggioProgramma(programma p) {
     p->Punteggio = 0;
 
-    diagonale ultimaDiagonale   = p->Diagonali[NUMERO_DIAGONALI - 1];
-    uint8_t ultimoElementoIndex = ultimaDiagonale->Elementi->ObjectsNumber - 1;
-    elemento ultimoElemento     = ultimaDiagonale->Elementi->Objects[ultimoElementoIndex];
-    if (ultimoElemento->Finale) {          // Se è un elemento finale
-        ultimaDiagonale->Punteggio *= 1.5; // Moltiplico il punteggio
+    diagonale ultimaDiagonale = p->Diagonali[NUMERO_DIAGONALI - 1];
+
+    for (uint8_t i = 0; i < ultimaDiagonale->Elementi->ObjectsNumber; i++) {
+        elemento tmp = ultimaDiagonale->Elementi->Objects[i];
+        if (tmp->Difficolta >= 8) {            // Se è un elemento almeno di difficoltà 8
+            ultimaDiagonale->Punteggio *= 1.5; // Moltiplico il punteggio
+            break;                             // Esco dal ciclo
+        }
     }
 
     for (uint8_t i = 0; i < NUMERO_DIAGONALI; i++) { // Sommo i valori delle diagonali
@@ -64,87 +135,24 @@ void freeProgramma(programma p) {
     free(p);
 }
 
-// Aggiorna il limite di difficoltà
-static unsigned int updateLimiteDifficolta(unsigned int difficoltaDiagonalePrecedente, unsigned int DD, unsigned int *DP) {
-    *DP -= difficoltaDiagonalePrecedente;
-    return *DP < DD ? *DP : DD;
-}
-
-static void programmaPerTerzaDiagonale(array a, unsigned int difficoltaDiagonale) {
-    mergeSort(a, (void *)&maggiorValoreConMoltiplicatore, &difficoltaDiagonale); // Eseguo l'ordinamento
-    elemento miglioreDa8 = a->Objects[0];
-    mergeSort(a, (void *)&maggiorValore, &difficoltaDiagonale); // Ordino l'array per convenienza
-    moveItemArray(a, miglioreDa8, 0);                           // Sposto l'elemento migliore da 8 in prima posizione
-}
-
-// Genera un programma in base ai limiti dati
-static programma generaProgramma(array elementi, unsigned int DD, unsigned int DP) {
-    programma p         = creaProgramma();                                // Programma contenente la soluzione
-    checks controlli    = newChecks();                                    // Creo i controlli
-    elemento diffMinima = getMinOrMax(elementi, (void *)&minoreElemento); // Salvo l'elemento di difficoltà minima
-    DP -= diffMinima->Difficolta;                                         // Imposto il limite minimo per l'ultima diagonale generata
-    unsigned int DPbackup = DP;                                           // Faccio un "backup" della difficoltà
-    diagonale tmpDiagonale;                                               // Creo la diagonale d'appoggio
-
-    // Genero la terza diagonale
-    programmaPerTerzaDiagonale(elementi, updateLimiteDifficolta(0, DD, &DP));                                           // Ordino l'array per la terza
-    p->Diagonali[2] = generaDiagonale(elementi, updateLimiteDifficolta(0, DD, &DP), controlli, diffMinima->Difficolta); // Genero la diagonale
-    tmpDiagonale    = p->Diagonali[2];
-
-// Genero la prima diagonale
-primeDueDiagonali:
-    mergeSort(elementi, (void *)&maggiorValore, &DD); // Ordino l'array per le restanti diagonali
-    controlli->Richiesti[elementoAvanti] = true;      // Aggiungo la richiesta di un elemento in avanti
-    p->Diagonali[0]                      = generaDiagonale(elementi, updateLimiteDifficolta(tmpDiagonale->Difficolta, DD, &DP), controlli, diffMinima->Difficolta);
-    tmpDiagonale                         = p->Diagonali[0];
-
-    // Genero la seconda diagonale
-    DP += diffMinima->Difficolta;                  // Rimuovo il limite
-    controlli->Richiesti[elementoIndietro] = true; // Aggiungo la richiesta di un elemento indietro
-    p->Diagonali[1]                        = generaDiagonale(elementi, updateLimiteDifficolta(tmpDiagonale->Difficolta, DD, &DP), controlli, diffMinima->Difficolta);
-    tmpDiagonale                           = p->Diagonali[1];
-
-    if (controlli->Valori[dueElementi]) { // Se non sono presenti due elementi in alcuna diagonale
-        freeProgramma(p);                 // Elimino il programma
-        freeChecks(controlli);            // Elimino i controlli
-        controlli   = newChecks();        // Ricreo i controlli
-        programma p = creaProgramma();    // Ricreo il programma
-        DP          = DPbackup;
-        DP -= diffMinima->Difficolta; // Imposto il limite minimo per l'ultima diagonale generata
-
-        // Genero la terza diagonale
-        controlli->Richiesti[dueElementi] = true;
-        mergeSort(elementi, (void *)&maggiorValoreConMoltiplicatore, &DD);                                                  // Ordino l'array per la terza
-        p->Diagonali[2] = generaDiagonale(elementi, updateLimiteDifficolta(0, DD, &DP), controlli, diffMinima->Difficolta); // Genero la diagonale
-
-        goto primeDueDiagonali; // Ricreo le prime due diagonali
-    }
-
-    calcolaDifficoltaProgramma(p);
-    calcolaPunteggioProgramma(p);
-
-    free(controlli);
-    return p; // Restituisco il programma
-}
-
 // Genera il programma di massima lunghezza
 programma generaMigliorProgramma(array elementi, unsigned int DD, unsigned int DP) {
     programma migliore, tmp;
 
-    // Inizializzo la prima variabile
-    migliore = generaProgramma(elementi, 1, DP); // Creo il programma con DD pari a 1
+    // // Inizializzo la prima variabile
+    // migliore = generaProgramma(elementi, 1, DP); // Creo il programma con DD pari a 1
 
-    // Genero il miglior programma
-    for (unsigned int i = 2; i <= DD; i++) {        // Per ogni livello di difficoltà
-        tmp = generaProgramma(elementi, i, DP);     // Creo il programma con DD incrementale
-        if (tmp->Punteggio > migliore->Punteggio) { // Controllo se il programma generato è migliore
-            freeProgramma(migliore);
-            migliore = tmp;
-        } else {
-            freeProgramma(tmp); // Scaro il programma appena generato
-        }
-    }
-
+    // // Genero il miglior programma
+    // for (unsigned int i = 2; i <= DD; i++) {        // Per ogni livello di difficoltà
+    //     tmp = generaProgramma(elementi, i, DP);     // Creo il programma con DD incrementale
+    //     if (tmp->Punteggio > migliore->Punteggio) { // Controllo se il programma generato è migliore
+    //         freeProgramma(migliore);
+    //         migliore = tmp;
+    //     } else {
+    //         freeProgramma(tmp); // Scaro il programma appena generato
+    //     }
+    // }
+    migliore = generaProgramma(elementi, DD, DP); // Creo il programma con DD pari a 1
     return migliore;
 }
 

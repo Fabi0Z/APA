@@ -16,8 +16,6 @@ bool maggiorValoreConMoltiplicatore(elemento a, elemento b, unsigned int *diffic
 bool maggiorValore(elemento a, elemento b, unsigned int *difficoltaDiagonale);
 float maxValoreConDifficolta(elemento e, unsigned int difficolta, bool moltiplicatore);
 diagonale generaDiagonale(array elementi, unsigned int DD, checks controlli, unsigned int difficoltaMinima);
-uint8_t generaDiagonaleR(array elementi, unsigned int difficoltaDiagonale, checks controlli, link soluzione, unsigned int difficoltaMinima);
-bool insertCheck(elemento e, unsigned int difficoltaDiagonale, checks controlli, unsigned int difficoltaMinima);
 bool updateChecks(elemento e, checks c, unsigned int difficoltaMassima, unsigned int difficoltaMinima);
 void printDiagonale(diagonale d);
 void freeDiagonale(diagonale d);
@@ -26,5 +24,6 @@ void copiaDiagonale(diagonale DEST, diagonale SRC);
 float calcolaPunteggioTerzaDiagonale(diagonale d);
 float calcolaPunteggioDiagonale(diagonale d);
 unsigned int calcolaDifficoltaDiagonale(diagonale d);
+bool insertCheck(elemento e, unsigned int difficoltaDiagonale, checks controlli, unsigned int difficoltaMinima);
 
 #endif // DIAGONALE_H
