@@ -105,6 +105,9 @@ uint8_t generaDiagonaleR(array elementi, unsigned int difficoltaDiagonale, check
         if (insertCheck(tmp, difficoltaDiagonale, controlli, difficoltaMinima)) { // Se l'elemento è inseribile
             putItem(soluzione, tmp);
             elementiInseriti++;
+            if (tmp->Finale) {
+                return elementiInseriti;
+            }
             // Ricorro per l'elemento successivo
             return elementiInseriti += generaDiagonaleR(elementi, (difficoltaDiagonale - tmp->Difficolta), controlli, soluzione, difficoltaMinima);
         }
