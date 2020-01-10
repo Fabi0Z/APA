@@ -43,25 +43,25 @@ static programma generaDiagonaliPerProgramma(array elementi, unsigned int DD, un
     p->Diagonali[1]                = generaDiagonale(elementi, updateLimiteDifficolta(tmpDiagonale->Difficolta, DD, &DP), c, diffMinima->Difficolta);
     tmpDiagonale                   = p->Diagonali[1];
 
-    if (!c->Valori[dueElementi]) {               // Se non sono presenti due elementi in alcuna diagonale
-        freeProgramma(p);                        // Elimino il programma
-        freeChecks(c);                           // Elimino i controlli
-        c                         = newChecks(); // Ricreo i controlli
-        c->Richiesti[dueElementi] = true;        // Aggiungo la richiesta di due elementi
-        p                         = generaDiagonaliPerProgramma(elementi, DD, DPBackup, c);
-    }
-
     return p;
 }
 
 // Genera un programma in base ai limiti dati
 static programma generaProgramma(array elementi, unsigned int DD, unsigned int DP) {
-    checks controlli = newChecks(); // Creo i controlli
-    programma p      = generaDiagonaliPerProgramma(elementi, DD, DP, controlli);
+    checks c    = newChecks(); // Creo i controlli
+    programma p = generaDiagonaliPerProgramma(elementi, DD, DP, c);
+
+    if (!c->Valori[dueElementi]) {               // Se non sono presenti due elementi in alcuna diagonale
+        freeProgramma(p);                        // Elimino il programma
+        freeChecks(c);                           // Elimino i controlli
+        c                         = newChecks(); // Ricreo i controlli
+        c->Richiesti[dueElementi] = true;        // Aggiungo la richiesta di due elementi
+        p                         = generaDiagonaliPerProgramma(elementi, DD, DP, c);
+    }
+
     calcolaDifficoltaProgramma(p);
     calcolaPunteggioProgramma(p);
-    printProgramma(p);
-    free(controlli);
+    free(c);
     return p; // Restituisco il programma
 }
 
@@ -125,20 +125,19 @@ void freeProgramma(programma p) {
 programma generaMigliorProgramma(array elementi, unsigned int DD, unsigned int DP) {
     programma migliore, tmp;
 
-    // // Inizializzo la prima variabile
-    // migliore = generaProgramma(elementi, 1, DP); // Creo il programma con DD pari a 1
+    // Inizializzo la prima variabile
+    migliore = generaProgramma(elementi, 1, DP); // Creo il programma con DD pari a 1
 
-    // // Genero il miglior programma
-    // for (unsigned int i = 2; i <= DD; i++) {        // Per ogni livello di difficoltà
-    //     tmp = generaProgramma(elementi, i, DP);     // Creo il programma con DD incrementale
-    //     if (tmp->Punteggio > migliore->Punteggio) { // Controllo se il programma generato è migliore
-    //         freeProgramma(migliore);
-    //         migliore = tmp;
-    //     } else {
-    //         freeProgramma(tmp); // Scaro il programma appena generato
-    //     }
-    // }
-    migliore = generaProgramma(elementi, DD, DP); // Creo il programma con DD pari a 1
+    // Genero il miglior programma
+    for (unsigned int i = 2; i <= DD; i++) {        // Per ogni livello di difficoltà
+        tmp = generaProgramma(elementi, i, DP);     // Creo il programma con DD incrementale
+        if (tmp->Punteggio > migliore->Punteggio) { // Controllo se il programma generato è migliore
+            freeProgramma(migliore);
+            migliore = tmp;
+        } else {
+            freeProgramma(tmp); // Scaro il programma appena generato
+        }
+    }
     return migliore;
 }
 
