@@ -12,7 +12,6 @@ int main() {
     parseArrayFromFile(elementi, filename, MAX_STRING);
 
     programma p = generaMigliorProgramma(elementi, 15, 30);
-    printArray(elementi);
     printProgramma(p);
 
     freeProgramma(p);
