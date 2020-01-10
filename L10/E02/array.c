@@ -102,6 +102,10 @@ void parseArrayFromFile(array a, char *filename, unsigned int max_string) {
 
 // Stampa un array
 void printArray(array a) {
+    if (a == NULL) {
+        return;
+    }
+
     for (unsigned int i = 0; i < a->ObjectsNumber; i++) { // Per ogni elemento
         a->printObject(a->Objects[i]);
     }
