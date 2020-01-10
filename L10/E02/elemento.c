@@ -11,7 +11,12 @@ elemento creaElemento() {
 
 // Elimina un elemento
 void freeElemento(elemento e) {
-    free(e->Nome);
+    if (e == NULL) {
+        return;
+    }
+    if (e->Nome != NULL) {
+        free(e->Nome);
+    }
     free(e);
 }
 
