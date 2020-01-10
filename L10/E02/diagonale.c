@@ -43,6 +43,11 @@ unsigned int calcolaDifficoltaDiagonale(diagonale d) {
 // Calcola e restituisce il punteggio di una diagonale
 float calcolaPunteggioDiagonale(diagonale d) {
     d->Punteggio = 0;
+
+    if (d->Elementi == NULL) {
+        return d->Punteggio;
+    }
+
     for (unsigned int i = 0; i < d->Elementi->ObjectsNumber; i++) {
         elemento tmp = (elemento)d->Elementi->Objects[i];
         d->Punteggio += tmp->Valore;
@@ -52,7 +57,12 @@ float calcolaPunteggioDiagonale(diagonale d) {
 
 // Calcola e restituisce il punteggio della terza diagonale
 float calcolaPunteggioTerzaDiagonale(diagonale d) {
-    d->Punteggio        = 0;
+    d->Punteggio = 0;
+
+    if (d->Elementi == NULL) {
+        return d->Punteggio;
+    }
+
     bool moltiplicatore = false;
     for (unsigned int i = 0; i < d->Elementi->ObjectsNumber; i++) {
         elemento tmp   = (elemento)d->Elementi->Objects[i];
@@ -93,7 +103,7 @@ void freeDiagonale(diagonale d) {
 
 // Stampa una diagonale a video
 void printDiagonale(diagonale d) {
-    printf("Il punteggi della diagonale è %f e la sua difficoltà %u:\n", d->Punteggio, d->Difficolta);
+    printf("Il punteggio della diagonale è %f e la sua difficoltà %u:\n", d->Punteggio, d->Difficolta);
     printArray(d->Elementi);
 }
 
