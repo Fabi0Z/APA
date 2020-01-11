@@ -12,9 +12,9 @@ typedef struct Diagonale {
     float Punteggio;
 } * diagonale;
 
-bool maggiorValoreConMoltiplicatore(elemento a, elemento b, unsigned int *difficoltaDiagonale);
+bool maggiorValoreConMoltiplicatore(elemento a, elemento b, item *args);
 bool maggiorValore(elemento a, elemento b, unsigned int *difficoltaDiagonale);
-float maxValoreConDifficolta(elemento e, unsigned int difficolta, bool moltiplicatore);
+float maxValoreConDifficolta(elemento e, unsigned int difficolta, bool moltiplicatore, uint8_t bonus);
 diagonale generaDiagonale(array elementi, unsigned int DD, checks controlli, unsigned int difficoltaMinima);
 bool updateChecks(elemento e, checks c, unsigned int difficoltaMassima, unsigned int difficoltaMinima);
 void printDiagonale(diagonale d);

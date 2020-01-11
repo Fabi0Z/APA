@@ -176,7 +176,7 @@ diagonale generaDiagonale(array elementi, unsigned int DD, checks controlli, uns
 }
 
 // Restituisce il valore massimo ottenibile come sequenza consecutiva dello stesso elemento senza superare una data diffioltà
-float maxValoreConDifficolta(elemento e, unsigned int difficolta, bool moltiplicatore) {
+float maxValoreConDifficolta(elemento e, unsigned int difficolta, bool moltiplicatore, uint8_t bonus) {
     uint8_t nElementi              = 0;
     float valore                   = 0;
     unsigned int difficoltaAttuale = 0;
@@ -188,16 +188,18 @@ float maxValoreConDifficolta(elemento e, unsigned int difficolta, bool moltiplic
             break;
         }
     }
-    valore *= difficoltaAttuale && moltiplicatore >= 8 ? 1.5 : 1; // Se il moltiplicatore è attivo incremento il punteggio
+    valore *= difficoltaAttuale && moltiplicatore >= bonus ? 1.5 : 1; // Se il moltiplicatore è attivo incremento il punteggio
     return valore;
 }
 
 // Restituisce true se l'elemento a è più ottimale rispetto a b
 bool maggiorValore(elemento a, elemento b, unsigned int *difficoltaDiagonale) {
-    return maxValoreConDifficolta(a, *difficoltaDiagonale, false) > maxValoreConDifficolta(b, *difficoltaDiagonale, false);
+    return maxValoreConDifficolta(a, *difficoltaDiagonale, false, (uint8_t)-1) > maxValoreConDifficolta(b, *difficoltaDiagonale, false, (uint8_t)-1);
 }
 
 // Restituisce true se l'elemento a è più ottimale rispetto a b
-bool maggiorValoreConMoltiplicatore(elemento a, elemento b, unsigned int *difficoltaDiagonale) {
-    return maxValoreConDifficolta(a, *difficoltaDiagonale, true) > maxValoreConDifficolta(b, *difficoltaDiagonale, true);
+bool maggiorValoreConMoltiplicatore(elemento a, elemento b, item *args) {
+    unsigned int *difficoltaDiagonale = args[0];
+    uint8_t *bonus                    = args[1];
+    return maxValoreConDifficolta(a, *difficoltaDiagonale, true, *bonus) > maxValoreConDifficolta(b, *difficoltaDiagonale, true, *bonus);
 }
