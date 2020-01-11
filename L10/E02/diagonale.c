@@ -14,7 +14,8 @@ static uint8_t generaDiagonaleR(array elementi, unsigned int difficoltaDiagonale
         return 0;
     }
     for (unsigned int i = 0; i < elementi->ObjectsNumber; i++) { // Esploro tutti gli elementi
-        elemento tmp = elementi->Objects[i];
+        elemento tmp                      = elementi->Objects[i];
+        controlli->Valori[primaDiagonale] = elementiInseriti == 0;                // Aggiorno il valore della prima diagonale
         if (insertCheck(tmp, difficoltaDiagonale, controlli, difficoltaMinima)) { // Se l'elemento è inseribile
             putItem(soluzione, tmp);
             elementiInseriti++;
@@ -136,6 +137,13 @@ bool insertCheck(elemento e, unsigned int difficoltaDiagonale, checks controlli,
     if (e->Difficolta > difficoltaDiagonale) { // Interruzione per limite difficoltà
         return false;
     }
+
+    if (controlli->Valori[primaDiagonale]) { // Se non mi trovo sulla prima diagonale
+        if (e->Precedenza) {                 // Se ha requisito di precedenza
+            return false;
+        }
+    }
+
     if (!updateChecks(e, controlli, difficoltaDiagonale, difficoltaMinima)) { // Interruzione basata sui controlli
         return false;
     }
