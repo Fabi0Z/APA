@@ -12,14 +12,21 @@ static unsigned int updateLimiteDifficolta(unsigned int difficoltaDiagonalePrece
 }
 
 // Riordina gli elementi per la terza diagonale
-static void programmaPerTerzaDiagonale(array a, unsigned int difficoltaDiagonale) {
+static void programmaPerTerzaDiagonale(array a, unsigned int difficoltaDiagonale, uint8_t difficoltaMinima) {
     array maggioriDiBonus = validItemsArray(a, (void *)&elementoIsMajorEqualThanBonus, (item)&DIFFICOLTA_BONUS); // Creo un array contenente solo gli elementi con difficoltà da bonus in su
-    
+
     void *args[2] = {&difficoltaDiagonale, (void *)&DIFFICOLTA_BONUS};         // Creo gli argomenti per il sorting
     mergeSort(maggioriDiBonus, (void *)&maggiorValoreConMoltiplicatore, args); // Eseguo l'ordinamento
 
     elemento miglioreDelBonus = maggioriDiBonus->Objects[0]; // Salvo l'elemento con bonus migliore
-    freeArray(maggioriDiBonus, false);                       // Elimino l'array
+    if (miglioreDelBonus->Precedenza) {                      // Se ha requisito di precedenza
+        unsigned int tempDifficolta = difficoltaDiagonale - difficoltaMinima;
+        args[0]                     = &tempDifficolta;
+        mergeSort(maggioriDiBonus, (void *)&maggiorValoreConMoltiplicatore, args); // Eseguo l'ordinamento
+        miglioreDelBonus = maggioriDiBonus->Objects[0];                   // Salvo l'elemento con bonus migliore
+    }
+
+    freeArray(maggioriDiBonus, false); // Elimino l'array
 
     mergeSort(a, (void *)&maggiorValore, &difficoltaDiagonale); // Ordino l'array per convenienza
     moveItemArray(a, miglioreDelBonus, 0);                      // Sposto l'elemento migliore secondo il bonus in prima posizione
@@ -33,8 +40,8 @@ static programma generaDiagonaliPerProgramma(array elementi, unsigned int DD, un
     diagonale tmpDiagonale;                                                 // Creo la diagonale d'appoggio
 
     // Genero la terza diagonale
-    if (DD >= DIFFICOLTA_BONUS) {                                                 // Se la difficoltà per diagonale rientra nel bonus
-        programmaPerTerzaDiagonale(elementi, updateLimiteDifficolta(0, DD, &DP)); // Ordino l'array per la terza
+    if (DD >= DIFFICOLTA_BONUS) {                                                                         // Se la difficoltà per diagonale rientra nel bonus
+        programmaPerTerzaDiagonale(elementi, updateLimiteDifficolta(0, DD, &DP), diffMinima->Difficolta); // Ordino l'array per la terza
     } else {
         mergeSort(elementi, (void *)&maggiorValore, &DD); // Ordino l'array per convenienza
     }
@@ -136,22 +143,23 @@ void freeProgramma(programma p) {
 
 // Genera il programma di massima lunghezza
 programma generaMigliorProgramma(array elementi, unsigned int DD, unsigned int DP) {
-    programma migliore, tmp;
+    // programma migliore, tmp;
 
-    // Inizializzo la prima variabile
-    migliore = generaProgramma(elementi, 1, DP); // Creo il programma con DD pari a 1
+    // // Inizializzo la prima variabile
+    // migliore = generaProgramma(elementi, 1, DP); // Creo il programma con DD pari a 1
 
-    // Genero il miglior programma
-    for (unsigned int i = 2; i <= DD; i++) {        // Per ogni livello di difficoltà
-        tmp = generaProgramma(elementi, i, DP);     // Creo il programma con DD incrementale
-        if (tmp->Punteggio > migliore->Punteggio) { // Controllo se il programma generato è migliore
-            freeProgramma(migliore);
-            migliore = tmp;
-        } else {
-            freeProgramma(tmp); // Scaro il programma appena generato
-        }
-    }
-    return migliore;
+    // // Genero il miglior programma
+    // for (unsigned int i = 2; i <= DD; i++) {        // Per ogni livello di difficoltà
+    //     tmp = generaProgramma(elementi, i, DP);     // Creo il programma con DD incrementale
+    //     if (tmp->Punteggio > migliore->Punteggio) { // Controllo se il programma generato è migliore
+    //         freeProgramma(migliore);
+    //         migliore = tmp;
+    //     } else {
+    //         freeProgramma(tmp); // Scaro il programma appena generato
+    //     }
+    // }
+    // return migliore;
+    return generaProgramma(elementi, DD, DP); // Creo il programma con DD pari a 1
 }
 
 // Stampa un programma a video
