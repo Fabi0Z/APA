@@ -22,6 +22,8 @@ item pullItem(link list);
 item popLink(link list);
 item popItem(link list);
 link getTail(link l);
+unsigned int getNumberOfItems(link l);
+bool getNext(link *l);
 link getHead(link l);
 void freeList(link list);
 void freeListFromTail(link list);

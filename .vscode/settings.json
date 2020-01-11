@@ -35,6 +35,7 @@
         "programma.h": "c",
         "diagonale.h": "c",
         "random": "c",
-        "limits": "c"
+        "limits": "c",
+        "list.h": "c"
     }
 }
