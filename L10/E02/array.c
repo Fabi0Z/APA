@@ -40,7 +40,7 @@ array cloneArray(array SRC) {
 // Crea un array con solo gli elementi validi secondo una funzione di validità, se nessuno è valido restituisce NULL
 array validItemsArray(array a, bool (*valid)(item i, item args), item args) {
     unsigned int items = countValidItemsArray(a, valid, args);
-    if (items = 0) {
+    if (items == 0) {
         return NULL;
     }
 
