@@ -18,12 +18,43 @@ void copyArray(array DEST, array SRC) {
     }
 }
 
+// Restituisce il numero di elementi validi all'interno di un array secondo una funzione di validità
+unsigned int countValidItemsArray(array a, bool (*valid)(item i, item args), item args) {
+    unsigned int items = 0;
+    for (unsigned int i = 0; i < a->ObjectsNumber; i++) {
+        if ((*valid)(a->Objects[i], args)) {
+            items++;
+        }
+    }
+    return items;
+}
+
 // Restituisce una copia dell'array SRC
 array cloneArray(array SRC) {
     array DEST = newArray(NULL, NULL, NULL);
     allocateArray(DEST, SRC->ObjectsNumber);
     copyArray(DEST, SRC);
     return DEST;
+}
+
+// Crea un array con solo gli elementi validi secondo una funzione di validità, se nessuno è valido restituisce NULL
+array validItemsArray(array a, bool (*valid)(item i, item args), item args) {
+    unsigned int items = countValidItemsArray(a, valid, args);
+    if (items = 0) {
+        return NULL;
+    }
+
+    array valids = newArray(a->freeObject, a->parseObject, a->printObject);
+    allocateArray(valids, items); // Alloco l'array
+
+    unsigned int validsIndex = 0;
+    for (unsigned int i = 0; i < a->ObjectsNumber; i++) {
+        if ((*valid)(a->Objects[i], args)) {
+            valids->Objects[validsIndex++] = a->Objects[i];
+        }
+    }
+
+    return valids;
 }
 
 /* Restituisce il massimo o il minimo dell'array secondo una funzione di comparazione
