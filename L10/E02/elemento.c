@@ -9,6 +9,11 @@ elemento creaElemento() {
     return e;
 }
 
+// Restituisce true se l'elemento ha difficoltà maggiore o uguale al bonus
+bool elementoIsMajorEqualThanBonus(elemento e, void *args) {
+    return e->Difficolta >= *(uint8_t *)args;
+}
+
 // Elimina un elemento
 void freeElemento(elemento e) {
     if (e == NULL) {

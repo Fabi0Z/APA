@@ -29,6 +29,7 @@ void printElemento(elemento e);
 elemento parseElemento(char *string);
 bool minoreElemento(elemento a, elemento b);
 void freeElemento(elemento e);
+bool elementoIsMajorEqualThanBonus(elemento e, void *args);
 elemento creaElemento();
 
 #endif // ELEMENTO_H
