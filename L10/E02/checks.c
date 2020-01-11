@@ -14,7 +14,6 @@ checks newChecks() {
     for (unsigned int i = dueElementi + 1; i < checksTotale; i++) {
         c->Valori[i] = false;
     }
-
     return c;
 }
 
