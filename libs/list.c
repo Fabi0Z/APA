@@ -42,7 +42,7 @@ link getHead(link l) {
     return getHead(l->Previous);
 }
 
-// Aggiorna il link nell'elemento successivo in lista, se non esiste restituisce false
+// Aggiorna il link con l'elemento successivo in lista, se non esiste restituisce false
 bool getNext(link *l) {
     link list = *l;
     if (list == NULL) { // In caso di elemento nullo
@@ -52,6 +52,19 @@ bool getNext(link *l) {
         return false;
     }
     *l = list->Next; // Aggiorno l'elemento
+    return true;
+}
+
+// Aggiorna il link con l'elemento precedente in lista, se non esiste restituisce false
+bool getPrevious(link *l) {
+    link list = *l;
+    if (list == NULL) { // In caso di elemento nullo
+        return false;
+    }
+    if (list->Previous == NULL) { // In caso di elemento inesistente
+        return false;
+    }
+    *l = list->Previous; // Aggiorno l'elemento
     return true;
 }
 
@@ -142,7 +155,7 @@ void pushLink(link list, link l) {
 
 // Aggiunge un item a fine lista
 void pushItem(link list, item i) {
-    link l = creaLink(i);
+    link l = newLink(i);
     pushLink(list, l);
 }
 
@@ -155,7 +168,7 @@ void putLink(link list, link l) {
 
 // Aggiunge un item a fine lista
 void putItem(link list, item i) {
-    link l = creaLink(i);
+    link l = newLink(i);
     putLink(list, l);
 }
 
