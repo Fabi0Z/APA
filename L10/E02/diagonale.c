@@ -4,6 +4,59 @@
 
 static const uint8_t MAX_ELEMENTI = 5;
 
+// Ricalcola i controlli
+static bool updateChecks(elemento e, checks c, unsigned int difficoltaMassima, unsigned int difficoltaMinima) {
+    bool valido = false;
+    if (c->Richiesti[elementoAvanti]) { // Se il controllo è richiesto
+        if (e->Ingresso == avanti) {
+            c->Valori[elementoAvanti]    = true;
+            c->Richiesti[elementoAvanti] = false; // Rimuovo la richiesta
+        }
+    }
+    if (c->Richiesti[elementoIndietro]) { // Se il controllo è richiesto
+        if (e->Ingresso == indietro) {
+            c->Valori[elementoIndietro]    = true;
+            c->Richiesti[elementoIndietro] = false; // Rimuovo la richiesta
+        }
+    }
+    if (c->Richiesti[dueElementi]) {                                               // Se il controllo è richiesto
+        if (difficoltaMinima <= difficoltaMassima - e->Difficolta && !e->Finale) { // Se rientro nel limite dell'elemento di difficoltà minima e se l'elemento non è un finale
+            c->Valori[dueElementi]    = true;
+            c->Richiesti[dueElementi] = false; // Rimuovo la richiesta
+        }
+    }
+    return verificaChecks(c);
+}
+
+// Verifica se un elemento può esser inserito nella diagonale
+static bool insertCheck(elemento e, unsigned int difficoltaDiagonale, checks controlli, unsigned int difficoltaMinima) {
+    if (controlli->Valori[vaiAlMinimo]) { // Interruzione per richiesta del minimo
+        if (e->Difficolta == difficoltaMinima) {
+            controlli->Valori[vaiAlMinimo] = false;
+        } else {
+            return false;
+        }
+    }
+
+    if (e->Difficolta > difficoltaDiagonale) { // Interruzione per limite difficoltà
+        return false;
+    }
+
+    if (controlli->Valori[primoElemento]) {                                // Se mi trovo sulla prima diagonale
+        if (e->Precedenza) {                                               // Se ha requisito di precedenza
+            if (difficoltaDiagonale - e->Difficolta >= difficoltaMinima) { // Se ci sta l'elemento di difficoltà minima
+                controlli->Valori[vaiAlMinimo] = true;
+            }
+            return false;
+        }
+    }
+
+    if (!updateChecks(e, controlli, difficoltaDiagonale, difficoltaMinima)) { // Interruzione basata sui controlli
+        return false;
+    }
+    return true;
+}
+
 // Genera tutte le diagonali possibili rispettando il limite di difficoltà e l'ordine di inserimento
 static uint8_t generaDiagonaleR(array elementi, unsigned int difficoltaDiagonale, checks controlli, link soluzione, unsigned int difficoltaMinima, uint8_t elementiInseriti) {
     if (elementiInseriti == MAX_ELEMENTI) { // Interruzione per limite di inserimenti
@@ -105,57 +158,6 @@ void freeDiagonale(diagonale d) {
 void printDiagonale(diagonale d) {
     printf("Il punteggio della diagonale è %f e la sua difficoltà %u:\n", d->Punteggio, d->Difficolta);
     printArray(d->Elementi);
-}
-
-// Ricalcola i controlli
-bool updateChecks(elemento e, checks c, unsigned int difficoltaMassima, unsigned int difficoltaMinima) {
-    bool valido = false;
-    if (c->Richiesti[elementoAvanti]) { // Se il controllo è richiesto
-        if (e->Ingresso == avanti) {
-            c->Valori[elementoAvanti]    = true;
-            c->Richiesti[elementoAvanti] = false; // Rimuovo la richiesta
-        }
-    }
-    if (c->Richiesti[elementoIndietro]) { // Se il controllo è richiesto
-        if (e->Ingresso == indietro) {
-            c->Valori[elementoIndietro]    = true;
-            c->Richiesti[elementoIndietro] = false; // Rimuovo la richiesta
-        }
-    }
-    if (c->Richiesti[dueElementi]) {                                               // Se il controllo è richiesto
-        if (difficoltaMinima <= difficoltaMassima - e->Difficolta && !e->Finale) { // Se rientro nel limite dell'elemento di difficoltà minima e se l'elemento non è un finale
-            c->Valori[dueElementi]    = true;
-            c->Richiesti[dueElementi] = false; // Rimuovo la richiesta
-        }
-    }
-    return verificaChecks(c);
-}
-
-// Verifica se un elemento può esser inserito nella diagonale
-bool insertCheck(elemento e, unsigned int difficoltaDiagonale, checks controlli, unsigned int difficoltaMinima) {
-    if (controlli->Valori[vaiAlMinimo]) { // Interruzione per richiesta del minimo
-        if (e->Difficolta == difficoltaMinima) {
-            controlli->Valori[vaiAlMinimo] = false;
-        } else {
-            return false;
-        }
-    }
-
-    if (e->Difficolta > difficoltaDiagonale) { // Interruzione per limite difficoltà
-        return false;
-    }
-
-    if (controlli->Valori[primoElemento]) { // Se mi trovo sulla prima diagonale
-        if (e->Precedenza) {                // Se ha requisito di precedenza
-            controlli->Valori[vaiAlMinimo] = true;
-            return false;
-        }
-    }
-
-    if (!updateChecks(e, controlli, difficoltaDiagonale, difficoltaMinima)) { // Interruzione basata sui controlli
-        return false;
-    }
-    return true;
 }
 
 // Genera la miglior diagonale in base ai limiti e ai controlli
