@@ -12,7 +12,7 @@ static unsigned int updateLimiteDifficolta(unsigned int difficoltaDiagonalePrece
 }
 
 // Riordina gli elementi per la terza diagonale
-static void programmaPerTerzaDiagonale(array a, unsigned int difficoltaDiagonale, uint8_t difficoltaMinima) {
+static void programmaPerTerzaDiagonale(array a, unsigned int difficoltaDiagonale, elemento elementoMinimo) {
     array maggioriDiBonus = validItemsArray(a, (void *)&elementoIsMajorEqualThanBonus, (item)&DIFFICOLTA_BONUS); // Creo un array contenente solo gli elementi con difficoltà da bonus in su
 
     void *args[2] = {&difficoltaDiagonale, (void *)&DIFFICOLTA_BONUS};         // Creo gli argomenti per il sorting
@@ -20,10 +20,10 @@ static void programmaPerTerzaDiagonale(array a, unsigned int difficoltaDiagonale
 
     elemento miglioreDelBonus = maggioriDiBonus->Objects[0]; // Salvo l'elemento con bonus migliore
     if (miglioreDelBonus->Precedenza) {                      // Se ha requisito di precedenza
-        unsigned int tempDifficolta = difficoltaDiagonale - difficoltaMinima;
+        unsigned int tempDifficolta = difficoltaDiagonale - elementoMinimo->Difficolta;
         args[0]                     = &tempDifficolta;
         mergeSort(maggioriDiBonus, (void *)&maggiorValoreConMoltiplicatore, args); // Eseguo l'ordinamento
-        miglioreDelBonus = maggioriDiBonus->Objects[0];                   // Salvo l'elemento con bonus migliore
+        miglioreDelBonus = maggioriDiBonus->Objects[0];                            // Salvo l'elemento con bonus migliore
     }
 
     freeArray(maggioriDiBonus, false); // Elimino l'array
@@ -41,11 +41,11 @@ static programma generaDiagonaliPerProgramma(array elementi, unsigned int DD, un
 
     // Genero la terza diagonale
     if (DD >= DIFFICOLTA_BONUS) {                                                                         // Se la difficoltà per diagonale rientra nel bonus
-        programmaPerTerzaDiagonale(elementi, updateLimiteDifficolta(0, DD, &DP), diffMinima->Difficolta); // Ordino l'array per la terza
+        programmaPerTerzaDiagonale(elementi, updateLimiteDifficolta(0, DD, &DP), diffMinima); // Ordino l'array per la terza
     } else {
         mergeSort(elementi, (void *)&maggiorValore, &DD); // Ordino l'array per convenienza
     }
-    p->Diagonali[2] = generaDiagonale(elementi, updateLimiteDifficolta(0, DD, &DP), c, diffMinima->Difficolta); // Genero la diagonale
+    p->Diagonali[2] = generaDiagonale(elementi, updateLimiteDifficolta(0, DD, &DP), c, diffMinima); // Genero la diagonale
     tmpDiagonale    = p->Diagonali[2];
     calcolaPunteggioTerzaDiagonale(tmpDiagonale);
 
@@ -54,13 +54,13 @@ static programma generaDiagonaliPerProgramma(array elementi, unsigned int DD, un
         mergeSort(elementi, (void *)&maggiorValore, &DD); // Ordino l'array per convenienza
     }
     c->Richiesti[elementoAvanti] = true; // Aggiungo la richiesta di un elemento in avanti
-    p->Diagonali[0]              = generaDiagonale(elementi, updateLimiteDifficolta(tmpDiagonale->Difficolta, DD, &DP), c, diffMinima->Difficolta);
+    p->Diagonali[0]              = generaDiagonale(elementi, updateLimiteDifficolta(tmpDiagonale->Difficolta, DD, &DP), c, diffMinima);
     tmpDiagonale                 = p->Diagonali[0];
 
     // Genero la seconda diagonale
     DP += diffMinima->Difficolta;          // Rimuovo il limite
     c->Richiesti[elementoIndietro] = true; // Aggiungo la richiesta di un elemento indietro
-    p->Diagonali[1]                = generaDiagonale(elementi, updateLimiteDifficolta(tmpDiagonale->Difficolta, DD, &DP), c, diffMinima->Difficolta);
+    p->Diagonali[1]                = generaDiagonale(elementi, updateLimiteDifficolta(tmpDiagonale->Difficolta, DD, &DP), c, diffMinima);
     tmpDiagonale                   = p->Diagonali[1];
 
     return p;

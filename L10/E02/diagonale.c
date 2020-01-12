@@ -8,13 +8,13 @@ static const uint8_t MAX_ELEMENTI = 5;
 static bool updateChecks(elemento e, checks c, unsigned int difficoltaMassima, unsigned int difficoltaMinima) {
     bool valido = false;
     if (c->Richiesti[elementoAvanti]) { // Se il controllo è richiesto
-        if (e->Ingresso == avanti) {
+        if (e->Tipo == avanti) {
             c->Valori[elementoAvanti]    = true;
             c->Richiesti[elementoAvanti] = false; // Rimuovo la richiesta
         }
     }
     if (c->Richiesti[elementoIndietro]) { // Se il controllo è richiesto
-        if (e->Ingresso == indietro) {
+        if (e->Tipo == indietro) {
             c->Valori[elementoIndietro]    = true;
             c->Richiesti[elementoIndietro] = false; // Rimuovo la richiesta
         }
@@ -29,9 +29,9 @@ static bool updateChecks(elemento e, checks c, unsigned int difficoltaMassima, u
 }
 
 // Verifica se un elemento può esser inserito nella diagonale
-static bool insertCheck(elemento e, unsigned int difficoltaDiagonale, checks controlli, unsigned int difficoltaMinima) {
+static bool insertCheck(elemento e, unsigned int difficoltaDiagonale, checks controlli, elemento elementoMinimo) {
     if (controlli->Valori[vaiAlMinimo]) { // Interruzione per richiesta del minimo
-        if (e->Difficolta == difficoltaMinima) {
+        if (e->Difficolta == elementoMinimo->Difficolta) {
             controlli->Valori[vaiAlMinimo] = false;
         } else {
             return false;
@@ -42,23 +42,23 @@ static bool insertCheck(elemento e, unsigned int difficoltaDiagonale, checks con
         return false;
     }
 
-    if (controlli->Valori[primoElemento]) {                                // Se mi trovo sulla prima diagonale
-        if (e->Precedenza) {                                               // Se ha requisito di precedenza
-            if (difficoltaDiagonale - e->Difficolta >= difficoltaMinima) { // Se ci sta l'elemento di difficoltà minima
+    if (controlli->Valori[primoElemento]) {                                          // Se mi trovo sulla prima diagonale
+        if (e->Precedenza) {                                                         // Se ha requisito di precedenza
+            if (difficoltaDiagonale - e->Difficolta >= elementoMinimo->Difficolta) { // Se ci sta l'elemento di difficoltà minima
                 controlli->Valori[vaiAlMinimo] = true;
             }
             return false;
         }
     }
 
-    if (!updateChecks(e, controlli, difficoltaDiagonale, difficoltaMinima)) { // Interruzione basata sui controlli
+    if (!updateChecks(e, controlli, difficoltaDiagonale, elementoMinimo->Difficolta)) { // Interruzione basata sui controlli
         return false;
     }
     return true;
 }
 
 // Genera tutte le diagonali possibili rispettando il limite di difficoltà e l'ordine di inserimento
-static uint8_t generaDiagonaleR(array elementi, unsigned int difficoltaDiagonale, checks controlli, link soluzione, unsigned int difficoltaMinima, uint8_t elementiInseriti) {
+static uint8_t generaDiagonaleR(array elementi, unsigned int difficoltaDiagonale, checks controlli, link soluzione, elemento elementoMinimo, uint8_t elementiInseriti) {
     if (elementiInseriti == MAX_ELEMENTI) { // Interruzione per limite di inserimenti
         return elementiInseriti;
     }
@@ -67,15 +67,15 @@ static uint8_t generaDiagonaleR(array elementi, unsigned int difficoltaDiagonale
     }
     for (unsigned int i = 0; i < elementi->ObjectsNumber; i++) { // Esploro tutti gli elementi
         elemento tmp                     = elementi->Objects[i];
-        controlli->Valori[primoElemento] = elementiInseriti == 0;                 // Aggiorno il valore della prima diagonale
-        if (insertCheck(tmp, difficoltaDiagonale, controlli, difficoltaMinima)) { // Se l'elemento è inseribile
+        controlli->Valori[primoElemento] = elementiInseriti == 0;               // Aggiorno il valore della prima diagonale
+        if (insertCheck(tmp, difficoltaDiagonale, controlli, elementoMinimo)) { // Se l'elemento è inseribile
             putItem(soluzione, tmp);
             elementiInseriti++;
             if (tmp->Finale) {
                 return elementiInseriti;
             }
             // Ricorro per l'elemento successivo
-            return generaDiagonaleR(elementi, (difficoltaDiagonale - tmp->Difficolta), controlli, soluzione, difficoltaMinima, elementiInseriti);
+            return generaDiagonaleR(elementi, (difficoltaDiagonale - tmp->Difficolta), controlli, soluzione, elementoMinimo, elementiInseriti);
         }
     }
     return elementiInseriti;
@@ -161,9 +161,9 @@ void printDiagonale(diagonale d) {
 }
 
 // Genera la miglior diagonale in base ai limiti e ai controlli
-diagonale generaDiagonale(array elementi, unsigned int DD, checks controlli, unsigned int difficoltaMinima) {
+diagonale generaDiagonale(array elementi, unsigned int DD, checks controlli, elemento elementoMinimo) {
     link maxDiagonale        = creaLink(NULL);
-    uint8_t elementiInseriti = generaDiagonaleR(elementi, DD, controlli, maxDiagonale, difficoltaMinima, 0);
+    uint8_t elementiInseriti = generaDiagonaleR(elementi, DD, controlli, maxDiagonale, elementoMinimo, 0);
     diagonale tempDiag       = creaDiagonale(elementiInseriti); // Creo la diagonale
 
     if (elementiInseriti > 0) {
