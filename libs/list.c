@@ -42,7 +42,7 @@ link getHead(link l) {
     return getHead(l->Previous);
 }
 
-// Aggiorna il link con l'elemento successivo in lista, se non esiste restituisce false
+// Aggiorna il link con l'elemento successivo in lista, se sono sull'ultimo elemento restituisce false
 bool getNext(link *l) {
     link list = *l;
     if (list == NULL) { // In caso di elemento nullo
@@ -55,7 +55,7 @@ bool getNext(link *l) {
     return true;
 }
 
-// Aggiorna il link con l'elemento precedente in lista, se non esiste restituisce false
+// Aggiorna il link con l'elemento precedente in lista, se sono sul primo elemento restituisce false
 bool getPrevious(link *l) {
     link list = *l;
     if (list == NULL) { // In caso di elemento nullo
@@ -175,7 +175,7 @@ void putItem(link list, item i) {
 /* Ricerca un item tramite un campo identificativo ed una funzione di match partendo dal link sino alla tail, restitusice NULL se non è stato trovato
    matchID = Funzione che restituisce true se l'elemento corretto combacia con l'identificativo */
 item searchByIDfromHead(link list, void *ID, bool(*matchID(item, void *))) {
-    if (list->Next == NULL) {
+    if (list->Next == NULL) { // Se mi trovo sull'ultimo elemento
         return (*matchID)(list->Item, ID) ? list->Item : NULL;
     }
     return (*matchID)(list->Item, ID) ? list->Item : (*matchID)(list->Next, ID);
@@ -184,7 +184,7 @@ item searchByIDfromHead(link list, void *ID, bool(*matchID(item, void *))) {
 /* Ricerca un item tramite un campo identificativo ed una funzione di match partendo dal link sino alla head, restitusice NULL se non è stato trovato
    matchID = Funzione che restituisce true se l'elemento corretto combacia con l'identificativo */
 item searchByIDfromTail(link list, void *ID, bool(*matchID(item, void *))) {
-    if (list->Previous == NULL) {
+    if (list->Previous == NULL) { // Se mi trovo sul primo elemento
         return (*matchID)(list->Item, ID) ? list->Item : NULL;
     }
     return (*matchID)(list->Item, ID) ? list->Item : (*matchID)(list->Previous, ID);
