@@ -42,6 +42,35 @@ link getHead(link l) {
     return getHead(l->Previous);
 }
 
+// Aggiorna il link nell'elemento successivo in lista, se non esiste restituisce false
+bool getNext(link *l) {
+    link list = *l;
+    if (list == NULL) { // In caso di elemento nullo
+        return false;
+    }
+    if (list->Next == NULL) { // In caso di elemento inesistente
+        return false;
+    }
+    *l = list->Next; // Aggiorno l'elemento
+    return true;
+}
+
+// Restituisce il numero di elementi presenti in una lista
+unsigned int getNumberOfItems(link l) {
+    l = getHead(l); // Risalgo alla head
+
+    if (getNext(&l)) { // Se non c'è nemmeno un elemento successivo
+        return 0;
+    }
+
+    unsigned int count = 0;
+    do {
+        count++;
+    } while (getNext(&l)); // Sinché esiste l'elemento successivo
+
+    return count;
+}
+
 // Restituisce la coda di una lista
 link getTail(link l) {
     if (l->Next == NULL) {
