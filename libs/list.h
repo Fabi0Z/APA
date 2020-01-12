@@ -10,7 +10,8 @@ struct List {
     link Next;
 };
 
-link validItemsList(link list, bool (*valid)(item i, item args), item args, unsigned int *numberOfItems);
+link validItemsListWithCount(link list, bool (*valid)(item i, item args), item args, unsigned int *numberOfItems);
+link validItemsList(link list, bool (*valid)(item i, item args), item args);
 item searchByID(link list, void *ID, bool(*matchID(item, void *)));
 item searchByIDfromTail(link list, void *ID, bool(*matchID(item, void *)));
 item searchByIDfromHead(link list, void *ID, bool(*matchID(item, void *)));

@@ -211,7 +211,22 @@ item searchByID(link list, void *ID, bool(*matchID(item, void *))) {
 }
 
 // Restituisce una lista con solo gli elementi validi
-link validItemsList(link list, bool (*valid)(item i, item args), item args, unsigned int *numberOfItems) {
+link validItemsList(link list, bool (*valid)(item i, item args), item args) {
+    if (list == NULL) { // Interruzione per lista non valida
+        return NULL;
+    }
+    list         = getHead(list); // trovo la head
+    link newList = newLink(NULL);
+    while (getNext(&list)) {              // Sinché ho l'elemento successivo
+        if ((*valid)(list->Item, args)) { // Se l'elemento è valido
+            putItem(newList, list->Item);
+        }
+    }
+    return newList;
+}
+
+// Restituisce una lista con solo gli elementi validi
+link validItemsListWithCount(link list, bool (*valid)(item i, item args), item args, unsigned int *numberOfItems) {
     if (list == NULL) { // Interruzione per lista non valida
         return NULL;
     }
