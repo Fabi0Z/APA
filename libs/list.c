@@ -1,12 +1,32 @@
 #include "list.h"
 
-// Crea un nodo di lista
-link newLink(item i) {
-    link l      = (link)malloc(sizeof(struct List));
-    l->Item     = i;
-    l->Previous = NULL;
-    l->Next     = NULL;
-    return l;
+// Conta gli elementi in una lista
+unsigned int countItemsList(link list) {
+    if (list == NULL) { // Interruzione per lista non valida
+        return 0;
+    }
+
+    list               = getHead(list); // trovo la head
+    unsigned int count = 0;
+    while (getNext(&list)) { // Sinché ho l'elemento successivo
+        count++;
+    }
+    return count;
+}
+
+// Conta gli elementi in una lista
+unsigned int countValidItemsList(link list, bool (*valid)(item i, item args), item args) {
+    if (list == NULL) { // Interruzione per lista non valida
+        return 0;
+    }
+    list               = getHead(list); // trovo la head
+    unsigned int count = 0;
+    while (getNext(&list)) {              // Sinché ho l'elemento successivo
+        if ((*valid)(list->Item, args)) { // Se l'elemento è valido
+            count++;
+        }
+    }
+    return count;
 }
 
 // Elimina ogni nodo di una lista a partire dalla head
@@ -68,28 +88,21 @@ bool getPrevious(link *l) {
     return true;
 }
 
-// Restituisce il numero di elementi presenti in una lista
-unsigned int getNumberOfItems(link l) {
-    l = getHead(l); // Risalgo alla head
-
-    if (getNext(&l)) { // Se non c'è nemmeno un elemento successivo
-        return 0;
-    }
-
-    unsigned int count = 0;
-    do {
-        count++;
-    } while (getNext(&l)); // Sinché esiste l'elemento successivo
-
-    return count;
-}
-
 // Restituisce la coda di una lista
 link getTail(link l) {
     if (l->Next == NULL) {
         return l;
     }
     return getTail(l->Next);
+}
+
+// Crea un nodo di lista
+link newLink(item i) {
+    link l      = (link)malloc(sizeof(struct List));
+    l->Item     = i;
+    l->Previous = NULL;
+    l->Next     = NULL;
+    return l;
 }
 
 // Estrae e restituisce l'ultimo item da una lista
@@ -195,4 +208,31 @@ item searchByIDfromTail(link list, void *ID, bool(*matchID(item, void *))) {
 item searchByID(link list, void *ID, bool(*matchID(item, void *))) {
     link top = searchByIDfromTail(list, ID, matchID);
     return top == NULL ? searchByIDfromHead(list, ID, matchID) : top;
+}
+
+// Restituisce una lista con solo gli elementi validi
+link validItemsList(link list, bool (*valid)(item i, item args), item args, unsigned int *numberOfItems) {
+    if (list == NULL) { // Interruzione per lista non valida
+        return NULL;
+    }
+    list         = getHead(list); // trovo la head
+    link newList = newLink(NULL);
+
+    if (numberOfItems == NULL) {
+        while (getNext(&list)) {              // Sinché ho l'elemento successivo
+            if ((*valid)(list->Item, args)) { // Se l'elemento è valido
+                putItem(newList, list->Item);
+            }
+        }
+    } else {
+        *numberOfItems = 0;
+        while (getNext(&list)) {              // Sinché ho l'elemento successivo
+            if ((*valid)(list->Item, args)) { // Se l'elemento è valido
+                putItem(newList, list->Item);
+                *numberOfItems++;
+            }
+        }
+    }
+
+    return newList;
 }

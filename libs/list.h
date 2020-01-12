@@ -10,6 +10,7 @@ struct List {
     link Next;
 };
 
+link validItemsList(link list, bool (*valid)(item i, item args), item args, unsigned int *numberOfItems);
 item searchByID(link list, void *ID, bool(*matchID(item, void *)));
 item searchByIDfromTail(link list, void *ID, bool(*matchID(item, void *)));
 item searchByIDfromHead(link list, void *ID, bool(*matchID(item, void *)));
@@ -21,14 +22,15 @@ item pullLink(link list);
 item pullItem(link list);
 item popLink(link list);
 item popItem(link list);
+link newLink(item i);
 link getTail(link l);
-unsigned int getNumberOfItems(link l);
 bool getPrevious(link *l);
-bool getNext(link *l);
-link getHead(link l);
 void freeList(link list);
 void freeListFromTail(link list);
 void freeListFromHead(link list);
-link newLink(item i);
+unsigned int countValidItemsList(link list, bool (*valid)(item i, item args), item args);
+bool getNext(link *l);
+link getHead(link l);
+unsigned int countItemsList(link list);
 
 #endif // LIST_H
