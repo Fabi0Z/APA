@@ -1,7 +1,7 @@
 #include "list.h"
 
 // Crea un nodo di lista
-link creaLink(item i) {
+link newLink(item i) {
     link l      = (link)malloc(sizeof(struct List));
     l->Item     = i;
     l->Previous = NULL;

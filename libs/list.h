@@ -28,6 +28,6 @@ link getHead(link l);
 void freeList(link list);
 void freeListFromTail(link list);
 void freeListFromHead(link list);
-link creaLink(item i);
+link newLink(item i);
 
 #endif // LIST_H
