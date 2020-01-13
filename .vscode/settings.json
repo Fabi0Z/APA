@@ -38,6 +38,7 @@
         "limits": "c",
         "list.h": "c",
         "array.h": "c",
-        "datastructlib.h": "c"
+        "datastructlib.h": "c",
+        "list": "c"
     }
 }
