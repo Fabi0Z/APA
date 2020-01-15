@@ -5,17 +5,14 @@ static const unsigned int DEFAULT_VALUE = 0;
 // Crea una matrice di adiacenze
 matriceAdiacenze creaMatrice(unsigned int size) {
     matriceAdiacenze m = malloc(sizeof(struct MatriceAdiacenze));
-    m->Size            = size;
-
-    if (m->Size == 0) { // Se la dimensione è 0
+    if (size == 0) { // Se la dimensione è 0
         m->Matrix = NULL;
         return m;
     }
-
-    m->Matrix = calloc(m->Size, sizeof(unsigned int *));      // Alloco per le X
-    for (unsigned int i = 0; i < m->Size; i++) {              // Per ogni X
-        m->Matrix[i] = calloc(m->Size, sizeof(unsigned int)); // Alloco celle Y
-        for (unsigned int j = 0; j < m->Size; j++) {
+    m->Matrix = calloc(size, sizeof(unsigned int *));      // Alloco per le X
+    for (unsigned int i = 0; i < size; i++) {              // Per ogni X
+        m->Matrix[i] = calloc(size, sizeof(unsigned int)); // Alloco celle Y
+        for (unsigned int j = 0; j < size; j++) {
             m->Matrix[i][j] = DEFAULT_VALUE; // Assegno il valore di default
         }
     }
@@ -23,7 +20,7 @@ matriceAdiacenze creaMatrice(unsigned int size) {
 }
 
 // Elimina una matrice di adiacenze
-void freeMatrice(matriceAdiacenze m) {
+void freeMatrice(matriceAdiacenze m, unsigned int size) {
     if (m == NULL) {
         return;
     }
@@ -31,7 +28,7 @@ void freeMatrice(matriceAdiacenze m) {
         free(m);
         return;
     }
-    for (unsigned i = 0; i < m->Size; i++) {
+    for (unsigned i = 0; i < size; i++) {
         free(m->Matrix[i]);
     }
     free(m->Matrix);

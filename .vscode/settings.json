@@ -39,6 +39,7 @@
         "list.h": "c",
         "array.h": "c",
         "datastructlib.h": "c",
-        "list": "c"
+        "list": "c",
+        "matriceadiacenze.h": "c"
     }
 }

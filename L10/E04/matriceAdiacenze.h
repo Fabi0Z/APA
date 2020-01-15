@@ -8,7 +8,7 @@ typedef struct MatriceAdiacenze {
     unsigned int Size;
 } * matriceAdiacenze;
 
-void freeMatrice(matriceAdiacenze m);
+void freeMatrice(matriceAdiacenze m, unsigned int size);
 matriceAdiacenze creaMatrice(unsigned int size);
 
 #endif // ! MATRICEADIACENZE_H

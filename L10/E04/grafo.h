@@ -3,6 +3,7 @@
 
 #include "arco.h"
 #include "array.h"
+#include "matriceAdiacenze.h"
 #include "shortlistadapted.h"
 
 struct Grafo;
