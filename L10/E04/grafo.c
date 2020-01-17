@@ -15,6 +15,10 @@ grafo creaGrafo(unsigned int NumeroVertici, unsigned int NumeroArchi) {
 
 void creaListaAdiacenze(grafo g) {
     // Alloco la lista adiacenze
-    g->ListaAdiacenze = newArray(&freeList, NULL, NULL);
+    g->ListaAdiacenze = newArray((void *)&freeList, NULL, NULL);
     allocateArray(g->ListaAdiacenze, g->NumeroVertici);
+}
+
+void creaMatriceAdiacenze(grafo g) {
+    g->Matrice = creaMatrice(g->NumeroArchi);
 }
