@@ -5,6 +5,20 @@ bool checkFilestream(FILE *stream) {
     return stream == NULL ? false : true;
 }
 
+// Restituisce true se due stringhe sono uguali
+bool equalStrings(char *a, char *b) {
+    unsigned int Length = strlen(a);
+    if (strlen(b) != Length) {
+        return false;
+    }
+    for (unsigned int i = 0; i < Length; i++) {
+        if (a[i] != b[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
 // Stampa un "Premi invio per continuare..."
 void premiPerContinuare() {
     puts("Premi invio per continuare...");
