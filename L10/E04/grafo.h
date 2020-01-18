@@ -9,4 +9,8 @@
 struct Grafo;
 typedef struct Grafo *grafo;
 
+grafo parseGrafo(char *filename);
+void creaListaAdiacenze(grafo g);
+grafo creaGrafo(unsigned int NumeroVertici, unsigned int NumeroArchi);
+
 #endif // ! GRAFO_H
