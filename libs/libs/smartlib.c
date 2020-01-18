@@ -9,12 +9,14 @@ bool checkFilestream(FILE *stream) {
 unsigned int countNumberOfLines(char *filename) {
     FILE *stream       = smartFopen(filename, "r");
     unsigned int lines = 0;
-    char temp[2];
-    fgets(temp, 1, stream); // Leggo la prima riga
-    while (!feof(stream)) { // Sinché non raggiungo l'EOF
-        lines++;
-        fgets(temp, 1, stream); // Leggo la riga successiva
-    }
+    char c, precedente;
+    precedente = EOF;
+    for (c = getc(stream); c != EOF; precedente = c, c = getc(stream))
+        if (c == '\n') {
+            lines++;
+        }
+    lines += precedente != '\n' ? 1 : 0;
+    fclose(stream);
     return lines;
 }
 
