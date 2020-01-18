@@ -8,9 +8,10 @@
 
 typedef void *item;
 
-FILE *smartFopen(char *filename, char *mode);
 void premiPerContinuare();
 bool equalStrings(char *a, char *b);
+FILE *smartFopen(char *filename, char *mode);
+unsigned int countNumberOfLines(char *filename);
 bool checkFilestream(FILE *stream);
 
 #endif // ! SMARTLIB_H

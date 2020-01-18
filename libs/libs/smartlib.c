@@ -5,6 +5,19 @@ bool checkFilestream(FILE *stream) {
     return stream == NULL ? false : true;
 }
 
+// Conta il numero di righe di un file
+unsigned int countNumberOfLines(char *filename) {
+    FILE *stream       = smartFopen(filename, "r");
+    unsigned int lines = 0;
+    char temp[2];
+    fgets(temp, 1, stream); // Leggo la prima riga
+    while (!feof(stream)) { // Sinché non raggiungo l'EOF
+        lines++;
+        fgets(temp, 1, stream); // Leggo la riga successiva
+    }
+    return lines;
+}
+
 // Restituisce true se due stringhe sono uguali
 bool equalStrings(char *a, char *b) {
     unsigned int Length = strlen(a);
