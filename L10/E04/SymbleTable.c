@@ -81,6 +81,11 @@ symbleTable newSymbleTable(unsigned int MaxItems) {
     return s;
 }
 
+// Restituisce il numero di elementi presenti nella symbleTable
+unsigned int numberOfItem(symbleTable s) {
+    return s->AddedItems;
+}
+
 // Modifico un symble della table
 bool updateSymble(symbleTable s, unsigned int Index, char *Name) {
     if (OutOfRange(s, Index)) { // Interruzione numero non possibile
