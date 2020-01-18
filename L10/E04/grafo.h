@@ -1,8 +1,8 @@
 #ifndef GRAFO_H
 #define GRAFO_H
 
+#include "SymbleTable.h"
 #include "arco.h"
-#include "array.h"
 #include "matriceAdiacenze.h"
 #include "shortlistadapted.h"
 
