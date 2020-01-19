@@ -28,6 +28,10 @@ unsigned int getPeso(adiacenza a) {
 
 // Crea una nuova adiacenza
 adiacenza newAdiacenza(unsigned int Destinazione, unsigned int Peso) {
-    adiacenza a     = malloc(sizeof(struct Adiacenza));
-    a->Destinazione = calloc((int)__ADIACENZA_PESATA + 1, sizeof(unsigned int)); // Alloco in base a lista pesata o meno
+    adiacenza a        = malloc(sizeof(struct Adiacenza));
+    a->Destinazione    = calloc((int)__ADIACENZA_PESATA + 1, sizeof(unsigned int)); // Alloco in base a lista pesata o meno
+    a->Destinazione[0] = Destinazione;
+    if (__ADIACENZA_PESATA) {
+        a->Destinazione[1] = Peso;
+    }
 }
