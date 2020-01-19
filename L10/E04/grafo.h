@@ -3,8 +3,8 @@
 
 #include "SymbleTable.h"
 #include "arco.h"
+#include "list.h"
 #include "matriceAdiacenze.h"
-#include "shortlistadapted.h"
 
 struct Grafo;
 typedef struct Grafo *grafo;

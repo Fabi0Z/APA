@@ -8,6 +8,7 @@ struct Grafo {
     unsigned int NumeroArchi;
 };
 
+// Aggiunge un arco alla tabella di simboli
 static void addArcoToSymbleTable(grafo g, arco a) {
     g->NumeroVertici += addSymble(g->Corrispondenze, a->IDElaboratori[0]) ? 1 : 0; // Se l'elaboratore è già stato considerato non incremento il numero di nodi
     g->NumeroVertici += addSymble(g->Corrispondenze, a->IDElaboratori[1]) ? 1 : 0; // Se l'elaboratore è già stato considerato non incremento il numero di nodi
@@ -35,6 +36,13 @@ void creaListaAdiacenze(grafo g) {
     // Alloco la lista adiacenze
     g->ListaAdiacenze = newArray((void *)&freeList, NULL, NULL);
     allocateArray(g->ListaAdiacenze, g->NumeroVertici);
+
+    // Esploro la matrice
+    for (unsigned int i = 0; i < g->Matrice->Size; i++) {
+        for (unsigned int j = 0; j < g->Matrice->Size; j++) {
+            /* code */
+        }
+    }
 }
 
 grafo parseGrafo(char *filename) {
