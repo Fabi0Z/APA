@@ -56,6 +56,9 @@ void freeArco(arco a) {
 arco newArco() {
     arco a    = malloc(sizeof(struct Arco));
     a->Flusso = 0;
+
+    a->IDElaboratori = calloc(NUMERO_COPPIE, sizeof(char *));
+    a->IDRete        = calloc(NUMERO_COPPIE, sizeof(char *));
     for (uint8_t i = 0; i < NUMERO_COPPIE; i++) { // Per ogni coppia
         a->IDElaboratori[i] = NULL;
         a->IDRete[i]        = NULL;
@@ -72,7 +75,7 @@ arco parseArco(char *string) {
     for (uint8_t i = 0; i < NUMERO_COPPIE; i++) { // Per ogni coppia
         conto += sscanf(string, "%s%s%[^\n]", temp->IDElaboratori[i], temp->IDRete[i], string);
     }
-    conto += sscanf(string, "%u", temp->Flusso);
+    conto += sscanf(string, "%u", &temp->Flusso);
 
     if (conto != NUMERO_COPPIE * 3 + 1) { // Controllo sugli elementi letti
         freeArco(temp);

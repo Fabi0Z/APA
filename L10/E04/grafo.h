@@ -1,9 +1,9 @@
 #ifndef GRAFO_H
 #define GRAFO_H
 
+#include "ListaAdicenze.h"
 #include "SymbleTable.h"
 #include "arco.h"
-#include "list.h"
 #include "matriceAdiacenze.h"
 
 struct Grafo;

@@ -24,11 +24,11 @@ bool addSymble(symbleTable s, char *Name) {
     if (MaxLimit(s)) { // Se supero il limite
         return false;
     }
-    if (!checkSymbleByName(s, Name)) { // Se esiste già un elemento con questo nome
+    if (checkSymbleByName(s, Name)) { // Se esiste già un elemento con questo nome
         return false;
     }
     s->Table->Objects[s->AddedItems++] = newSymble(strlen(Name)); // Creo il simbolo
-    updateSymbleName(s->Table->Objects[s->AddedItems], Name);     // Aggiorno il nome
+    updateSymbleName(s->Table->Objects[s->AddedItems - 1], Name); // Aggiorno il nome
     return true;
 }
 

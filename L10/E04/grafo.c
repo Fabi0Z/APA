@@ -1,7 +1,7 @@
 #include "grafo.h"
 
 struct Grafo {
-    array ListaAdiacenze;
+    listaAdicenze ListaAdiacenze;
     matriceAdiacenze Matrice;
     symbleTable Corrispondenze;
     unsigned int NumeroVertici;
@@ -29,18 +29,20 @@ grafo creaGrafo(unsigned int NumeroVertici, unsigned int NumeroArchi) {
     g->NumeroArchi    = NumeroArchi;
     g->NumeroVertici  = NumeroVertici;
     g->Corrispondenze = newSymbleTable(NumeroArchi);
+    return g;
 }
 
 // Crea la lista di adiacenze del grafo
 void creaListaAdiacenze(grafo g) {
-    // Alloco la lista adiacenze
-    g->ListaAdiacenze = newArray((void *)&freeList, NULL, NULL);
-    allocateArray(g->ListaAdiacenze, g->NumeroVertici);
+    g->ListaAdiacenze = newListaAdiacenze(g->NumeroVertici); // Creo la lista
 
     // Esploro la matrice
+    unsigned int **Matrix = g->Matrice->Matrix;
     for (unsigned int i = 0; i < g->Matrice->Size; i++) {
         for (unsigned int j = 0; j < g->Matrice->Size; j++) {
-            /* code */
+            if (Matrix[i][j] != 0) { // Se il collegamento esiste
+                addAdiacenza(g->ListaAdiacenze, i, j, Matrix[i][j]);
+            }
         }
     }
 }
