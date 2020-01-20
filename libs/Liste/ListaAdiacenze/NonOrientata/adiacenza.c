@@ -1,0 +1,1 @@
+../adiacenza.c
