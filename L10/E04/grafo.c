@@ -8,6 +8,8 @@ struct Grafo {
     unsigned int NumeroArchi;
 };
 
+static uint8_t MAX_NAME = 50;
+
 // Aggiunge un arco alla tabella di simboli
 static void addArcoToSymbleTable(grafo g, arco a) {
     g->NumeroVertici += addSymble(g->Corrispondenze, a->IDElaboratori[0]) ? 1 : 0; // Se l'elaboratore è già stato considerato non incremento il numero di nodi
@@ -50,7 +52,7 @@ void creaListaAdiacenze(grafo g) {
 grafo parseGrafo(char *filename) {
     unsigned int numeroArchi = countNumberOfLines(filename);
     grafo g                  = creaGrafo(0, numeroArchi);
-    unsigned int max_string  = 250;
+    unsigned int max_string  = MAX_NAME * 5 + 1;
     FILE *stream             = smartFopen(filename, "r");
 
     link HEAD = newLink(NULL); // Creo la head della lista di archi
@@ -72,4 +74,17 @@ grafo parseGrafo(char *filename) {
     freeList(HEAD); // Elimino la lista
     fclose(stream); // Chiudo il filestream
     return g;
+}
+
+// Stampa un grafo
+void printGrafo(grafo g) {
+    // Esploro la matrice
+    unsigned int **Matrix = g->Matrice->Matrix;
+    for (unsigned int i = 0; i < g->Matrice->Size; i++) {
+        for (unsigned int j = 0; j < g->Matrice->Size; j++) {
+            if (Matrix[i][j] != 0) {                                                                                          // Se il collegamento esiste
+                printf("%s %s %u\n", getSymbleName(g->Corrispondenze, i), getSymbleName(g->Corrispondenze, j), Matrix[i][j]); // Stampo l'arco
+            }
+        }
+    }
 }
