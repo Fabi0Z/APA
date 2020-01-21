@@ -3,7 +3,7 @@
 
 #include "adiacenza.h"
 #include "array.h"
-#include "list.h"
+#include "shortlistadapted.h"
 
 typedef struct ListaAdicenze {
     array Indici;
