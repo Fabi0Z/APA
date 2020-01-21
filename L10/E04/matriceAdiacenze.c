@@ -9,7 +9,8 @@ matriceAdiacenze creaMatrice(unsigned int size) {
         m->Matrix = NULL;
         return m;
     }
-    m->Matrix = calloc(size, sizeof(unsigned int *));      // Alloco per le X
+    m->Matrix = calloc(size, sizeof(unsigned int *)); // Alloco per le X
+    m->Size   = size;
     for (unsigned int i = 0; i < size; i++) {              // Per ogni X
         m->Matrix[i] = calloc(size, sizeof(unsigned int)); // Alloco celle Y
         for (unsigned int j = 0; j < size; j++) {
@@ -32,5 +33,5 @@ void freeMatrice(matriceAdiacenze m, unsigned int size) {
         free(m->Matrix[i]);
     }
     free(m->Matrix);
-    free(m);    
+    free(m);
 }
