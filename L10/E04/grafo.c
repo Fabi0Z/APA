@@ -25,19 +25,44 @@ static void addArcoToMatrice(grafo g, arco a) {
     g->Matrice->Matrix[elab0][elab1] = a->Flusso; // Salvo il valore del flusso
 }
 
+// Stampa un arco di un grafo
+static void printArcoGrafo(grafo g, unsigned int Nodo0, unsigned int Nodo1) {
+    printf("%s %s %u\n", getSymbleName(g->Corrispondenze, Nodo0), getSymbleName(g->Corrispondenze, Nodo1), g->Matrice->Matrix[Nodo0][Nodo1]); // Stampo l'arco
+}
+
+// Stampa un arco di un grafo
+static void printArcoGrafoLista(grafo g, link nodo, unsigned int nodoPartenza) {
+    adiacenza a = nodo->Item;
+    printf("%s %s %u\n", getSymbleName(g->Corrispondenze, nodoPartenza), getSymbleName(g->Corrispondenze, a->Destinazione[0]), getPeso(a)); // Stampo l'arco
+}
+
+// Stampa il grafo a partire dalla matrice di adiacenze
+static void printGrafoMatriceAdiacenze(grafo g) {
+    // Esploro la matrice
+    unsigned int **Matrix = g->Matrice->Matrix;
+    for (unsigned int i = 0; i < g->Matrice->Size; i++) {
+        for (unsigned int j = 0; j < g->Matrice->Size; j++) {
+            if (Matrix[i][j] != 0) { // Se il collegamento esiste
+                printArcoGrafo(g, i, j);
+            }
+        }
+    }
+}
+
 // Crea un grafo
 grafo creaGrafo(unsigned int NumeroVertici, unsigned int NumeroArchi) {
     grafo g           = malloc(sizeof(struct Grafo));
     g->NumeroArchi    = NumeroArchi;
     g->NumeroVertici  = NumeroVertici;
     g->Corrispondenze = newSymbleTable(NumeroArchi);
+    g->ListaAdiacenze = NULL;
     return g;
 }
 
 // Crea la lista di adiacenze del grafo
 void creaListaAdiacenze(grafo g) {
+    adiacenzaPesata(true);                                   // Imposto la lista come pesata
     g->ListaAdiacenze = newListaAdiacenze(g->NumeroVertici); // Creo la lista
-
     // Esploro la matrice
     unsigned int **Matrix = g->Matrice->Matrix;
     for (unsigned int i = 0; i < g->Matrice->Size; i++) {
@@ -78,12 +103,15 @@ grafo parseGrafo(char *filename) {
 
 // Stampa un grafo
 void printGrafo(grafo g) {
-    // Esploro la matrice
-    unsigned int **Matrix = g->Matrice->Matrix;
-    for (unsigned int i = 0; i < g->Matrice->Size; i++) {
-        for (unsigned int j = 0; j < g->Matrice->Size; j++) {
-            if (Matrix[i][j] != 0) {                                                                                          // Se il collegamento esiste
-                printf("%s %s %u\n", getSymbleName(g->Corrispondenze, i), getSymbleName(g->Corrispondenze, j), Matrix[i][j]); // Stampo l'arco
+    if (g->ListaAdiacenze == NULL) {
+        return printGrafoMatriceAdiacenze(g);
+    }
+
+    for (unsigned int i = 0; i < g->ListaAdiacenze->Indici->ObjectsNumber; i++) { // Per ogni vertice
+        if (g->ListaAdiacenze->Indici->Objects[i] != NULL) {                      // Se la lista esiste
+            link nextItem = g->ListaAdiacenze->Indici->Objects[i];
+            while (getNext(&nextItem)) {             // Sinché la lista è esplorabile
+                printArcoGrafoLista(g, nextItem, i); // Stampo l'arco
             }
         }
     }
