@@ -20,9 +20,11 @@ bool addAdiacenza(listaAdicenze l, unsigned int Index, unsigned int Destinazione
 listaAdicenze newListaAdiacenze(unsigned int NumeroVertici) {
     listaAdicenze l = malloc(sizeof(struct ListaAdicenze));
     l->Indici       = newArray((void *)&freeList, NULL, NULL);
+    allocateArray(l->Indici, NumeroVertici);
     for (unsigned int i = 0; i < l->Indici->ObjectsNumber; i++) { // Per ogni Vertice
         l->Indici->Objects[i] = NULL;
     }
+    return l;
 }
 
 // Elimina una lista adiacenza

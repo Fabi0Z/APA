@@ -47,10 +47,10 @@ bool getNext(shortLink *l) {
     return true;
 }
 
-// Restituisce l'elemento prima della coda di una lista
+// Restituisce l'elemento prima della coda di una lista, se è l'unico elemento restituisce se stesso
 shortLink getPreTail(shortLink l) {
     if (l->Next == NULL) { // Se ho l'ultimo elemento
-        return NULL;
+        return l;
     }
     if (l->Next->Next == NULL) { // Se ho il penultimo elemento
         return l;
@@ -60,7 +60,8 @@ shortLink getPreTail(shortLink l) {
 
 // Restituisce l'elemento in coda alla lista
 shortLink getTail(shortLink l) {
-    return getPreTail(l)->Next;
+    shortLink pretail = getPreTail(l);
+    return pretail->Next == NULL ? pretail : pretail->Next;
 }
 
 // Crea un nodo di lista

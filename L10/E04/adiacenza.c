@@ -34,4 +34,5 @@ adiacenza newAdiacenza(unsigned int Destinazione, unsigned int Peso) {
     if (__ADIACENZA_PESATA) {
         a->Destinazione[1] = Peso;
     }
+    return a;
 }

@@ -110,6 +110,7 @@ void printGrafo(grafo g) {
     for (unsigned int i = 0; i < g->ListaAdiacenze->Indici->ObjectsNumber; i++) { // Per ogni vertice
         if (g->ListaAdiacenze->Indici->Objects[i] != NULL) {                      // Se la lista esiste
             link nextItem = g->ListaAdiacenze->Indici->Objects[i];
+            printArcoGrafoLista(g, nextItem, i);     // Stampo il primo arco
             while (getNext(&nextItem)) {             // Sinché la lista è esplorabile
                 printArcoGrafoLista(g, nextItem, i); // Stampo l'arco
             }

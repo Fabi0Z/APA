@@ -8,6 +8,7 @@ struct SymbleTable;
 typedef struct SymbleTable *symbleTable;
 
 bool updateSymble(symbleTable s, unsigned int Index, char *Name);
+unsigned int numberOfItem(symbleTable s);
 symbleTable newSymbleTable(unsigned int MaxItems);
 char *getSymbleName(symbleTable s, unsigned int Index);
 void freeSymbleTable(symbleTable s);
