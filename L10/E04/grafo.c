@@ -117,3 +117,48 @@ void printGrafo(grafo g) {
         }
     }
 }
+
+// * PARTE DI RIORDINAMENTO
+
+// Restituisce true se il nome del vertice di partenza dell'adiacenza a è prima in ordine alfabetico rispetto a quello di b
+bool minorUgualeNomeVertice(unsigned int *a, unsigned int *b, grafo g) {
+    char *nomeA = getSymbleName(g->Corrispondenze, *a);
+    char *nomeB = getSymbleName(g->Corrispondenze, *b);
+    return ordineAlfabetico(nomeA, nomeB);
+}
+
+// Riordina i vertici di una lista adiacenze in un arco per nome
+void reorderVertexByName(grafo g) {
+    unsigned int indici[g->ListaAdiacenze->Indici->ObjectsNumber];        // Array di interi contenente gli indici
+    array indiciArray = newArray(NULL, NULL, NULL);                       // Creo modello di array
+    allocateArray(indiciArray, g->ListaAdiacenze->Indici->ObjectsNumber); // Alloco l'array
+
+    for (unsigned int i = 0; i < indiciArray->ObjectsNumber; i++) { // Scrivo i valori degli indici
+        indici[i]               = i;                                // Scrivo il numero
+        indiciArray->Objects[i] = &indici[i];                       // Copio il puntatore
+    }
+
+    mergeSort(indiciArray, (void *)&minorUgualeNomeVertice, g); // Applico il merge sort
+
+    for (unsigned int i = 0; i < indiciArray->ObjectsNumber; i++) {
+        unsigned int *value = indiciArray->Objects[i]; // Salvo il numero
+        if (i != *value) {                             // Se il numero è diverso dall'indice
+            // Scambio le liste
+            link tmp                                   = g->ListaAdiacenze->Indici->Objects[i];
+            link tmp2                                  = g->ListaAdiacenze->Indici->Objects[*value];
+            g->ListaAdiacenze->Indici->Objects[i]      = tmp2;
+            g->ListaAdiacenze->Indici->Objects[*value] = tmp;
+
+            if (/* condition */) {
+                /* code */
+            }
+            while (/* condition */) {
+                /* code */
+            }
+
+            updateSymbleTableItemIndex(g->Corrispondenze, i, *value); // Sostituisco l'indice
+        }
+    }
+
+    freeArray(indiciArray, false); // Elimino l'array
+}

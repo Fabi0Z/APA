@@ -1,6 +1,7 @@
 #ifndef SMARTLIB_H
 #define SMARTLIB_H
 
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,6 +11,7 @@ typedef void *item;
 
 void premiPerContinuare();
 bool equalStrings(char *a, char *b);
+bool ordineAlfabetico(char *a, char *b);
 FILE *smartFopen(char *filename, char *mode);
 unsigned int countNumberOfLines(char *filename);
 bool checkFilestream(FILE *stream);

@@ -7,7 +7,8 @@
 struct SymbleTable;
 typedef struct SymbleTable *symbleTable;
 
-bool updateSymble(symbleTable s, unsigned int Index, char *Name);
+bool updateSymbleTableItemIndex(symbleTable s, unsigned int Index, unsigned int NewIndex);
+bool updateSymbleTableItemName(symbleTable s, unsigned int Index, char *NewName);
 unsigned int numberOfItem(symbleTable s);
 symbleTable newSymbleTable(unsigned int MaxItems);
 char *getSymbleName(symbleTable s, unsigned int Index);

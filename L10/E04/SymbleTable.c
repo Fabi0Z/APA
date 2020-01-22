@@ -87,11 +87,24 @@ unsigned int numberOfItem(symbleTable s) {
 }
 
 // Modifico un symble della table
-bool updateSymble(symbleTable s, unsigned int Index, char *Name) {
+bool updateSymbleTableItemName(symbleTable s, unsigned int Index, char *NewName) {
     if (OutOfRange(s, Index)) { // Interruzione numero non possibile
         return false;
     }
     symble temp = s->Table->Objects[Index];
-    updateSymbleName(temp, Name);
+    updateSymbleName(temp, NewName);
+    return true;
+}
+
+// Modifico un symble della table
+bool updateSymbleTableItemIndex(symbleTable s, unsigned int Index, unsigned int NewIndex) {
+    if (OutOfRange(s, Index)) { // Interruzione numero non possibile
+        return false;
+    }
+    // Scambio gli elementi negli array
+    symble temp                 = s->Table->Objects[Index];
+    symble temp2                = s->Table->Objects[NewIndex];
+    s->Table->Objects[Index]    = temp2;
+    s->Table->Objects[NewIndex] = temp;
     return true;
 }

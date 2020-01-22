@@ -20,6 +20,21 @@ unsigned int countNumberOfLines(char *filename) {
     return lines;
 }
 
+// Restituisce true se la stringa a viene prima di b in ordine alfabetico
+bool ordineAlfabetico(char *a, char *b) {
+    unsigned int length  = strlen(a);
+    unsigned int lengthb = strlen(b);
+    length               = lengthb < length ? lengthb : length; // Prendo la lunghezza minore
+    for (unsigned int i = 0; i < length; i++) {
+        if (tolower(a[i]) < tolower(b[i])) { // Se viene prima
+            return true;
+        } else if (tolower(a[i]) > tolower(b[i])) { // Se viene dopo
+            return false;
+        }
+    }
+    return lengthb != length; // Se era uguale per tutta la lunghezza restituisco true nel solo caso in cui a fosse la parola più breve
+}
+
 // Restituisce true se due stringhe sono uguali
 bool equalStrings(char *a, char *b) {
     unsigned int Length = strlen(a);
